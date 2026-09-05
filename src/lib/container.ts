@@ -10,6 +10,7 @@ import { CaseStudyRepository } from "./repositories/strapi/CaseStudyRepository";
 import { BlogPostRepository } from "./repositories/strapi/BlogPostRepository";
 import { PartnerRepository } from "./repositories/strapi/PartnerRepository";
 import { AboutPageRepository } from "./repositories/strapi/AboutPageRepository";
+import { TeamMemberRepository } from "./repositories/strapi/TeamMemberRepository";
 
 import { GET_HOMEPAGE } from "./cqrs/queries/GetHomepageQuery";
 import { GET_GLOBAL } from "./cqrs/queries/GetGlobalQuery";
@@ -17,6 +18,8 @@ import { GET_FEATURED_CASE_STUDIES } from "./cqrs/queries/GetFeaturedCaseStudies
 import { GET_LATEST_BLOG_POSTS } from "./cqrs/queries/GetLatestBlogPostsQuery";
 import { GET_ALL_PARTNERS } from "./cqrs/queries/GetAllPartnersQuery";
 import { GET_CLIENT_LOGOS } from "./cqrs/queries/GetClientLogosQuery";
+import { GET_ABOUT_PAGE } from "./cqrs/queries/GetAboutPageQuery";
+import { GET_FEATURED_TEAM_MEMBERS } from "./cqrs/queries/GetFeaturedTeamMembersQuery";
 
 import { GetHomepageHandler } from "./cqrs/handlers/queries/GetHomepageHandler";
 import { GetGlobalHandler } from "./cqrs/handlers/queries/GetGlobalHandler";
@@ -24,6 +27,8 @@ import { GetFeaturedCaseStudiesHandler } from "./cqrs/handlers/queries/GetFeatur
 import { GetLatestBlogPostsHandler } from "./cqrs/handlers/queries/GetLatestBlogPostsHandler";
 import { GetAllPartnersHandler } from "./cqrs/handlers/queries/GetAllPartnersHandler";
 import { GetClientLogosHandler } from "./cqrs/handlers/queries/GetClientLogosHandler";
+import { GetAboutPageHandler } from "./cqrs/handlers/queries/GetAboutPageHandler";
+import { GetFeaturedTeamMembersHandler } from "./cqrs/handlers/queries/GetFeaturedTeamMembersHandler";
 
 import { HomepageService } from "./services/HomepageService";
 import { GlobalService } from "./services/GlobalService";
@@ -31,6 +36,7 @@ import { CaseStudyService } from "./services/CaseStudyService";
 import { BlogPostService } from "./services/BlogPostService";
 import { PartnerService } from "./services/PartnerService";
 import { AboutPageService } from "./services/AboutPageService";
+import { TeamMemberService } from "./services/TeamMemberService";
 
 import { HomepageController } from "./controllers/HomepageController";
 import { GlobalController } from "./controllers/GlobalController";
@@ -38,6 +44,7 @@ import { CaseStudyController } from "./controllers/CaseStudyController";
 import { BlogPostController } from "./controllers/BlogPostController";
 import { PartnerController } from "./controllers/PartnerController";
 import { AboutPageController } from "./controllers/AboutPageController";
+import { TeamMemberController } from "./controllers/TeamMemberController";
 
 interface Container {
   homepageController: HomepageController;
@@ -46,6 +53,7 @@ interface Container {
   blogPostController: BlogPostController;
   partnerController: PartnerController;
   aboutPageController: AboutPageController;
+  teamMemberController: TeamMemberController;
 }
 
 const CONTAINER_KEY = "__cnsContainer";
@@ -61,6 +69,7 @@ function build(): Container {
   const blogPostRepo = new BlogPostRepository();
   const partnerRepo = new PartnerRepository();
   const aboutPageRepo = new AboutPageRepository();
+  const teamMemberRepo = new TeamMemberRepository();
 
   queryBus.register(GET_HOMEPAGE, new GetHomepageHandler(homepageRepo));
   queryBus.register(GET_GLOBAL, new GetGlobalHandler(globalRepo));
@@ -68,6 +77,8 @@ function build(): Container {
   queryBus.register(GET_LATEST_BLOG_POSTS, new GetLatestBlogPostsHandler(blogPostRepo));
   queryBus.register(GET_ALL_PARTNERS, new GetAllPartnersHandler(partnerRepo));
   queryBus.register(GET_CLIENT_LOGOS, new GetClientLogosHandler(aboutPageRepo));
+  queryBus.register(GET_ABOUT_PAGE, new GetAboutPageHandler(aboutPageRepo));
+  queryBus.register(GET_FEATURED_TEAM_MEMBERS, new GetFeaturedTeamMembersHandler(teamMemberRepo));
 
   return {
     homepageController: new HomepageController(new HomepageService(queryBus)),
@@ -76,6 +87,7 @@ function build(): Container {
     blogPostController: new BlogPostController(new BlogPostService(queryBus)),
     partnerController: new PartnerController(new PartnerService(queryBus)),
     aboutPageController: new AboutPageController(new AboutPageService(queryBus)),
+    teamMemberController: new TeamMemberController(new TeamMemberService(queryBus)),
   };
 }
 
@@ -94,3 +106,4 @@ export const caseStudyController = container.caseStudyController;
 export const blogPostController = container.blogPostController;
 export const partnerController = container.partnerController;
 export const aboutPageController = container.aboutPageController;
+export const teamMemberController = container.teamMemberController;

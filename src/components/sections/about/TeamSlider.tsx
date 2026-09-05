@@ -31,8 +31,31 @@ const AUTOPLAY = 6000; // Splide `interval`
 /** Three copies of the list; the middle one is the one actually on screen. */
 const COPIES = 3;
 
-export function TeamSlider() {
-  const members = team.members;
+export type TeamMemberCard = {
+  name: string;
+  position: string;
+  description: string;
+  image: string;
+};
+
+export type OfficeCard = { flag: string; alt: string; country: string; body: string };
+
+export function TeamSlider({
+  tag = team.tag,
+  heading = team.heading,
+  intro = team.intro,
+  members: memberCards = team.members,
+  localHeading = team.localHeading,
+  offices = team.offices,
+}: {
+  tag?: string;
+  heading?: string;
+  intro?: string;
+  members?: TeamMemberCard[];
+  localHeading?: string;
+  offices?: OfficeCard[];
+} = {}) {
+  const members = memberCards;
   const len = members.length;
   const rendered = Array.from({ length: COPIES * len }, (_, i) => ({
     member: members[i % len],
@@ -119,16 +142,16 @@ export function TeamSlider() {
     <section className="team spacing bg-grey-50">
       <div className="flex flex-col gap-3 justify-center items-center mb-16 container">
         <Reveal>
-          <Tag className="mx-auto">{team.tag}</Tag>
+          <Tag className="mx-auto">{tag}</Tag>
         </Reveal>
         <Reveal>
           <h2 className="heading-2 font-semibold max-w-[815px] text-center mt-3 text-cyan-400">
-            {team.heading}
+            {heading}
           </h2>
         </Reveal>
         <Reveal>
           <p className="body-2 font-medium max-w-[815px] text-center mt-3">
-            {team.intro}
+            {intro}
             {/* The original ends this paragraph with `<br /><br />`, which
                 leaves one blank line under the intro. It is load-bearing: drop
                 it and the section comes up 28px short of the original. */}
@@ -273,12 +296,12 @@ export function TeamSlider() {
       <div className="container">
         <div className="mt-10 lg:mt-16">
           <div className="text-center heading-3 font-semibold text-cyan-400">
-            {team.localHeading}
+            {localHeading}
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 2xl:gap-10 mt-16">
-          {team.offices.map((office) => (
+          {offices.map((office) => (
             <Reveal key={office.country} className="flex flex-col gap-3">
               <Image
                 src={office.flag}

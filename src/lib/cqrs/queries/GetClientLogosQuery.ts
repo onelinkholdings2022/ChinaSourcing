@@ -1,8 +1,8 @@
 import type { IQuery } from "../bus";
-import type { AboutPagePartial } from "../../types/about-page";
+import type { AboutPageData } from "../../types/about-page";
 
 export const GET_CLIENT_LOGOS = "about-page/GetClientLogos";
 
-export class GetClientLogosQuery implements IQuery<AboutPagePartial> {
+export class GetClientLogosQuery implements IQuery<AboutPageData> {
   readonly type = GET_CLIENT_LOGOS;
 }

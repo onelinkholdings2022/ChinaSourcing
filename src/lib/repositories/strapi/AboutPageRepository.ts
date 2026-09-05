@@ -1,15 +1,20 @@
 import { StrapiBaseRepository } from "../../core/BaseRepository";
-import type { AboutPagePartial } from "../../types/about-page";
+import type { AboutPageData } from "../../types/about-page";
 
-// Repo đầy đủ cho `/about-us` sẽ mở rộng khi build trang đó. Hiện chỉ cần
-// `logoMarquee` — dùng chung cho section LogoMarquee ở trang chủ (site gốc
-// dùng lại đúng 7 logo này ở cả 2 trang, homepage không có field riêng).
-export class AboutPageRepository extends StrapiBaseRepository<AboutPagePartial> {
+// Trang `/about-us` — một endpoint duy nhất, populate sâu ở phía server
+// (`buildDeepPopulate`, strapi-cns/src/utils/deep-populate.ts). `getClientLogos`
+// và `getPage` đọc cùng một response — Next fetch cache dedupe theo URL nên
+// không tốn thêm request.
+export class AboutPageRepository extends StrapiBaseRepository<AboutPageData> {
   protected getBaseEndpoint() {
     return "/api/about-us-page";
   }
 
-  getClientLogos(): Promise<AboutPagePartial | null> {
+  getPage(): Promise<AboutPageData | null> {
     return this.fetchSingle("/about-us-page", { revalidate: 3600, tags: ["strapi", "about-us-page"] });
+  }
+
+  getClientLogos(): Promise<AboutPageData | null> {
+    return this.getPage();
   }
 }

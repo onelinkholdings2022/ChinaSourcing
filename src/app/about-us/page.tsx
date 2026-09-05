@@ -1,7 +1,6 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { landingMetadata } from "@/components/LandingPage";
-import { reasons, aboutCta, aboutLogos, brandTabs, journey } from "@/data/about";
 import { AboutHero } from "@/components/sections/about/AboutHero";
 import { JourneyTimeline } from "@/components/sections/JourneyTimeline";
 import { FounderQuote } from "@/components/sections/about/FounderQuote";
@@ -12,6 +11,20 @@ import { TeamSlider } from "@/components/sections/about/TeamSlider";
 import { CaseStudySlider } from "@/components/sections/CaseStudySlider";
 import { FlowTrackTabs } from "@/components/sections/FlowTrackTabs";
 import { DarkCta } from "@/components/sections/DarkCta";
+import { aboutPageController, teamMemberController, caseStudyController, globalController } from "@/lib";
+import {
+  buildAboutHeroView,
+  buildJourneyView,
+  buildFounderQuoteView,
+  buildAboutLogosView,
+  buildCoreValuesView,
+  buildBenefitsView,
+  buildTeamView,
+  buildAboutCaseStudiesView,
+  buildBrandCultureView,
+  buildCtaBannerView,
+} from "@/lib/views/aboutView";
+import { buildNavView, buildFooterView } from "@/lib/views/globalView";
 
 export const metadata = landingMetadata("about-us");
 
@@ -22,47 +35,85 @@ export const metadata = landingMetadata("about-us");
  * because the hero is on a light background — the transparent variant is for
  * the homepage's dark video hero only.
  */
-export default function Page() {
+export default async function Page() {
+  const [pageResult, membersResult, caseStudiesResult, globalResult] = await Promise.all([
+    aboutPageController.getPage(),
+    teamMemberController.getFeatured(),
+    caseStudyController.getFeatured(),
+    globalController.getGlobal(),
+  ]);
+
+  const page = pageResult.data;
+  const members = membersResult.data ?? [];
+  const caseStudies = caseStudiesResult.data ?? [];
+  const global = globalResult.data;
+
+  if (!page) {
+    return (
+      <>
+        <Header solid nav={global ? buildNavView(global) : undefined} />
+        <main>
+          <p className="container py-40 text-center">
+            Không tải được nội dung trang About Us. Vui lòng thử lại sau.
+          </p>
+        </main>
+        <Footer footer={global ? buildFooterView(global) : undefined} />
+      </>
+    );
+  }
+
+  const journey = buildJourneyView(page);
+  const team = buildTeamView(page, members);
+  const caseStudiesView = buildAboutCaseStudiesView(page, caseStudies);
+  const brandCulture = buildBrandCultureView(page);
+  const ctaBanner = buildCtaBannerView(page);
+
   return (
     <>
-      <Header solid />
+      <Header solid nav={global ? buildNavView(global) : undefined} />
       <main className="pt-28 lg:pt-32">
-        <AboutHero />
+        <AboutHero {...buildAboutHeroView(page)} />
         <JourneyTimeline
           tag={journey.tag}
           heading={journey.heading}
           ship={journey.ship}
           milestones={journey.milestones}
         />
-        <FounderQuote />
+        <FounderQuote {...buildFounderQuoteView(page)} />
         <LogoStrip
-          logos={aboutLogos}
+          logos={buildAboutLogosView(page)}
           className="logo container text-center lg:py-[80px] py-[60px] pt-0 lg:pt-0"
         />
-        <CoreValues />
-        <UspList
-          tag={reasons.tag}
-          heading={reasons.heading}
-          intro={reasons.intro}
-          icon={reasons.icon}
-          image={reasons.image}
-          items={reasons.items}
+        <CoreValues {...buildCoreValuesView(page)} />
+        <UspList {...buildBenefitsView(page)} />
+        <TeamSlider
+          tag={team.tag}
+          heading={team.heading}
+          intro={team.intro}
+          members={team.members}
+          localHeading={team.localHeading}
+          offices={team.offices}
         />
-        <TeamSlider />
-        <CaseStudySlider />
+        <CaseStudySlider
+          tag={caseStudiesView.tag}
+          headingLines={caseStudiesView.headingLines}
+          cards={caseStudiesView.cards}
+          ctaLabel={caseStudiesView.ctaLabel}
+          ctaHref={caseStudiesView.ctaHref}
+        />
         <FlowTrackTabs
-          tag={brandTabs.tag}
-          heading={brandTabs.heading}
-          slides={brandTabs.slides}
+          tag={brandCulture.tag}
+          heading={brandCulture.heading}
+          slides={brandCulture.slides}
         />
         <DarkCta
-          tag={aboutCta.tag}
-          heading={aboutCta.heading}
-          body={aboutCta.body}
-          ctaLabel={aboutCta.cta}
+          tag={ctaBanner.tag}
+          heading={ctaBanner.heading}
+          body={ctaBanner.body}
+          ctaLabel={ctaBanner.ctaLabel}
         />
       </main>
-      <Footer />
+      <Footer footer={global ? buildFooterView(global) : undefined} />
     </>
   );
 }

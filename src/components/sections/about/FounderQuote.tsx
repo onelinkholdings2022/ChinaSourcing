@@ -12,19 +12,31 @@ import { Reveal } from "@/components/Reveal";
  * (`-top-6 -left-6` / `-bottom-6 -right-6`); they sit above the text on the
  * z-order but must never intercept a click, hence `pointer-events-none`.
  */
-export function FounderQuote() {
+export function FounderQuote({
+  tag = founderQuote.tag,
+  avatar = founderQuote.avatar,
+  name = founderQuote.name,
+  role = founderQuote.role,
+  paragraphs = founderQuote.paragraphs,
+}: {
+  tag?: string;
+  avatar?: string;
+  name?: string;
+  role?: string;
+  paragraphs?: string[];
+} = {}) {
   return (
     <section className="simple-quote spacing">
       <div className="container flex flex-col items-center text-center">
         <Reveal>
-          <Tag className="mx-auto">{founderQuote.tag}</Tag>
+          <Tag className="mx-auto">{tag}</Tag>
         </Reveal>
 
         <div className="mt-3 flex flex-col items-center">
           <Reveal>
             <Image
-              src={founderQuote.avatar}
-              alt={founderQuote.name}
+              src={avatar}
+              alt={name}
               width={80}
               height={80}
               className="w-20 h-20 rounded-full overflow-hidden object-cover mb-3"
@@ -32,12 +44,12 @@ export function FounderQuote() {
           </Reveal>
           <Reveal>
             <p className="font-bold body-2 text-grey-600 font-lora">
-              {founderQuote.name}
+              {name}
             </p>
           </Reveal>
           <Reveal>
             <p className="body-2 font-medium text-grey-600">
-              {founderQuote.role}
+              {role}
             </p>
           </Reveal>
         </div>
@@ -52,7 +64,7 @@ export function FounderQuote() {
             className="absolute -top-6 -left-6 w-8 h-8 lg:w-[96px] lg:h-[70px] pointer-events-none"
           />
           <blockquote className="[&>*]:heading-3 text-grey-600 mx-10 lg:mx-28">
-            {founderQuote.paragraphs.map((p, i) => (
+            {paragraphs.map((p, i) => (
               // The original separates the paragraphs with an empty `<p>&nbsp;</p>`
               // rather than a margin. Keep it: `[&>*]:heading-3` gives that blank
               // line the heading line-height, so the gap grows with the type scale

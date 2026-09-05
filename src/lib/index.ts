@@ -9,6 +9,7 @@ export {
   blogPostController,
   partnerController,
   aboutPageController,
+  teamMemberController,
 } from "./container";
 
 export { getMediaUrl, mediaWidth, mediaHeight, mediaAlt } from "./api/media-url";
@@ -20,4 +21,6 @@ export type { GlobalData, NavItem, FooterColumn, FooterLocation, SocialLink } fr
 export type { CaseStudy } from "./types/case-study";
 export type { BlogPost } from "./types/blog-post";
 export type { Partner, PartnerCategory } from "./types/partner";
+export type { AboutPageData } from "./types/about-page";
+export type { TeamMember } from "./types/team-member";
 export type { StrapiMedia, StrapiButton, StrapiTag, StrapiSeo } from "./types/strapi";

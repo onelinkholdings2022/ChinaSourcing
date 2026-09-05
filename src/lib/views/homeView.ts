@@ -3,7 +3,7 @@ import type { HomepageData } from "../types/homepage";
 import type { CaseStudy } from "../types/case-study";
 import type { BlogPost } from "../types/blog-post";
 import type { Partner } from "../types/partner";
-import type { AboutPagePartial } from "../types/about-page";
+import type { AboutPageData } from "../types/about-page";
 
 // ─── View model cho trang chủ ────────────────────────────────────────────────
 // Map raw Strapi -> đúng hình dữ liệu mà các component section đang đọc (trước
@@ -206,7 +206,7 @@ export function buildMissionVideoView(data: HomepageData): MissionVideoViewData 
   };
 }
 
-export function buildClientLogosView(about: AboutPagePartial | null): string[] {
+export function buildClientLogosView(about: AboutPageData | null): string[] {
   if (!about) return [];
   return about.logoMarquee.logos.map((l) => getMediaUrl(l.logo) ?? FALLBACK_IMAGE);
 }
