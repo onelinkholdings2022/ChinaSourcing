@@ -6,7 +6,15 @@ import { DarkCta } from "@/components/sections/DarkCta";
 import { UspList } from "@/components/sections/UspList";
 import { JourneyTimeline } from "@/components/sections/JourneyTimeline";
 import { ProductHero } from "@/components/sections/product/ProductHero";
-import { processPage } from "@/data/process";
+import { processPageController, globalController } from "@/lib";
+import {
+  buildProcessHeroView,
+  buildProcessTimelineView,
+  buildProcessUspView,
+  buildProcessFaqView,
+  buildProcessCtaView,
+} from "@/lib/views/processView";
+import { buildNavView, buildFooterView } from "@/lib/views/globalView";
 
 export const metadata = landingMetadata("process");
 
@@ -15,12 +23,38 @@ export const metadata = landingMetadata("process");
  * The timeline is the same pinned GSAP block as About's "From Vision to
  * Impact", here with eight steps and a "Step N" label per panel.
  */
-export default function Page() {
-  const { hero, timeline, usp, faq, cta } = processPage;
+export default async function Page() {
+  const [pageResult, globalResult] = await Promise.all([
+    processPageController.getPage(),
+    globalController.getGlobal(),
+  ]);
+
+  const page = pageResult.data;
+  const global = globalResult.data;
+
+  if (!page) {
+    return (
+      <>
+        <Header solid nav={global ? buildNavView(global) : undefined} />
+        <main>
+          <p className="container py-40 text-center">
+            Không tải được nội dung trang Process. Vui lòng thử lại sau.
+          </p>
+        </main>
+        <Footer footer={global ? buildFooterView(global) : undefined} />
+      </>
+    );
+  }
+
+  const hero = buildProcessHeroView(page);
+  const timeline = buildProcessTimelineView(page);
+  const usp = buildProcessUspView(page);
+  const faq = buildProcessFaqView(page);
+  const cta = buildProcessCtaView(page);
 
   return (
     <>
-      <Header solid />
+      <Header solid nav={global ? buildNavView(global) : undefined} />
       <main className="pt-28 lg:pt-32">
         <ProductHero hero={hero} />
         <JourneyTimeline
@@ -53,7 +87,7 @@ export default function Page() {
           className={cta.sectionClass}
         />
       </main>
-      <Footer />
+      <Footer footer={global ? buildFooterView(global) : undefined} />
     </>
   );
 }

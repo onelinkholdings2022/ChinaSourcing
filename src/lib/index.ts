@@ -10,6 +10,7 @@ export {
   partnerController,
   aboutPageController,
   teamMemberController,
+  processPageController,
 } from "./container";
 
 export { getMediaUrl, mediaWidth, mediaHeight, mediaAlt } from "./api/media-url";

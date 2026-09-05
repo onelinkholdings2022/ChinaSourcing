@@ -4,6 +4,7 @@ import type { CaseStudy } from "../types/case-study";
 import type { BlogPost } from "../types/blog-post";
 import type { Partner } from "../types/partner";
 import type { AboutPageData } from "../types/about-page";
+import { stripHtml, estimateReadTime, formatDate } from "./textUtils";
 
 // ─── View model cho trang chủ ────────────────────────────────────────────────
 // Map raw Strapi -> đúng hình dữ liệu mà các component section đang đọc (trước
@@ -72,34 +73,6 @@ export interface MissionVideoViewData {
 }
 
 const FALLBACK_IMAGE = "/images/blog-fallback.png";
-
-function stripHtml(html: string | null | undefined): string {
-  if (!html) return "";
-  return html
-    .replace(/<[^>]+>/g, " ")
-    .replace(/&hellip;/g, "…")
-    .replace(/&amp;/g, "&")
-    .replace(/&#8217;/g, "’")
-    .replace(/&#8220;/g, "“")
-    .replace(/&#8221;/g, "”")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function estimateReadTime(html: string | null | undefined): string {
-  const words = stripHtml(html).split(" ").filter(Boolean).length;
-  const minutes = Math.max(1, Math.round(words / 200));
-  return `${minutes} min read`;
-}
-
-function formatDate(iso: string | null | undefined): string {
-  if (!iso) return "";
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return "";
-  const dd = String(d.getDate()).padStart(2, "0");
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  return `${dd}/${mm}/${d.getFullYear()}`;
-}
 
 export function buildHeroView(data: HomepageData): HeroViewData {
   const { hero } = data;
