@@ -2,17 +2,26 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { getCaseStudyPage, caseStudySlugs } from "@/data/case-studies";
 import { CaseStudyHero } from "@/components/sections/casestudy/CaseStudyHero";
 import { CaseStudyArticle } from "@/components/sections/casestudy/CaseStudyArticle";
 import { SimpleCardGrid } from "@/components/sections/SimpleCardGrid";
 import { CaseStudySlider } from "@/components/sections/CaseStudySlider";
 import { DarkCta } from "@/components/sections/DarkCta";
+import { caseStudyController, caseStudySettingController, globalController } from "@/lib";
+import {
+  buildCaseStudyHeroView,
+  buildCaseStudySimpleView,
+  buildCaseStudyBlocksView,
+  buildCaseStudyRelatedView,
+  buildCaseStudyCtaView,
+} from "@/lib/views/caseStudyView";
+import { buildNavView, buildFooterView } from "@/lib/views/globalView";
 
 const SITE = "https://chinasourcing.co";
 
-export function generateStaticParams() {
-  return caseStudySlugs();
+export async function generateStaticParams() {
+  const result = await caseStudyController.getAll();
+  return (result.data ?? []).map((c) => ({ slug: c.slug }));
 }
 
 export async function generateMetadata({
@@ -21,7 +30,8 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const page = getCaseStudyPage(slug);
+  const result = await caseStudyController.getBySlug(slug);
+  const page = result.data;
   return {
     title: page ? `${page.title} | China Sourcing Co` : "China Sourcing Co",
     description: page?.description || undefined,
@@ -34,7 +44,7 @@ export async function generateMetadata({
  * Every case study renders the identical five-section sequence (hero, the
  * dark "What We Do" card grid, the article body, the slider of other studies,
  * the dark CTA), so there is one component tree and the differences are all
- * content in `case-study-pages.json`.
+ * content from Strapi's `case-study` collection.
  *
  * The `flex flex-col pb-[120px]` wrapper is the theme's — the trailing 120px is
  * what separates the CTA from the footer, since `.dark-cta` here ships without
@@ -46,50 +56,60 @@ export default async function CaseStudyPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const page = getCaseStudyPage(slug);
-  if (!page) notFound();
+
+  const [caseStudyResult, allResult, settingsResult, globalResult] = await Promise.all([
+    caseStudyController.getBySlug(slug),
+    caseStudyController.getAll(),
+    caseStudySettingController.getSettings(),
+    globalController.getGlobal(),
+  ]);
+
+  const cs = caseStudyResult.data;
+  if (!cs) notFound();
+
+  const all = allResult.data ?? [];
+  const settings = settingsResult.data;
+  const global = globalResult.data;
+
+  const hero = buildCaseStudyHeroView(cs);
+  const simple = buildCaseStudySimpleView(cs);
+  const blocks = buildCaseStudyBlocksView(cs);
+  const related = buildCaseStudyRelatedView(cs, all, settings);
+  const cta = buildCaseStudyCtaView(settings);
 
   return (
     <>
-      <Header solid />
+      <Header solid nav={global ? buildNavView(global) : undefined} />
       <main className="pt-28 lg:pt-32">
         <div className="flex flex-col pb-[120px]">
-          <CaseStudyHero
-            heading={page.hero.heading}
-            intro={page.hero.intro}
-            facts={page.hero.meta}
-          />
+          <CaseStudyHero heading={hero.heading} intro={hero.intro} facts={hero.facts} />
           <SimpleCardGrid
-            tag={page.simple.tag}
-            heading={page.simple.heading}
-            intro={page.simple.intro}
-            cards={page.simple.cards}
+            tag={simple.tag}
+            heading={simple.heading}
+            intro={simple.intro}
+            cards={simple.cards}
             align="left"
             columns={4}
           />
-          <CaseStudyArticle
-            blocks={page.blocks}
-            title={page.title}
-            shareUrl={`${SITE}/case-study/${page.slug}/`}
-          />
+          <CaseStudyArticle blocks={blocks} title={cs.title} shareUrl={`${SITE}/case-study/${cs.slug}/`} />
           <CaseStudySlider
             variant="dark"
-            tag={page.slider.tag}
-            headingLines={[page.slider.heading]}
-            cards={page.slider.cards}
-            ctaLabel={page.slider.ctaLabel}
-            ctaHref={page.slider.ctaHref}
+            tag={related.tag}
+            headingLines={related.headingLines}
+            cards={related.cards}
+            ctaLabel={related.ctaLabel}
+            ctaHref={related.ctaHref}
           />
           <DarkCta
-            tag={page.cta.tag}
-            heading={page.cta.heading}
-            body={page.cta.body}
-            ctaLabel={page.cta.ctaLabel}
-            className={page.cta.sectionClass}
+            tag={cta.tag}
+            heading={cta.heading}
+            body={cta.body}
+            ctaLabel={cta.ctaLabel}
+            className={cta.sectionClass}
           />
         </div>
       </main>
-      <Footer />
+      <Footer footer={global ? buildFooterView(global) : undefined} />
     </>
   );
 }

@@ -1,16 +1,23 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { landingMetadata } from "@/components/LandingPage";
-import { caseStudiesIndex } from "@/data/case-studies";
 import { SimpleHero } from "@/components/sections/SimpleHero";
 import { CaseStudyList } from "@/components/sections/CaseStudyList";
 import { UspList } from "@/components/sections/UspList";
 import { CarouselTestimonial } from "@/components/sections/CarouselTestimonial";
 import { DarkCta } from "@/components/sections/DarkCta";
+import { caseStudiesPageController, caseStudyController, globalController } from "@/lib";
+import {
+  buildCaseStudiesHeroView,
+  buildCaseStudiesListView,
+  buildCaseStudyCardsView,
+  buildCaseStudiesUspView,
+  buildCaseStudiesTestimonialsView,
+  buildCaseStudiesCtaView,
+} from "@/lib/views/caseStudyView";
+import { buildNavView, buildFooterView } from "@/lib/views/globalView";
 
 export const metadata = landingMetadata("case-studies");
-
-const { hero, list, usp, testimonials, cta, cards } = caseStudiesIndex;
 
 /**
  * `/case-studies`, rebuilt as components.
@@ -21,10 +28,41 @@ const { hero, list, usp, testimonials, cta, cards } = caseStudiesIndex;
  * the owner's request — the three studies it promotes are all in the grid
  * directly above it.
  */
-export default function Page() {
+export default async function Page() {
+  const [pageResult, allResult, globalResult] = await Promise.all([
+    caseStudiesPageController.getPage(),
+    caseStudyController.getAll(),
+    globalController.getGlobal(),
+  ]);
+
+  const page = pageResult.data;
+  const all = allResult.data ?? [];
+  const global = globalResult.data;
+
+  if (!page) {
+    return (
+      <>
+        <Header solid nav={global ? buildNavView(global) : undefined} />
+        <main>
+          <p className="container py-40 text-center">
+            Không tải được nội dung trang Case Studies. Vui lòng thử lại sau.
+          </p>
+        </main>
+        <Footer footer={global ? buildFooterView(global) : undefined} />
+      </>
+    );
+  }
+
+  const hero = buildCaseStudiesHeroView(page);
+  const list = buildCaseStudiesListView(page, all);
+  const cards = buildCaseStudyCardsView(all);
+  const usp = buildCaseStudiesUspView(page);
+  const testimonials = buildCaseStudiesTestimonialsView(page);
+  const cta = buildCaseStudiesCtaView(page);
+
   return (
     <>
-      <Header solid />
+      <Header solid nav={global ? buildNavView(global) : undefined} />
       <main className="pt-28 lg:pt-32">
         <SimpleHero
           heading={hero.heading}
@@ -61,7 +99,7 @@ export default function Page() {
           className={cta.sectionClass}
         />
       </main>
-      <Footer />
+      <Footer footer={global ? buildFooterView(global) : undefined} />
     </>
   );
 }

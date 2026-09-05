@@ -13,6 +13,8 @@ import { AboutPageRepository } from "./repositories/strapi/AboutPageRepository";
 import { TeamMemberRepository } from "./repositories/strapi/TeamMemberRepository";
 import { ProcessPageRepository } from "./repositories/strapi/ProcessPageRepository";
 import { ContactPageRepository } from "./repositories/strapi/ContactPageRepository";
+import { CaseStudiesPageRepository } from "./repositories/strapi/CaseStudiesPageRepository";
+import { CaseStudySettingRepository } from "./repositories/strapi/CaseStudySettingRepository";
 
 import { GET_HOMEPAGE } from "./cqrs/queries/GetHomepageQuery";
 import { GET_GLOBAL } from "./cqrs/queries/GetGlobalQuery";
@@ -24,6 +26,10 @@ import { GET_ABOUT_PAGE } from "./cqrs/queries/GetAboutPageQuery";
 import { GET_FEATURED_TEAM_MEMBERS } from "./cqrs/queries/GetFeaturedTeamMembersQuery";
 import { GET_PROCESS_PAGE } from "./cqrs/queries/GetProcessPageQuery";
 import { GET_CONTACT_PAGE } from "./cqrs/queries/GetContactPageQuery";
+import { GET_CASE_STUDIES_PAGE } from "./cqrs/queries/GetCaseStudiesPageQuery";
+import { GET_CASE_STUDY_SETTING } from "./cqrs/queries/GetCaseStudySettingQuery";
+import { GET_ALL_CASE_STUDIES } from "./cqrs/queries/GetAllCaseStudiesQuery";
+import { GET_CASE_STUDY_BY_SLUG } from "./cqrs/queries/GetCaseStudyBySlugQuery";
 
 import { GetHomepageHandler } from "./cqrs/handlers/queries/GetHomepageHandler";
 import { GetGlobalHandler } from "./cqrs/handlers/queries/GetGlobalHandler";
@@ -35,6 +41,10 @@ import { GetAboutPageHandler } from "./cqrs/handlers/queries/GetAboutPageHandler
 import { GetFeaturedTeamMembersHandler } from "./cqrs/handlers/queries/GetFeaturedTeamMembersHandler";
 import { GetProcessPageHandler } from "./cqrs/handlers/queries/GetProcessPageHandler";
 import { GetContactPageHandler } from "./cqrs/handlers/queries/GetContactPageHandler";
+import { GetCaseStudiesPageHandler } from "./cqrs/handlers/queries/GetCaseStudiesPageHandler";
+import { GetCaseStudySettingHandler } from "./cqrs/handlers/queries/GetCaseStudySettingHandler";
+import { GetAllCaseStudiesHandler } from "./cqrs/handlers/queries/GetAllCaseStudiesHandler";
+import { GetCaseStudyBySlugHandler } from "./cqrs/handlers/queries/GetCaseStudyBySlugHandler";
 
 import { HomepageService } from "./services/HomepageService";
 import { GlobalService } from "./services/GlobalService";
@@ -45,6 +55,8 @@ import { AboutPageService } from "./services/AboutPageService";
 import { TeamMemberService } from "./services/TeamMemberService";
 import { ProcessPageService } from "./services/ProcessPageService";
 import { ContactPageService } from "./services/ContactPageService";
+import { CaseStudiesPageService } from "./services/CaseStudiesPageService";
+import { CaseStudySettingService } from "./services/CaseStudySettingService";
 
 import { HomepageController } from "./controllers/HomepageController";
 import { GlobalController } from "./controllers/GlobalController";
@@ -55,6 +67,8 @@ import { AboutPageController } from "./controllers/AboutPageController";
 import { TeamMemberController } from "./controllers/TeamMemberController";
 import { ProcessPageController } from "./controllers/ProcessPageController";
 import { ContactPageController } from "./controllers/ContactPageController";
+import { CaseStudiesPageController } from "./controllers/CaseStudiesPageController";
+import { CaseStudySettingController } from "./controllers/CaseStudySettingController";
 
 interface Container {
   homepageController: HomepageController;
@@ -66,6 +80,8 @@ interface Container {
   teamMemberController: TeamMemberController;
   processPageController: ProcessPageController;
   contactPageController: ContactPageController;
+  caseStudiesPageController: CaseStudiesPageController;
+  caseStudySettingController: CaseStudySettingController;
 }
 
 const CONTAINER_KEY = "__cnsContainer";
@@ -84,6 +100,8 @@ function build(): Container {
   const teamMemberRepo = new TeamMemberRepository();
   const processPageRepo = new ProcessPageRepository();
   const contactPageRepo = new ContactPageRepository();
+  const caseStudiesPageRepo = new CaseStudiesPageRepository();
+  const caseStudySettingRepo = new CaseStudySettingRepository();
 
   queryBus.register(GET_HOMEPAGE, new GetHomepageHandler(homepageRepo));
   queryBus.register(GET_GLOBAL, new GetGlobalHandler(globalRepo));
@@ -95,6 +113,10 @@ function build(): Container {
   queryBus.register(GET_FEATURED_TEAM_MEMBERS, new GetFeaturedTeamMembersHandler(teamMemberRepo));
   queryBus.register(GET_PROCESS_PAGE, new GetProcessPageHandler(processPageRepo));
   queryBus.register(GET_CONTACT_PAGE, new GetContactPageHandler(contactPageRepo));
+  queryBus.register(GET_CASE_STUDIES_PAGE, new GetCaseStudiesPageHandler(caseStudiesPageRepo));
+  queryBus.register(GET_CASE_STUDY_SETTING, new GetCaseStudySettingHandler(caseStudySettingRepo));
+  queryBus.register(GET_ALL_CASE_STUDIES, new GetAllCaseStudiesHandler(caseStudyRepo));
+  queryBus.register(GET_CASE_STUDY_BY_SLUG, new GetCaseStudyBySlugHandler(caseStudyRepo));
 
   return {
     homepageController: new HomepageController(new HomepageService(queryBus)),
@@ -106,6 +128,8 @@ function build(): Container {
     teamMemberController: new TeamMemberController(new TeamMemberService(queryBus)),
     processPageController: new ProcessPageController(new ProcessPageService(queryBus)),
     contactPageController: new ContactPageController(new ContactPageService(queryBus)),
+    caseStudiesPageController: new CaseStudiesPageController(new CaseStudiesPageService(queryBus)),
+    caseStudySettingController: new CaseStudySettingController(new CaseStudySettingService(queryBus)),
   };
 }
 
@@ -127,3 +151,5 @@ export const aboutPageController = container.aboutPageController;
 export const teamMemberController = container.teamMemberController;
 export const processPageController = container.processPageController;
 export const contactPageController = container.contactPageController;
+export const caseStudiesPageController = container.caseStudiesPageController;
+export const caseStudySettingController = container.caseStudySettingController;

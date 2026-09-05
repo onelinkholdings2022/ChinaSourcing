@@ -10,4 +10,12 @@ export class CaseStudyController extends BaseController {
   getFeatured(): Promise<Result<CaseStudy[]>> {
     return this.handle(() => this.service.getFeatured());
   }
+
+  getAll(): Promise<Result<CaseStudy[]>> {
+    return this.handle(() => this.service.getAll());
+  }
+
+  getBySlug(slug: string): Promise<Result<CaseStudy>> {
+    return this.handle(() => this.service.getBySlug(slug));
+  }
 }

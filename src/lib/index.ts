@@ -12,6 +12,8 @@ export {
   teamMemberController,
   processPageController,
   contactPageController,
+  caseStudiesPageController,
+  caseStudySettingController,
 } from "./container";
 
 export { getMediaUrl, mediaWidth, mediaHeight, mediaAlt } from "./api/media-url";
