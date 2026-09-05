@@ -1,0 +1,252 @@
+{
+  "hero": {
+    "typedPrefix": "",
+    "typedWords": [
+      "Sourcing",
+      "Manufacturing",
+      "Quality Control",
+      "Freight & Logistics"
+    ],
+    "heading": "All In One Place",
+    "intro": "We provide tailored sourcing solutions, from finding your factory to delivering the final product.",
+    "ctaLabel": null,
+    "ctaHref": null,
+    "image": "/images/china-sourcing-service.png",
+    "imageAlt": "Containers"
+  },
+  "flowTrack": {
+    "tag": "Our Process",
+    "heading": "How We Source",
+    "slides": [
+      {
+        "label": "Product Briefing & Consultation",
+        "subheading": "We start with",
+        "title": "Product Briefing & Consultation",
+        "paragraphs": [
+          "We take the time to understand your needs and ensure we’re fully aligned with your goals."
+        ],
+        "image": "/images/product-briefing-consultation.png",
+        "alt": "china sourcing people in meeting room",
+        "nextLabel": "Supplier Sourcing & Vetting"
+      },
+      {
+        "label": "Supplier Sourcing & Vetting",
+        "subheading": "And then",
+        "title": "Supplier Sourcing & Vetting",
+        "paragraphs": [
+          "Our team identifies the ideal manufacturer based on your specific requirements."
+        ],
+        "image": "/images/supplier-sourcing-vetting.png",
+        "alt": "supplier vetting",
+        "nextLabel": "Sample & Quotation"
+      },
+      {
+        "label": "Sample & Quotation",
+        "subheading": "Move to",
+        "title": "Sample & Quotation",
+        "paragraphs": [
+          "Receive transparent pricing, clear timelines, and physical samples for your approval."
+        ],
+        "image": "/images/sample-and-quotation.png",
+        "alt": "product sample",
+        "nextLabel": "Production Oversight"
+      },
+      {
+        "label": "Production Oversight",
+        "subheading": "Follow By",
+        "title": "Production Oversight",
+        "paragraphs": [
+          "We coordinate, oversee, and manage every stage of the supply chain to ensure your satisfaction at every step."
+        ],
+        "image": "/images/production-oversight.png",
+        "alt": "production phase by china sourcing",
+        "nextLabel": "Quality Control"
+      },
+      {
+        "label": "Quality Control",
+        "subheading": "After that",
+        "title": "Quality Control",
+        "paragraphs": [
+          "We implement rigorous quality control measures at every stage of the supply chain to ensure the highest standards."
+        ],
+        "image": "/images/quality-control-1.png",
+        "alt": "quality control by china sourcing",
+        "nextLabel": "Freight & Delivery"
+      },
+      {
+        "label": "Freight & Delivery",
+        "subheading": "Finally",
+        "title": "Freight & Delivery",
+        "paragraphs": [
+          "We manage your freight and delivery to ensure your goods arrive on time and in perfect condition."
+        ],
+        "image": "/images/freight-and-delivery.png",
+        "alt": "people in meeting room",
+        "nextLabel": null
+      }
+    ]
+  },
+  "serviceList": {
+    "cards": [
+      {
+        "href": "/service/sourcing-service",
+        "tag": "Our Core Services",
+        "title": "Sourcing Service",
+        "body": "Factory selection done right with vetted suppliers, verified capabilities, and no middle layer",
+        "ctaLabel": "See Service Detail",
+        "image": "/images/sourcing-service-300x168.png",
+        "alt": "china sourcing service"
+      },
+      {
+        "href": "/service/custom-manufacturing",
+        "tag": "Our Core Services",
+        "title": "Custom Manufacturing",
+        "body": "Turn product ideas into production ready files and samples, even if you are starting from scratch.",
+        "ctaLabel": "See Service Detail",
+        "image": "/images/custom-manufacturing-300x168.png",
+        "alt": "china sourcing custom manufacturing"
+      },
+      {
+        "href": "/service/quality-control",
+        "tag": "Our Core Services",
+        "title": "Quality Control",
+        "body": "Documents the processes carefully and provides detailed reports to customers through real photos and video.",
+        "ctaLabel": "See Service Detail",
+        "image": "/images/china-sourcing-quality-control-300x168.png",
+        "alt": "quality control"
+      },
+      {
+        "href": "/service/freight-logistics",
+        "tag": "Our Core Services",
+        "title": "Freight & Logistics",
+        "body": "Our dedicated team manage the entire process and endless paperwork to getting our goods to do your.",
+        "ctaLabel": "See Service Detail",
+        "image": "/images/freight-and-logistics-1-300x168.png",
+        "alt": "freight and logistics"
+      }
+    ]
+  },
+  "verticalTab": {
+    "tag": "Our Products",
+    "heading": "Explore by Category",
+    "intro": "Looking for solutions by product type? Visit our Product Overview page to explore real-world applications across:",
+    "ctaLabel": "See All Products",
+    "ctaHref": "/products",
+    "tabs": [
+      {
+        "label": "Furniture",
+        "image": "/images/china-sourcing-furniture.png",
+        "alt": "Furniture ",
+        "body": "Sourced from our trusted manufacturing partners, tailored to meet your exact needs.",
+        "linkLabel": "Explore more",
+        "linkHref": "/product/furniture"
+      },
+      {
+        "label": "Packaging",
+        "image": "/images/china-sourcing-packaging.png",
+        "alt": "Packaging",
+        "body": "From custom boxes and protective materials to eco-friendly options, we help you source reliable packaging solutions that fit your product and brand.",
+        "linkLabel": "Explore more",
+        "linkHref": "/product/packaging"
+      },
+      {
+        "label": "Gym & Fitness",
+        "image": "/images/china-sourcing-gym-fitness.png",
+        "alt": "Gym and Fitness",
+        "body": "From weights and resistance bands to cardio machines and yoga accessories, we help you source high-quality gym and fitness equipment to suit every workout.",
+        "linkLabel": "Explore more",
+        "linkHref": "/product/gym-fitness"
+      },
+      {
+        "label": "Building Materials",
+        "image": "/images/china-sourcing-building-material.png",
+        "alt": "Building Materials",
+        "body": "From structural steel and timber to insulation and finishing materials, we help you source reliable, high-quality building materials for any project.",
+        "linkLabel": "Explore more",
+        "linkHref": "/product/building-materials"
+      },
+      {
+        "label": "Textiles & Garments",
+        "image": "/images/china-sourcing-textiles-garments.png",
+        "alt": "Textile and Garments",
+        "body": "From fabrics and yarns to finished apparel and custom garments, we help you source high-quality textiles and garments to meet your production needs.",
+        "linkLabel": "Explore more",
+        "linkHref": "/products"
+      }
+    ]
+  },
+  "usp": {
+    "tag": "Our USPs",
+    "heading": "Why Choose China Sourcing Co?",
+    "intro": "We are more than just sourcing agents, we are an extension of your team, working on the ground to bridge the gap between manufacturers and your business needs.",
+    "icon": "/images/star-05.png",
+    "image": "/images/china-sourcing-container.png",
+    "items": [
+      {
+        "title": "No Upfront Fees",
+        "body": "We only engage when you're ready to move forward - no fees until you're ready to take action."
+      },
+      {
+        "title": "Verified Factories",
+        "body": "We work exclusively with trusted, verified manufacturing partners to ensure quality and reliability."
+      },
+      {
+        "title": "Transparent Pricing",
+        "body": "We offer clear, upfront pricing-leveraging our strong supply chain relationships to provide you with the best value."
+      },
+      {
+        "title": "Local Execution",
+        "body": "Our team is on the ground inside the factories, ensuring direct oversight and seamless coordination."
+      }
+    ]
+  },
+  "resources": {
+    "tag": "Our Resources",
+    "headingLines": [
+      "Resources to",
+      "Get Started"
+    ],
+    "ctaLabel": "Explore our full Resource Hub",
+    "ctaHref": "/resource",
+    "cards": [
+      {
+        "href": "/how-to-choose-best-china-sourcing-agent",
+        "image": "/images/how-to-choose-best-china-sourcing-agent.jpeg",
+        "alt": "Best China Sourcing Agent: How to Choose the Right One for Your Business",
+        "category": "Blog",
+        "title": "Best China Sourcing Agent: How to Choose the Right One for Your Business",
+        "excerpt": "Sourcing products from China has become a cornerstone for many businesses worldwide, given China's status as the largest exporter of goods. According...",
+        "date": "14/03/2025",
+        "readTime": "8 min read"
+      },
+      {
+        "href": "/10-best-e-commerce-platforms-for-small-businesses-onelink-holdings",
+        "image": "/images/10-Best-E-commerce-Platforms-for-Small-Businesses-scaled-1.jpg",
+        "alt": "10 Best E-commerce Platforms for Small Businesses | OneLink Holdings",
+        "category": "Blog",
+        "title": "10 Best E-commerce Platforms for Small Businesses | OneLink Holdings",
+        "excerpt": "E-Commerce Looking for the best e-commerce platforms for your small business? Look no further than our comprehensive guide to the 10 Best E-commerce ...",
+        "date": "28/04/2023",
+        "readTime": "8 min read"
+      },
+      {
+        "href": "/10-common-mistakes-to-avoid-in-product-sourcing-and-manufacturing",
+        "image": "/images/10-Common-Mistakes-to-Avoid-in-Product-Sourcing-and-Manufacturing-scaled-2.jpg",
+        "alt": "10 Common Mistakes to Avoid in Product Sourcing and Manufacturing",
+        "category": "Blog",
+        "title": "10 Common Mistakes to Avoid in Product Sourcing and Manufacturing",
+        "excerpt": "Manufacturing Avoid costly mistakes in product sourcing and manufacturing with our guide to the 10 most common errors. From failing to conduct proper...",
+        "date": "26/04/2023",
+        "readTime": "5 min read"
+      }
+    ]
+  },
+  "cta": {
+    "sectionClass": "dark-cta px-5 pb-[120px]",
+    "tag": "Contact Us Today",
+    "heading": "Let’s Build Smarter Supply Chains",
+    "body": "Get in touch with us today for a free quote!",
+    "ctaLabel": "Talk to our Sourcing Expert",
+    "ctaHref": "/contact-us"
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "hero": {
+    "typedPrefix": "",
+    "typedWords": [],
+    "heading": "Our Process",
+    "intro": "From product selection to delivery, our team works as an extension of yours to ensure every detail meets your standards and moves your business forward.",
+    "ctaLabel": null,
+    "ctaHref": null,
+    "image": "/images/china-sourcing-process.png",
+    "imageAlt": "Warehouse"
+  },
+  "timeline": {
+    "tag": "Our Process",
+    "heading": "How We Make Sourcing Work",
+    "intro": "You remain in control while we manage every detail, from quote to shipment.",
+    "ship": "/images/Ship.png",
+    "milestones": [
+      {
+        "rail": "Enquire",
+        "step": "Step 1",
+        "title": "Enquire",
+        "body": "Speak to our team to align on your requirement and build out your product brief."
+      },
+      {
+        "rail": "Quote",
+        "step": "Step 2",
+        "title": "Quote",
+        "body": "Once we have negotiated your requirements with our preferred manufacturers, we will promptly submit our price proposal to you."
+      },
+      {
+        "rail": "Sample & Design",
+        "step": "Step 3",
+        "title": "Sample & Design",
+        "body": "Sample and design confirmation are integral elements that instill confidence in the product you will receive. By thoroughly reviewing and validating samples and designs, we ensure that the final product meets your expectations."
+      },
+      {
+        "rail": "Confirmation",
+        "step": "Step 4",
+        "title": "Confirmation",
+        "body": "Order confirmation is finalized upon receipt of your deposit payment."
+      },
+      {
+        "rail": "Production",
+        "step": "Step 5",
+        "title": "Production",
+        "body": "Production commences on the goods and the agreed-upon production timeline (roughly around 3-6 weeks) which is closely monitored by our on-the-ground team."
+      },
+      {
+        "rail": "Quality Assurances",
+        "step": "Step 6",
+        "title": "Quality Assurances",
+        "body": "We implement comprehensive quality control measures throughout production to ensure all standards are met."
+      },
+      {
+        "rail": "Final inspection and balance",
+        "step": "Step 7",
+        "title": "Final inspection and balance",
+        "body": "Upon the completion of production, our team will conduct a thorough quality inspection to ensure the goods meet the highest standards before the balance is paid."
+      },
+      {
+        "rail": "Freight and Logistics",
+        "step": "Step 8",
+        "title": "Freight and Logistics",
+        "body": "Once the final payment is received, we organize freight and delivery from our warehouse to your specified address."
+      }
+    ]
+  },
+  "usp": {
+    "tag": "Why This Process Works",
+    "heading": "Your Trusted Sourcing & Procurement Partner in Asia",
+    "intro": "We deliver the highest quality products at the best possible price.",
+    "icon": "/images/star-05.png",
+    "image": "/images/china-sourcing-process-1.png",
+    "items": [
+      {
+        "title": "No Guesswork",
+        "body": "You’ll always know exactly what’s happening and when - no surprises, just transparency."
+      },
+      {
+        "title": "Supplier Filters",
+        "body": "We partner exclusively with trusted factories that pass our rigorous vetting process."
+      },
+      {
+        "title": "Built for Your Needs",
+        "body": "Whether you need one SKU or fifty, enjoy a single point of contact while we manage everything else."
+      },
+      {
+        "title": "Local Eyes, Global Reach",
+        "body": "Our on-the-ground team acts in your best interests, ensuring seamless communication and flawless execution."
+      },
+      {
+        "title": "Quality Control at Every Stage",
+        "body": "From contract terms to final quality checks, we help mitigate risks and ensure you avoid costly mistakes."
+      }
+    ]
+  },
+  "faq": {
+    "tag": "Common Questions",
+    "headingLines": [
+      "Frequently Asked",
+      "Questions"
+    ],
+    "email": "info@chinasourcing.co",
+    "items": [
+      {
+        "question": "Do you manage the entire supply chain from start to finish?",
+        "answer": "Yes, we handle the entire process, from sourcing and vetting suppliers to overseeing production and managing logistics. Our team ensures that all timelines, quality control standards, and compliance requirements are met throughout."
+      },
+      {
+        "question": "What are your lead times for sourcing and delivery?",
+        "answer": "Lead times vary depending on the product type and order size. On average, we can source products and provide samples within 1-2 weeks. Full production and delivery typically take between 4 to 8 weeks. We handle negotiations with suppliers on your behalf and provide regular updates to ensure you’re informed throughout the entire process."
+      },
+      {
+        "question": "What happens if there’s a delay in the supply chain?",
+        "answer": "We actively monitor production and shipping timelines. If there is any risk of delay, we communicate with you promptly and work with the supplier to resolve the issue, minimizing any impact on your business."
+      },
+      {
+        "question": "How do I track my order during production and shipping?",
+        "answer": "We provide regular updates throughout the sourcing, production, and shipping phases. You’ll receive status reports and tracking information to stay informed every step of the way."
+      }
+    ]
+  },
+  "cta": {
+    "sectionClass": "dark-cta px-5 pb-[120px]",
+    "tag": "Let Us Manage Your Supply Chain",
+    "heading": "Ready to work with a sourcing team that’s built for real-world results?",
+    "body": "From sourcing to delivery, we handle every aspect of your supply chain with precision, ensuring smooth operations and timely results.",
+    "ctaLabel": "Start Your Project",
+    "ctaHref": "/contact-us"
+  }
+}

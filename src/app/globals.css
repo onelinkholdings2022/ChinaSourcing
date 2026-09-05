@@ -1,0 +1,733 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* Migrated page bodies are stored as HTML strings, so Tailwind has to scan
+   the JSON too or the classes they use would never be generated. */
+@source "../data/content/*.json";
+
+/* ============================================================
+   China Sourcing Co — design tokens
+   Extracted 1:1 from the live site's computed styles.
+   ============================================================ */
+
+@theme {
+  --font-poppins: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-lora: var(--font-lora), Georgia, serif;
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+
+  /* Brand blue (site calls it "cyan") */
+  --color-cyan-50: rgb(232 240 255);
+  --color-cyan-300: rgb(72 132 235);
+  --color-cyan-400: rgb(37 107 232);
+  --color-cyan-500: rgb(29 89 192);
+  --color-cyan-900: rgb(7 21 46);
+  --color-cyan-950: rgb(4 12 25);
+
+  /* Indigo / dark blue */
+  --color-dark-blue-50: rgb(243 246 252);
+  --color-dark-blue-400: rgb(164 175 227);
+  --color-dark-blue-500: rgb(129 141 205);
+  --color-dark-blue-700: rgb(102 112 193);
+  --color-dark-blue-800: rgb(78 91 176);
+  --color-dark-blue-900: rgb(60 73 160);
+  --color-dark-blue-950: rgb(39 48 141);
+
+  /* Neutrals */
+  --color-primary: rgb(10 10 10);
+  --color-grey-50: rgb(250 250 250);
+  --color-grey-100: rgb(245 245 245);
+  --color-grey-200: rgb(229 229 229);
+  --color-grey-300: rgb(163 163 163);
+  --color-grey-400: rgb(97 87 127);
+  /* The theme collapses 600-950 onto one ink colour */
+  --color-grey-600: rgb(30 15 72);
+  --color-grey-700: rgb(30 15 72);
+  --color-grey-800: rgb(30 15 72);
+  --color-grey-950: rgb(30 15 72);
+
+  /* Site breakpoints (Tailwind defaults + the 1920 tier the site adds) */
+  --breakpoint-3xl: 1920px;
+}
+
+/* ------------------------------------------------------------
+   Container — matches the site's fixed max-width tiers
+
+   Declared with `@utility`, which *replaces* Tailwind's built-in container
+   rather than sitting beside it. That matters twice over:
+
+   - As a plain `.container` rule outside any layer it beat every utility, so
+     a width stated on the same element was ignored — and the theme states one
+     in several places: `container max-w-[800px]` on the case-study article,
+     `container 2xl:px-0` on every `.usp-list`, `container max-w-[860px]` on
+     the blog template. The article rendered 1448px wide instead of 800 and its
+     inline images came out nearly twice their intended size.
+   - Moving it into `@layer components` fixed that but lost to Tailwind's own
+     `.container` utility, which caps at 1536px — 48px wider than this site's
+     top tier, on every container on every page.
+
+   As a `@utility` it is a utility like any other, ordered before `max-w-*`,
+   which is exactly how the original's Tailwind v3 container behaves.
+   ------------------------------------------------------------ */
+@utility container {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 20px;
+
+  @media (min-width: 600px)  { max-width: 600px; }
+  @media (min-width: 728px)  { max-width: 728px; }
+  @media (min-width: 984px)  { max-width: 984px; }
+  @media (min-width: 1140px) { max-width: 1140px; }
+  @media (min-width: 1488px) { max-width: 1488px; }
+}
+
+/* ------------------------------------------------------------
+   Typography scale — the site's own heading and body utilities
+
+   These live in `@layer components` on purpose. Unlayered rules beat every
+   layered one, so at the top level `.body-2` would win against `text-sm` — and
+   the theme relies on the opposite. /process writes
+   `class="text-dark-blue-50 body-2 text-sm ... leading-snug"` on the timeline
+   intro and renders it at 14px/19.25px; with `.body-2` unlayered it came out
+   18px/28px, which made the pinned section 119px too tall.
+   ------------------------------------------------------------ */
+@layer components {
+  .heading-1 { font-size: 30px; line-height: 34px; }
+  @media (min-width: 768px)  { .heading-1 { font-size: 40px; line-height: 50px; } }
+  @media (min-width: 1280px) { .heading-1 { font-size: 56px; line-height: 72px; } }
+  @media (min-width: 1536px) { .heading-1 { font-size: 64px; line-height: 80px; } }
+  @media (min-width: 1920px) { .heading-1 { font-size: 72px; line-height: 84px; } }
+
+  .heading-2 { font-size: 24px; line-height: 36px; }
+  @media (min-width: 768px)  { .heading-2 { font-size: 30px; line-height: 40px; } }
+  @media (min-width: 1280px) { .heading-2 { font-size: 40px; line-height: 56px; } }
+  @media (min-width: 1920px) { .heading-2 { font-size: 48px; line-height: 64px; } }
+
+  .heading-3 { font-size: 20px; line-height: 30px; }
+  @media (min-width: 768px)  { .heading-3 { font-size: 24px; line-height: 36px; } }
+  @media (min-width: 1280px) { .heading-3 { font-size: 28px; line-height: 40px; } }
+  @media (min-width: 1920px) { .heading-3 { font-size: 32px; line-height: 48px; } }
+
+  .body-1 { font-size: 18px; line-height: 28px; }
+  @media (min-width: 1536px) { .body-1 { font-size: 20px; line-height: 28px; } }
+  @media (min-width: 1920px) { .body-1 { font-size: 24px; line-height: 36px; } }
+
+  .body-2 { font-size: 16px; line-height: 28px; }
+  @media (min-width: 1536px) { .body-2 { font-size: 18px; line-height: 28px; } }
+
+  .body-3 { font-size: 14px; line-height: 24px; }
+  @media (min-width: 1536px) { .body-3 { font-size: 16px; line-height: 28px; } }
+
+  /* The hero uses an oversized display size */
+  .heading-max { font-size: 36px; line-height: 44px; }
+  @media (min-width: 768px)  { .heading-max { font-size: 48px; line-height: 60px; } }
+  @media (min-width: 1280px) { .heading-max { font-size: 56px; line-height: 72px; } }
+  @media (min-width: 1920px) { .heading-max { font-size: 72px; line-height: 88px; } }
+}
+
+/* ------------------------------------------------------------
+   .rich-text — the WYSIWYG region of the case-study article body
+
+   The theme declares this with Tailwind's `&` nesting inside its own
+   stylesheet; these are the rules it compiles to, read off the live site.
+   Layered for the same reason as the typography scale above: an element
+   inside `.rich-text` must still be able to override with a utility class.
+   ------------------------------------------------------------ */
+@layer components {
+  .rich-text > :not([hidden]) ~ :not([hidden]) { margin-top: 1.5rem; }
+
+  .rich-text h2 { font-size: 24px; line-height: 36px; font-family: var(--font-lora), Georgia, serif; font-weight: 600; color: rgb(4 12 25); }
+  @media (min-width: 768px)  { .rich-text h2 { font-size: 30px; line-height: 40px; } }
+  @media (min-width: 1280px) { .rich-text h2 { font-size: 40px; line-height: 56px; } }
+  @media (min-width: 1920px) { .rich-text h2 { font-size: 48px; line-height: 64px; } }
+
+  .rich-text h3 { font-size: 20px; line-height: 30px; font-family: var(--font-lora), Georgia, serif; font-weight: 600; color: rgb(4 12 25); }
+  @media (min-width: 768px)  { .rich-text h3 { font-size: 24px; line-height: 36px; } }
+  @media (min-width: 1280px) { .rich-text h3 { font-size: 28px; line-height: 40px; } }
+  @media (min-width: 1920px) { .rich-text h3 { font-size: 32px; line-height: 48px; } }
+
+  .rich-text h4, .rich-text h5, .rich-text h6 { font-size: 18px; line-height: 28px; font-weight: 600; color: rgb(4 12 25); }
+  @media (min-width: 1536px) { .rich-text h4, .rich-text h5, .rich-text h6 { font-size: 20px; line-height: 28px; } }
+  @media (min-width: 1920px) { .rich-text h4, .rich-text h5, .rich-text h6 { font-size: 24px; line-height: 36px; } }
+
+  .rich-text p,
+  .rich-text ul,
+  .rich-text ol,
+  .rich-text li,
+  .rich-text a,
+  .rich-text blockquote { font-size: 16px; line-height: 28px; }
+  @media (min-width: 1536px) {
+    .rich-text p,
+    .rich-text ul,
+    .rich-text ol,
+    .rich-text li,
+    .rich-text a,
+    .rich-text blockquote { font-size: 18px; line-height: 28px; }
+  }
+
+  .rich-text p  { color: rgb(30 15 72); }
+  .rich-text ul { list-style-position: inside; list-style-type: disc; color: rgb(30 15 72); }
+  .rich-text ol { list-style-position: inside; list-style-type: decimal; color: rgb(30 15 72); }
+  .rich-text li { margin-bottom: 0.5rem; color: rgb(30 15 72); }
+  .rich-text a  { color: rgb(4 12 25); }
+  .rich-text img { width: 100%; border-radius: 1.5rem; }
+  .rich-text blockquote { border-left-width: 2px; border-color: rgb(4 12 25); padding-left: 1rem; color: rgb(30 15 72); }
+  .rich-text table { width: 100%; }
+}
+
+/* ------------------------------------------------------------
+   Resource / blog listings — the category rail and the pager
+
+   Both listings use the same shapes with inverted palettes: the blog rail sits
+   on `grey-50` and fills indigo when active, the resource rail sits on indigo
+   and fills white. Values read off the live stylesheet.
+   ------------------------------------------------------------ */
+@layer components {
+  .blog-tab-btn { color: rgb(163 163 163); border-radius: 8px; transition: 0.3s; }
+  .blog-tab-btn.active,
+  .blog-tab-btn:hover { background-color: rgb(46 53 144); color: rgb(255 255 255); cursor: pointer; }
+
+  .resource-tab-btn { color: rgb(255 255 255); border-radius: 8px; }
+  .resource-tab-btn.active,
+  .resource-tab-btn:hover { background-color: rgb(255 255 255); color: rgb(46 53 144); cursor: pointer; }
+
+  .listing-pager {
+    text-align: center;
+    margin-top: 2.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .listing-pager button {
+    background-color: rgb(255 255 255);
+    font-size: 0.875rem;
+    line-height: 24px;
+    color: rgb(163 163 163);
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: 0.3s;
+  }
+  .listing-pager span {
+    margin: 0 0.25rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    background-color: rgb(255 255 255);
+    color: rgb(163 163 163);
+    padding: 0.75rem 1.1rem;
+  }
+  .listing-pager button:hover { background-color: rgb(46 53 144); cursor: pointer; }
+  /* The two pagers differ only here: the blog's current page is indigo on
+     white, the resource band's is white on indigo — the theme writes them as
+     `.pagination-blog` and `.pagination-resource`. */
+  .listing-pager--blog button.active { background-color: rgb(46 53 144); color: rgb(255 255 255); }
+  .listing-pager--resource button.active { background-color: rgb(255 255 255); color: rgb(46 53 144); }
+}
+
+/* ------------------------------------------------------------
+   Table of contents — the Easy Table of Contents plugin's own box
+   ------------------------------------------------------------ */
+@layer components {
+  .ez-toc {
+    background-color: rgb(242 249 253);
+    border: 1px solid rgb(255 255 255);
+    border-radius: 4px;
+    padding: 10px 20px 10px 10px;
+    box-shadow: 0 1px 1px rgb(0 0 0 / 0.05);
+  }
+  /* `display: table` plus a floated toggle — that pair is what makes the title
+     row 34px tall rather than the title's own 27px. */
+  .ez-toc-title-container { display: table; width: 100%; }
+  .ez-toc-title {
+    display: inline;
+    font-size: 19.2px;
+    line-height: 27.84px;
+    font-weight: 500;
+    color: rgb(15 45 66);
+  }
+  .ez-toc-toggle {
+    float: right;
+    display: flex;
+    align-items: center;
+    /* 34px is the plugin's button height, and it is what sets the title row's
+       height — the title itself is only 27px. */
+    height: 34px;
+    padding: 1px 5px;
+    margin-left: 10px;
+    border-radius: 3px;
+    line-height: 18px;
+    color: rgb(15 45 66);
+    cursor: pointer;
+  }
+  /* The visible outline is on the icons' own box, not the button. */
+  .ez-toc-toggle > span {
+    display: flex;
+    align-items: center;
+    width: 35px;
+    height: 32px;
+    border: 1px solid rgb(153 145 145);
+    border-radius: 5px;
+  }
+  .ez-toc ul { margin: 0; padding: 0; list-style: none; }
+  .ez-toc li,
+  .ez-toc a {
+    font-size: 15.2px;
+    line-height: 24.32px;
+    font-weight: 500;
+    color: rgb(0 0 0);
+    text-decoration: none;
+  }
+  /* `inline-flex` plus the 6px foot is the plugin's; it is worth 6px on every
+     row, so the box is 66px shorter without it. */
+  .ez-toc a { display: inline-flex; padding: 0 0 6px; }
+
+  /* Each entry is numbered, and the number is a `::before` *inside* the link —
+     which is why the row starts at the list's left edge and the wrapped lines
+     hang under the text rather than under the number. `counters()` rather than
+     `counter()` so a nested heading would read "1.1."; the plugin's own rule.
+     Chrome does not carry the hover underline into a flex item, so the number
+     stays clean while the label underlines — same as the original. */
+  .ez-toc ul { counter-reset: item 0; }
+  .ez-toc li { counter-increment: item; }
+  .ez-toc a::before {
+    content: counters(item, ".") ". ";
+    display: block;
+    /* Same size as the label; the gap is 0.2em, which is what puts the text at
+       12px from the row's left edge. */
+    flex: 0 0 auto;
+    margin-right: 0.2em;
+  }
+  .ez-toc a:hover { text-decoration: underline; }
+}
+
+/* ------------------------------------------------------------
+   The sticky "Index" tab and its drawer
+
+   A second copy of the same links, pinned to the left edge of the viewport at
+   every scroll position. The tab is always visible; the drawer slides in over
+   the page.
+   ------------------------------------------------------------ */
+@layer components {
+  .ez-toc-open-icon {
+    position: fixed;
+    left: 0;
+    top: 8%;
+    display: inline-grid;
+    justify-items: center;
+    padding: 5px 10px 15px;
+    background-color: rgb(255 255 255);
+    color: rgb(17 17 17);
+    font-weight: 700;
+    line-height: 1.4;
+    border-radius: 0 10px 10px 0;
+    box-shadow: 1px -5px 10px 5px rgb(0 0 0 / 0.1);
+    z-index: 999999;
+    cursor: pointer;
+  }
+
+  .ez-toc-sticky-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: auto;
+    max-width: 100%;
+    z-index: 999999;
+  }
+  /* Opening and closing are deliberately not symmetrical — the plugin eases
+     out on the way in and accelerates on the way back. */
+  .ez-toc-sticky-fixed.show { transition: left 0.3s linear; left: 0; }
+  .ez-toc-sticky-fixed.hide {
+    transition: opacity 0.3s linear, left 0.3s cubic-bezier(0.4, 0, 1, 1);
+    left: -100%;
+  }
+
+  .ez-toc-sidebar {
+    position: relative;
+    width: auto;
+    height: 100vh;
+    padding: 20px 30px;
+    background: rgb(255 255 255);
+    box-shadow: 1px 1px 10px 3px rgb(0 0 0 / 0.2);
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .ez-toc-sticky-title-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px;
+    background-color: rgb(255 255 255);
+    border-bottom: 1px solid rgb(229 229 229);
+    display: table;
+    z-index: 1;
+  }
+  .ez-toc-sticky-title {
+    display: table-cell;
+    text-align: left;
+    vertical-align: middle;
+    font-size: 18px;
+    line-height: 1.45;
+    font-weight: 600;
+    color: rgb(17 17 17);
+  }
+  .ez-toc-close-icon {
+    float: right;
+    position: relative;
+    top: -2px;
+    padding: 0;
+    background: none;
+    border: 0;
+    font-size: 30px;
+    line-height: 1;
+    font-weight: 600;
+    color: rgb(17 17 17);
+    cursor: pointer;
+  }
+  /* Clears the absolutely-positioned title bar above it. */
+  #ez-toc-sticky-container { margin-top: 65px; }
+  #ez-toc-sticky-container ul { margin: 0; padding: 0; list-style: none; counter-reset: item 0; }
+  #ez-toc-sticky-container li { counter-increment: item; }
+  #ez-toc-sticky-container a {
+    display: inline-flex;
+    font-size: 16px;
+    line-height: 25.6px;
+    font-weight: 400;
+    color: rgb(0 0 0);
+    text-decoration: none;
+  }
+  /* Same numbering as the inline box, at the drawer's larger 16px. */
+  #ez-toc-sticky-container a::before {
+    content: counters(item, ".") ". ";
+    display: block;
+    flex: 0 0 auto;
+    margin-right: 0.2em;
+  }
+  #ez-toc-sticky-container a:hover { text-decoration: underline; }
+}
+
+/* Vertical rhythm between sections */
+.spacing { padding-block: 40px; }
+@media screen and (min-width: 1028px) { .spacing { padding-block: 120px; } }
+
+/* ------------------------------------------------------------
+   Gradients
+   ------------------------------------------------------------ */
+.bg-gradient-cyan   { background-image: linear-gradient(0deg, #27308d, #236be7 92.86%); }
+/* `hover:bg-gradient-*` is not a generated utility, so spell the hover out */
+.hover\:bg-gradient-cyan:hover { background-image: linear-gradient(0deg, #27308d, #236be7 92.86%); }
+.bg-gradient-tag    { background-image: linear-gradient(90deg, #fff, #f6fcff 49.79%, #fff); }
+.bg-gradient-header { background-image: linear-gradient(to bottom, #e3f1fb, #fff); }
+.bg-gradient-black  { background-image: linear-gradient(175.69deg, #0000 3.44%, #000 96.5%); }
+
+/* ------------------------------------------------------------
+   Base
+   ------------------------------------------------------------ */
+:root {
+  --background: #ffffff;
+  --foreground: #000000;
+}
+
+/*
+ * Tailwind v3's default border colour, which the original theme relies on.
+ * This MUST stay inside `@layer base`: unlayered rules beat every layered one,
+ * so at the top level it would override `border-cyan-400` and friends and paint
+ * a pale grey edge on every bordered button, tag and card.
+ */
+@layer base {
+  * {
+    border-color: rgb(229 231 235);
+  }
+}
+
+/*
+ * No `scroll-behavior: smooth` here. The original does not set it either, and
+ * GSAP ScrollTrigger's pinned sections (see UspSlider) stutter and get stuck
+ * when the browser is animating the scroll position underneath them.
+ */
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Marquee used by the client-logo strip */
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee-scroll 30s linear infinite;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* ------------------------------------------------------------
+   About page — Journey timeline rail
+   The dot/heading colour change is CSS on the original; GSAP only toggles
+   `.active`. Both children already carry `transition-all duration-300`.
+   ------------------------------------------------------------ */
+.timeline-track-item.active .timeline-track-dot { background: #fff; }
+.timeline-track-item.active .timeline-track-heading {
+  color: #fff;
+  transform: translateX(4px);
+}
+
+/* ------------------------------------------------------------
+   Page transition curtain — copied from the theme stylesheet.
+   The columns deliberately have NO initial translate: the theme's
+   `transform: translateY(-100%)` is commented out with `//`, which is not valid
+   CSS, so the declaration is dropped and they sit over the page on first paint.
+   `outline: 1px solid` in the same colour hides the sub-pixel seams between
+   them; `translateZ(0)` keeps each column on its own layer so the stagger does
+   not repaint the whole strip.
+   ------------------------------------------------------------ */
+#page-transition-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+  align-items: stretch;
+  z-index: 9999;
+  pointer-events: none;
+  visibility: visible;
+}
+.transition-columns {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+  gap: 0;
+}
+.transition-column {
+  height: 100%;
+  background-color: #2e368f;
+  pointer-events: all;
+  width: calc(100% / 6);
+  flex: none;
+  outline: 1px solid #2e368f;
+  transform: translateZ(0);
+}
+.page-transition-layer .overlay.layer-1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  opacity: 0;
+}
+.page-transition-layer .overlay.layer-2 {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+}
+.transition-group {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+.transition-logo {
+  height: 150px;
+  max-width: 80%;
+  object-fit: contain;
+}
+.transition-percent {
+  font-size: 100px;
+  font-weight: 700;
+  color: #fff;
+  margin-top: 16px;
+}
+
+/* Tab panels that slide in from the right — the theme's Alpine transition
+   `x-transition:enter-start="opacity-0 translate-x-20"` →
+   `enter-end="opacity-100 translate-x-0"`, 500ms ease-out. Used by
+   `.vertical-tab` and `.tabbed-testimonial`. */
+@keyframes tab-in {
+  from { opacity: 0; transform: translateX(5rem); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.animate-tab-in {
+  animation: tab-in 500ms cubic-bezier(0, 0, 0.2, 1) both;
+}
+
+/* Blockquote type scales.
+
+   The theme writes `[&>*]:heading-3` (About's founder quote) and `[&>*]:body-2`
+   (the product testimonials) on the blockquote itself. Those arbitrary variants
+   only compile when the utility they name is a registered Tailwind utility; in
+   this project `heading-3` and `body-2` are plain classes declared in this file,
+   so Tailwind emits nothing for them and the children fall back to the browser
+   default 16px. Both scales are applied directly here instead. */
+.two-column-testimonial blockquote > *,
+.tabbed-testimonial blockquote > * {
+  font-size: 16px;
+  line-height: 28px;
+}
+@media (min-width: 1536px) {
+  .two-column-testimonial blockquote > *,
+  .tabbed-testimonial blockquote > * { font-size: 18px; line-height: 28px; }
+}
+
+.simple-quote blockquote > * {
+  font-size: 20px;
+  line-height: 30px;
+}
+@media (min-width: 768px)  { .simple-quote blockquote > * { font-size: 24px; line-height: 36px; } }
+@media (min-width: 1280px) { .simple-quote blockquote > * { font-size: 28px; line-height: 40px; } }
+@media (min-width: 1920px) { .simple-quote blockquote > * { font-size: 32px; line-height: 48px; } }
+
+/* About page — "The Why Behind Us" tab strip.
+   The theme spells the dot class `flow-tract-tab-dot`; the typo is reproduced
+   so these selectors stay a straight copy of the original stylesheet. */
+.flow-track-tab-label .tab-btn { color: #e5e5e5; }
+.flow-track-tab-label.active .tab-btn { color: #040c19; }
+.flow-track-tab-label .flow-tract-tab-dot { background-color: #e5e5e5; }
+.flow-track-tab-label.active .flow-tract-tab-dot { background-color: #040c19; }
+
+/* About page partner strip.
+   Splide's AutoScroll runs at `speed: 0.5` — half a pixel per animation frame,
+   so ~30px/s. One cycle covers half the doubled track: 7 logos x (100px + 120px
+   gap) = 1540px, hence ~51s. Below 1280px the theme drops the gap to 24px, so
+   the track shortens to 868px and the same 30px/s works out at ~29s.
+   Unlike the homepage strip this one does NOT pause on hover — the original
+   sets `drag: false` and never binds a hover handler. */
+.animate-marquee-about {
+  animation: marquee-scroll 29s linear infinite;
+}
+@media (min-width: 1280px) {
+  .animate-marquee-about { animation-duration: 51s; }
+}
+
+/* Footer band — two copies of the line scrolling one full copy per cycle */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+.marquee-animate {
+  animation: marquee 20s linear infinite;
+}
+
+/* Stacked chevrons above the closing CTA — they bob and fade in sequence */
+@keyframes pulse-arrow {
+  0%   { transform: translateY(0);    opacity: 1; }
+  25%  { transform: translateY(-5px); opacity: 0.7; }
+  50%  { transform: translateY(0);    opacity: 0.4; }
+  75%  { transform: translateY(2px);  opacity: 0.7; }
+  100% { transform: translateY(0);    opacity: 1; }
+}
+.animate-pulse-arrow { animation: pulse-arrow 2s ease-in-out infinite; }
+.animation-delay-100 { animation-delay: 0.1s; }
+.animation-delay-200 { animation-delay: 0.2s; }
+.animation-delay-300 { animation-delay: 0.3s; }
+.animation-delay-400 { animation-delay: 0.4s; }
+
+/* Nav link for the current route */
+.header-link.active {
+  background-image: linear-gradient(to right, #27308d, #236be7 92.86%);
+  color: #fff !important;
+}
+
+/* Blinking caret for the hero's typewriter line */
+@keyframes caret-blink {
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.animate-caret {
+  animation: caret-blink 1s step-end infinite;
+}
+
+/* ------------------------------------------------------------
+   Editor-authored bodies (blog posts, resources, privacy policy).
+   This markup has no classes of its own, so it needs real defaults.
+   ------------------------------------------------------------ */
+.wp-prose {
+  color: rgb(64 64 64);
+  font-size: 17px;
+  line-height: 30px;
+}
+.wp-prose > * + * { margin-top: 1.25em; }
+.wp-prose h2 {
+  font-size: 30px;
+  line-height: 40px;
+  font-weight: 600;
+  color: rgb(39 48 141);
+  margin-top: 1.8em;
+}
+.wp-prose h3 {
+  font-size: 22px;
+  line-height: 32px;
+  font-weight: 600;
+  color: rgb(39 48 141);
+  margin-top: 1.6em;
+}
+.wp-prose h4 { font-size: 19px; font-weight: 600; color: rgb(39 48 141); }
+.wp-prose a { color: rgb(37 107 232); text-decoration: underline; }
+.wp-prose a:hover { color: rgb(29 89 192); }
+.wp-prose strong { font-weight: 600; color: rgb(23 23 23); }
+.wp-prose ul, .wp-prose ol { padding-left: 1.5em; }
+.wp-prose ul { list-style: disc; }
+.wp-prose ol { list-style: decimal; }
+.wp-prose li + li { margin-top: 0.5em; }
+.wp-prose img {
+  border-radius: 0.5rem;
+  height: auto;
+  max-width: 100%;
+}
+.wp-prose figure { margin-block: 2em; }
+.wp-prose figcaption {
+  font-size: 14px;
+  color: rgb(115 115 115);
+  text-align: center;
+  margin-top: 0.75em;
+}
+.wp-prose blockquote {
+  border-left: 4px solid rgb(37 107 232);
+  padding-left: 1.25em;
+  font-style: italic;
+  color: rgb(82 82 82);
+}
+.wp-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+.wp-prose th, .wp-prose td {
+  border: 1px solid rgb(229 229 229);
+  padding: 0.6em 0.9em;
+  text-align: left;
+}
+.wp-prose th { background: rgb(243 246 252); font-weight: 600; }
+
+/* Wide media inside a post must never push the page sideways */
+.wp-prose :is(table, pre) { display: block; overflow-x: auto; }
+
+/* Hide scrollbars on the horizontally scrollable tab rails */
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }

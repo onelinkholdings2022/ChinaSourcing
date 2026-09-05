@@ -1,0 +1,1787 @@
+{
+  "hero": {
+    "heading": "Resources for Smarter Sourcing",
+    "intro": "With deep expertise in China sourcing, global trade, and eCommerce, we are here to share it all to help your business run smoother and scale faster.",
+    "image": "/images/Frame-4947-1-1.png",
+    "imageAlt": "Logistic"
+  },
+  "resources": {
+    "tag": "Free Resources",
+    "heading": "Everything You Need to Source Smarter",
+    "perPage": 3,
+    "tabs": [
+      {
+        "value": "all",
+        "label": "All"
+      },
+      {
+        "value": "checklists",
+        "label": "Checklists"
+      },
+      {
+        "value": "ebook",
+        "label": "eBook"
+      },
+      {
+        "value": "others",
+        "label": "Others"
+      },
+      {
+        "value": "templates",
+        "label": "Templates"
+      }
+    ],
+    "cards": [
+      {
+        "types": [
+          "others"
+        ],
+        "category": null,
+        "title": "The Hidden Profit Leak Most Ecommerce Brands Ignore",
+        "excerpt": "The Hidden Profit Leak Most Ecommerce Brands Ignore A data-backed sourcing guide showing how “cheap” manufacturing decisions can lead to higher retu...",
+        "date": "19/05/2026",
+        "href": "/resource/the-hidden-profit-leak-most-ecommerce-brands-ignore/"
+      },
+      {
+        "types": [
+          "others"
+        ],
+        "category": "Logistics Tips",
+        "title": "Incoterms Explained",
+        "excerpt": "FOB, EXW, CIF? Cut through the jargon with this one-page Incoterms guide for importers.",
+        "date": "19/06/2025",
+        "href": "/resource/incoterms-explained/"
+      },
+      {
+        "types": [
+          "others"
+        ],
+        "category": "Logistics Tips",
+        "title": "Supplier Interview Questions List",
+        "excerpt": "Use our curated list of questions to ask during factory calls or visits to assess reliability and fit.",
+        "date": "19/06/2025",
+        "href": "/resource/supplier-interview-questions-list/"
+      },
+      {
+        "types": [
+          "others"
+        ],
+        "category": "Logistics Tips",
+        "title": "8 Biggest Mistakes to Avoid When Sourcing from China",
+        "excerpt": "Download this short guide to avoid common sourcing pitfalls.",
+        "date": "19/06/2025",
+        "href": "/resource/8-biggest-mistakes-to-avoid-when-sourcing-from-china/"
+      },
+      {
+        "types": [],
+        "category": "Logistics Tips",
+        "title": "China Supplier Outreach Email Scripts",
+        "excerpt": "Copy and paste email templates to professionally introduce your business and request quotes from Chinese suppliers.",
+        "date": "19/06/2025",
+        "href": "/resource/china-supplier-outreach-email-scripts/"
+      },
+      {
+        "types": [
+          "templates"
+        ],
+        "category": "Logistics Tips",
+        "title": "Custom Manufacturing Requirements Template",
+        "excerpt": "Clearly communicate your requirements when developing new or custom products with Chinese factories.",
+        "date": "19/06/2025",
+        "href": "/resource/custom-manufacturing-requirements-template/"
+      },
+      {
+        "types": [
+          "checklists"
+        ],
+        "category": "Logistics Tips",
+        "title": "Quality Control Inspection Checklist",
+        "excerpt": "A downloadable example of a QC checklist used in factory inspections and customize for your own products.",
+        "date": "19/06/2025",
+        "href": "/resource/quality-control-inspection-checklist/"
+      },
+      {
+        "types": [
+          "ebook"
+        ],
+        "category": "Logistics Tips",
+        "title": "Intro to China Manufacturing",
+        "excerpt": "A beginner’s guide to sourcing from China, from finding suppliers to understanding MOQs and IP protection.",
+        "date": "19/06/2025",
+        "href": "/resource/intro-to-china-manufacturing/"
+      },
+      {
+        "types": [
+          "checklists"
+        ],
+        "category": "Logistics Tips",
+        "title": "Pre-Production Sample Checklist",
+        "excerpt": "The must-have checklist before approving your golden sample – avoid costly mistakes and miscommunication.",
+        "date": "17/04/2025",
+        "href": "/resource/dummy-resource-4/"
+      },
+      {
+        "types": [
+          "templates"
+        ],
+        "category": "Logistics Tips",
+        "title": "Sourcing Timeline Template",
+        "excerpt": "Understand the key stages in a China sourcing project, from RFQ to delivery and how long each step typically takes.",
+        "date": "17/04/2025",
+        "href": "/resource/dummy-resource-3/"
+      },
+      {
+        "types": [
+          "checklists"
+        ],
+        "category": "Logistics Tips",
+        "title": "Manufacturer Vetting Checklist",
+        "excerpt": "Our internal checklist of the top 10 criteria we use to identify the right factory partners in China.",
+        "date": "17/04/2025",
+        "href": "/resource/dummy-resource-2/"
+      },
+      {
+        "types": [
+          "templates"
+        ],
+        "category": "Logistics Tips",
+        "title": "RFQ Template",
+        "excerpt": "Use our proven RFQ template to communicate clearly with suppliers and get accurate quotes faster.",
+        "date": "10/04/2025",
+        "href": "/resource/dummy-resource-1/"
+      }
+    ]
+  },
+  "blogs": {
+    "tag": "Sourcing Insights",
+    "heading": "Smart Sourcing Begins with Informed Insights",
+    "intro": "Discover what truly drives success in supply chains",
+    "perPage": 6,
+    "tabs": [
+      {
+        "value": "all",
+        "label": "All"
+      },
+      {
+        "value": "basic-blog-functions",
+        "label": "Basic Blog Functions"
+      },
+      {
+        "value": "canton-fair",
+        "label": "Canton Fair"
+      },
+      {
+        "value": "ecommerce",
+        "label": "Ecommerce"
+      },
+      {
+        "value": "freight-logistics",
+        "label": "Freight & Logistics"
+      },
+      {
+        "value": "manufacturing",
+        "label": "Manufacturing"
+      },
+      {
+        "value": "market-insights",
+        "label": "Market insights"
+      },
+      {
+        "value": "product-guide",
+        "label": "Product Guide"
+      },
+      {
+        "value": "sourcing-guide",
+        "label": "Sourcing Guide"
+      },
+      {
+        "value": "wholesale-furniture",
+        "label": "Wholesale Furniture"
+      }
+    ],
+    "cards": [
+      {
+        "types": [
+          "market-insights"
+        ],
+        "category": "Blog",
+        "title": "Canton Fair: The \"Green Transformation\" Landmark of China's Industrial Capital",
+        "excerpt": "Held every two years in China’s industrial capital, the Canton Fair trade show has always been a large-scale event. As reported by Xinhua News Agency,...",
+        "date": "10/08/2026",
+        "readingTime": "5 min read",
+        "image": "/images/canton-fair-the-green-transformation-landmark-of-chinas-industrial-capital.jpg",
+        "alt": "Canton Fair: The \"Green Transformation\" Landmark of China's Industrial Capital",
+        "href": "/canton-fair-the-green-transformation-landmark-of-chinas-industrial-capital/"
+      },
+      {
+        "types": [
+          "market-insights"
+        ],
+        "category": "Blog",
+        "title": "China Manufacturing Rebounds in March 2026: What Buyers Should Watch",
+        "excerpt": "China Manufacturing Rebounds in March 2026: What Buyers Should Watch China’s March PMI has moved back above the 50-point mark, giving international b...",
+        "date": "03/08/2026",
+        "readingTime": "5 min read",
+        "image": "/images/china-manufacturing-rebounds-in-march-2026-what-buyers-should-watch-scaled.jpg",
+        "alt": "China Manufacturing Rebounds in March 2026: What Buyers Should Watch",
+        "href": "/china-manufacturing-rebounds-in-march-2026-what-buyers-should-watch/"
+      },
+      {
+        "types": [
+          "product-guide"
+        ],
+        "category": "Blog",
+        "title": "Wholesale Packaging Supplies from China: Where to Buy and What to Expect",
+        "excerpt": "In today's global economy, the demand for wholesale packaging supplies has increased significantly, particularly for businesses looking for wholesale ...",
+        "date": "31/07/2026",
+        "readingTime": "14 min read",
+        "image": "/images/wholesale-packaging-supplies-from-china-where-to-buy-and-what-to-expect.jpg",
+        "alt": "Wholesale Packaging Supplies from China: Where to Buy and What to Expect",
+        "href": "/wholesale-packaging-supplies-from-china-where-to-buy-and-what-to-expect/"
+      },
+      {
+        "types": [
+          "product-guide"
+        ],
+        "category": "Blog",
+        "title": "Packaging Products and Materials: Choosing the Right Packaging Solutions for Your Business",
+        "excerpt": "In today's competitive market, selecting the proper packaging solutions, particularly product packaging bags, is crucial for ensuring product safety, ...",
+        "date": "31/07/2026",
+        "readingTime": "10 min read",
+        "image": "/images/packaging-products-and-materials-choosing-the-right-packaging-solutions-for-your-business.jpg",
+        "alt": "Packaging Products and Materials: Choosing the Right Packaging Solutions for Your Business",
+        "href": "/packaging-products-and-materials-choosing-the-right-packaging-solutions-for-your-business/"
+      },
+      {
+        "types": [
+          "product-guide"
+        ],
+        "category": "Blog",
+        "title": "Industry-Specific Packaging Sourcing Guides: Choosing the Right Packaging for Every Sector",
+        "excerpt": "Definition: What Is Industry-Specific Packaging? Industry Specific Packaging is a tailored system of structural engineering, material selection, and ...",
+        "date": "31/07/2026",
+        "readingTime": "10 min read",
+        "image": "/images/industry-specific-packaging-sourcing-guides-choosing-the-right-packaging-for-every-sector.jpg",
+        "alt": "Industry-Specific Packaging Sourcing Guides: Choosing the Right Packaging for Every Sector",
+        "href": "/industry-specific-packaging-sourcing-guides-choosing-the-right-packaging-for-every-sector/"
+      },
+      {
+        "types": [
+          "product-guide"
+        ],
+        "category": "Blog",
+        "title": "Packaging Quality Control, Compliance and Logistics: A Complete Guide for Global Brands",
+        "excerpt": "In the competitive realm of global trade, packaging quality control emerges as a crucial pillar for brands aiming to maintain their reputation, ensure...",
+        "date": "30/07/2026",
+        "readingTime": "9 min read",
+        "image": "/images/packaging-quality-control-compliance-and-logistics-a-complete-guide-for-global-brands.jpg",
+        "alt": "Packaging Quality Control, Compliance and Logistics: A Complete Guide for Global Brands",
+        "href": "/packaging-quality-control-compliance-and-logistics-a-complete-guide-for-global-brands/"
+      },
+      {
+        "types": [
+          "product-guide"
+        ],
+        "category": "Blog",
+        "title": "Custom Packaging in China: The Complete Sourcing Guide for Brands",
+        "excerpt": "When it comes to launching a new product or enhancing an existing one, the packaging design is just as critical as the product itself. Custom packagin...",
+        "date": "30/07/2026",
+        "readingTime": "12 min read",
+        "image": "/images/custom-packaging-in-china-the-complete-sourcing-guide-for-brands.jpg",
+        "alt": "Custom Packaging in China: The Complete Sourcing Guide for Brands",
+        "href": "/custom-packaging-in-china-the-complete-sourcing-guide-for-brands/"
+      },
+      {
+        "types": [
+          "product-guide"
+        ],
+        "category": "Blog",
+        "title": "Wholesale Packaging from China: The A-Z Sourcing Guide",
+        "excerpt": "When it comes to sourcing wholesale packaging supplies, few countries match the capabilities, innovation, and pricing available from China. The nation...",
+        "date": "30/07/2026",
+        "readingTime": "10 min read",
+        "image": "/images/wholesale-packaging-from-china-the-a-z-sourcing-guide.jpg",
+        "alt": "Wholesale Packaging from China: The A-Z Sourcing Guide",
+        "href": "/wholesale-packaging-from-china-the-a-z-sourcing-guide/"
+      },
+      {
+        "types": [
+          "product-guide"
+        ],
+        "category": "Blog",
+        "title": "China Packaging Sourcing: The Ultimate Hub for Packaging Manufacturers and Wholesale Packaging",
+        "excerpt": "Wholesale packaging supplies are essential for businesses looking to ensure their products reach the market effectively. In an increasingly globalized...",
+        "date": "29/07/2026",
+        "readingTime": "11 min read",
+        "image": "/images/china-packaging-sourcing-the-ultimate-hub-for-packaging-manufacturers-and-wholesale-packaging.jpg",
+        "alt": "China Packaging Sourcing: The Ultimate Hub for Packaging Manufacturers and Wholesale Packaging",
+        "href": "/china-packaging-sourcing-the-ultimate-hub-for-packaging-manufacturers-and-wholesale-packaging/"
+      },
+      {
+        "types": [],
+        "category": "Example Category",
+        "title": "China's March PMI Reaches 50.4 Amid Middle East Conflict Pressures",
+        "excerpt": "Stronger Demand Drives China's Manufacturing PMI to 50.4 China's factory activity experienced its highest growth in a year during March, buoyed by st...",
+        "date": "28/07/2026",
+        "readingTime": "4 min read",
+        "image": "/images/chinas-march-pmi-reaches-50-4-amid-middle-east-conflict-pressures.jpg",
+        "alt": "China's March PMI Reaches 50.4 Amid Middle East Conflict Pressures",
+        "href": "/chinas-march-pmi-reaches-50-4-amid-middle-east-conflict-pressures/"
+      },
+      {
+        "types": [],
+        "category": "Example Category",
+        "title": "Furniture Wholesale Suppliers: The Ultimate Framework to Vet Top Manufacturers in China [2025]",
+        "excerpt": "For leaders in the furniture wholesale suppliers industry, a polished Alibaba profile or impressive product brochure are vanity metrics. The true me...",
+        "date": "17/06/2026",
+        "readingTime": "8 min read",
+        "image": "/images/10-point-framework-vetting-furniture-wholesale-suppliers.png",
+        "alt": "Furniture Wholesale Suppliers: The Ultimate Framework to Vet Top Manufacturers in China [2025]",
+        "href": "/furniture-wholesale-suppliers-the-ultimate-framework-to-vet-top-manufacturers-in-china-2025/"
+      },
+      {
+        "types": [
+          "canton-fair"
+        ],
+        "category": "Blog",
+        "title": "Canton Fair 2026 Phase 2: A Deep Dive Into Home, Decor and Gifts",
+        "excerpt": "If Canton Fair Phase 1 is the \"engine room\" of industry, then Canton Fair 2026 Phase 2 is where the heart and soul of daily life take center stage. ...",
+        "date": "17/06/2026",
+        "readingTime": "4 min read",
+        "image": "/images/canton-fair-2025-phase-2.png",
+        "alt": "Canton Fair 2026 Phase 2: A Deep Dive Into Home, Decor and Gifts",
+        "href": "/canton-fair-2026-phase-2-a-deep-dive-into-home-decor-and-gifts/"
+      },
+      {
+        "types": [],
+        "category": "Example Category",
+        "title": "The 2026 consumer goods pivot: Why your China strategy needs an upgrade",
+        "excerpt": "We have entered a new era for consumer goods in China. The latest \"Horizon Scanning\" reports for 2026 confirm that the market has moved beyond simpl...",
+        "date": "19/03/2026",
+        "readingTime": "3 min read",
+        "image": "/images/global-consumer-goods-garment-supply-chain-logistics-vietnam.png",
+        "alt": "The 2026 consumer goods pivot: Why your China strategy needs an upgrade",
+        "href": "/the-2026-consumer-goods-pivot-in-china/"
+      },
+      {
+        "types": [],
+        "category": "Example Category",
+        "title": "The post-October reality: Why export compliance is the new standard in 2026 China sourcing",
+        "excerpt": "We are now several months into the enforcement of China’s sweeping export compliance overhaul. For global procurement leaders, the transition from \"...",
+        "date": "03/03/2026",
+        "readingTime": "3 min read",
+        "image": "/images/China-export-compliance-enforcement-impacting-global-supply-chains-and-sourcing-operations-in-2026.png",
+        "alt": "The post-October reality: Why export compliance is the new standard in 2026 China sourcing",
+        "href": "/export-compliance-2026-china-sourcing/"
+      },
+      {
+        "types": [],
+        "category": "Example Category",
+        "title": "The Hidden Risk of 0.2% China Inflation Rate: Why \"Cheap China\" might be costing you more",
+        "excerpt": "The latest data shows China’s CPI rose by a mere 0.2% in October. While many procurement teams see stagnant inflation as a sign that prices will sta...",
+        "date": "26/02/2026",
+        "readingTime": "3 min read",
+        "image": "/images/china-inflation-rate-0-2-percent-supply-chain-risk.png",
+        "alt": "The Hidden Risk of 0.2% China Inflation Rate: Why \"Cheap China\" might be costing you more",
+        "href": "/the-hidden-risk-of-the-0-2-china-inflation-rate/"
+      },
+      {
+        "types": [],
+        "category": "Example Category",
+        "title": "Sourcing Wholesale Office Furniture: An Ultimate Guide to the Top 5 Factories in Foshan",
+        "excerpt": "For international buyers, sourcing wholesale office furniture from Foshan is a high-stakes endeavor. As the epicenter of global production, accounti...",
+        "date": "18/11/2025",
+        "readingTime": "8 min read",
+        "image": "/images/foshan-furniture-sourcing-map-china.png",
+        "alt": "Sourcing Wholesale Office Furniture: An Ultimate Guide to the Top 5 Factories in Foshan",
+        "href": "/wholesale-office-furniture-in-foshan/"
+      },
+      {
+        "types": [
+          "wholesale-furniture"
+        ],
+        "category": "Example Category",
+        "title": "China Furniture Industry: Sourcing Beyond Foshan - 3 \"Hidden\" Hubs",
+        "excerpt": "For leaders of large-scale furniture enterprises, Foshan is the undisputed epicenter of the China furniture industry. Its dominance is undeniable, a...",
+        "date": "28/10/2025",
+        "readingTime": "9 min read",
+        "image": "/images/china-furniture-industry-sourcing-map.png",
+        "alt": "China Furniture Industry: Sourcing Beyond Foshan - 3 \"Hidden\" Hubs",
+        "href": "/china-furniture-industry-3-hidden-hubs/"
+      },
+      {
+        "types": [
+          "wholesale-furniture"
+        ],
+        "category": "Example Category",
+        "title": "China Factory Audit: A Complete Guide for Vetting Furniture Suppliers",
+        "excerpt": "For leaders of large-scale furniture distribution businesses, the process of selecting a manufacturing partner is one of the highest-stakes decision...",
+        "date": "28/10/2025",
+        "readingTime": "9 min read",
+        "image": "/images/professional-china-factory-audit-in-progress-2.png",
+        "alt": "China Factory Audit: A Complete Guide for Vetting Furniture Suppliers",
+        "href": "/china-factory-audit-guide-for-vetting-suppliers/"
+      },
+      {
+        "types": [
+          "wholesale-furniture"
+        ],
+        "category": "Example Category",
+        "title": "Furniture Certification: A Strategic Guide to FSC, CARB P2 & Fire Safety Standards",
+        "excerpt": "For leaders of large-scale furniture distribution businesses, navigating the complex alphabet soup of international certifications—FSC, CARB P2, BIFMA...",
+        "date": "28/10/2025",
+        "readingTime": "9 min read",
+        "image": "/images/key-furniture-certification-logos.png",
+        "alt": "Furniture Certification: A Strategic Guide to FSC, CARB P2 & Fire Safety Standards",
+        "href": "/furniture-certification-safety-standards/"
+      },
+      {
+        "types": [
+          "wholesale-furniture"
+        ],
+        "category": "Example Category",
+        "title": "How to Calculate Landed Cost Furniture: An Advanced Guide for Importers",
+        "excerpt": "For leaders of large-scale furniture distribution businesses, the distinction between a profitable import program and a loss-making one often hinges...",
+        "date": "28/10/2025",
+        "readingTime": "8 min read",
+        "image": "/images/landed-cost-spreadsheet-detail.png",
+        "alt": "How to Calculate Landed Cost Furniture: An Advanced Guide for Importers",
+        "href": "/landed-cost-furniture-an-advanced-guide/"
+      },
+      {
+        "types": [
+          "wholesale-furniture"
+        ],
+        "category": "Example Category",
+        "title": "Furniture Design Protection: A Strategic IP Guide for Sourcing from China",
+        "excerpt": "For leaders of established furniture brands, your most valuable asset is not your inventory, your warehouses, or your distribution network; it is yo...",
+        "date": "28/10/2025",
+        "readingTime": "9 min read",
+        "image": "/images/furniture-design-from-sketch-to-product.png",
+        "alt": "Furniture Design Protection: A Strategic IP Guide for Sourcing from China",
+        "href": "/furniture-design-protection-strategic-ip-guide/"
+      },
+      {
+        "types": [
+          "wholesale-furniture"
+        ],
+        "category": "Example Category",
+        "title": "The China Furniture Supply Chain: An In-depth Analysis [2025]",
+        "excerpt": "For leaders of global furniture brands, viewing the China furniture supply chain as a simple, linear path from raw material to finished product is a...",
+        "date": "28/10/2025",
+        "readingTime": "9 min read",
+        "image": "/images/furniture-supply-chain-financial-analysis.png",
+        "alt": "The China Furniture Supply Chain: An In-depth Analysis [2025]",
+        "href": "/china-furniture-supply-chain-in-depth-analysis/"
+      },
+      {
+        "types": [
+          "wholesale-furniture"
+        ],
+        "category": "Example Category",
+        "title": "Incoterms for Furniture Imports: A Strategic Guide for Wholesale Furniture Distributors",
+        "excerpt": "For leaders of large-scale wholesale furniture distribution businesses, the three-letter acronyms found on a purchase order - FOB, CIF, EXW - are fa...",
+        "date": "28/10/2025",
+        "readingTime": "9 min read",
+        "image": "/images/incoterms-risk-transfer-point.png",
+        "alt": "Incoterms for Furniture Imports: A Strategic Guide for Wholesale Furniture Distributors",
+        "href": "/incoterms-guide-wholesale-furniture-distributors/"
+      },
+      {
+        "types": [
+          "wholesale-furniture"
+        ],
+        "category": "Example Category",
+        "title": "Wholesale Furniture Distributors: A 5-Step Guide to Becoming a Furniture Distributor",
+        "excerpt": "For ambitious wholesale furniture distributors, the evolution from simply importing non-branded products to becoming an official, exclusive furnitur...",
+        "date": "28/10/2025",
+        "readingTime": "8 min read",
+        "image": "/images/furniture-distributor-partnership-agreement.png",
+        "alt": "Wholesale Furniture Distributors: A 5-Step Guide to Becoming a Furniture Distributor",
+        "href": "/5-step-guide-for-wholesale-furniture-distributors/"
+      },
+      {
+        "types": [
+          "wholesale-furniture"
+        ],
+        "category": "Example Category",
+        "title": "China Sourcing Agent vs. DIY: A Strategic Analysis for Large-Scale Wholesale Furniture Vendors",
+        "excerpt": "For leaders of established wholesale furniture vendors and large-scale distributors, the decision between an in-house DIY sourcing model and a strat...",
+        "date": "28/10/2025",
+        "readingTime": "10 min read",
+        "image": "/images/streamlined-sourcing-process-flowchart.png",
+        "alt": "China Sourcing Agent vs. DIY: A Strategic Analysis for Large-Scale Wholesale Furniture Vendors",
+        "href": "/strategic-analysis-wholesale-furniture-vendors/"
+      },
+      {
+        "types": [
+          "wholesale-furniture"
+        ],
+        "category": "Example Category",
+        "title": "China Wholesale Furniture Shipping: A Strategic Analysis of Sea Freight vs. Truck",
+        "excerpt": "For leaders managing a wholesale furniture supply chain, the selection of a shipping method is one of the most critical decisions impacting landed...",
+        "date": "28/10/2025",
+        "readingTime": "9 min read",
+        "image": "/images/sea-freight-vs-truck-shipping-comparison.png",
+        "alt": "China Wholesale Furniture Shipping: A Strategic Analysis of Sea Freight vs. Truck",
+        "href": "/sea-freight-vs-truck-wholesale-furniture/"
+      },
+      {
+        "types": [],
+        "category": "Example Category",
+        "title": "Strategic Furniture Quality Control: The Definitive Guide to Your China QC Check",
+        "excerpt": "For leaders and importers in the wholesale furniture industry, the most significant financial risk is not market fluctuation or shipping costs; it i...",
+        "date": "28/10/2025",
+        "readingTime": "11 min read",
+        "image": "/images/professional-furniture-quality-control-inspection.png",
+        "alt": "Strategic Furniture Quality Control: The Definitive Guide to Your China QC Check",
+        "href": "/strategic-furniture-quality-control-guide/"
+      },
+      {
+        "types": [
+          "wholesale-furniture"
+        ],
+        "category": "Example Category",
+        "title": "China Furniture Logistics: A Strategic Guide for Wholesale Furniture Distributors to Mastering QC & Shipping",
+        "excerpt": "For leaders in the global furniture market, the title of wholesale furniture distributors signifies more than just the ability to source products. I...",
+        "date": "28/10/2025",
+        "readingTime": "7 min read",
+        "image": "/images/global-furniture-logistics-and-shipping.png",
+        "alt": "China Furniture Logistics: A Strategic Guide for Wholesale Furniture Distributors to Mastering QC & Shipping",
+        "href": "/guide-for-wholesale-furniture-distributors/"
+      },
+      {
+        "types": [
+          "wholesale-furniture"
+        ],
+        "category": "Example Category",
+        "title": "Sourcing Wholesale Boho Furniture: The Strategic Guide to Authenticity, Quality, and Profit",
+        "excerpt": "For wholesale buyers and brand curators, the Boho aesthetic represents one of the most compelling and high-margin opportunities in the current furni...",
+        "date": "28/10/2025",
+        "readingTime": "10 min read",
+        "image": "/images/high-end-wholesale-boho-furniture-living-room.png",
+        "alt": "Sourcing Wholesale Boho Furniture: The Strategic Guide to Authenticity, Quality, and Profit",
+        "href": "/wholesale-boho-furniture-guide/"
+      },
+      {
+        "types": [
+          "wholesale-furniture"
+        ],
+        "category": "Example Category",
+        "title": "Strategic Sourcing for School Furniture Wholesale: The Definitive Guide to Safety, Durability, and Long-Term Value",
+        "excerpt": "For educational leaders and procurement managers, sourcing school furniture wholesale is an act of profound responsibility with decade-long conseque...",
+        "date": "28/10/2025",
+        "readingTime": "11 min read",
+        "image": "/images/modern-classroom-furniture-china.png",
+        "alt": "Strategic Sourcing for School Furniture Wholesale: The Definitive Guide to Safety, Durability, and Long-Term Value",
+        "href": "/sourcing-school-furniture-wholesale/"
+      },
+      {
+        "types": [
+          "wholesale-furniture"
+        ],
+        "category": "Example Category",
+        "title": "Case Study: Sourcing Coffee Shop Furniture Wholesale from China",
+        "excerpt": "Every new cafe starts not with a business plan, but with a dream. A vision of a space where people connect, where the aroma of coffee blends with th...",
+        "date": "28/10/2025",
+        "readingTime": "7 min read",
+        "image": "/images/coffee-shop-furniture-wholesale.png",
+        "alt": "Case Study: Sourcing Coffee Shop Furniture Wholesale from China",
+        "href": "/case-study-coffee-shop-furniture-wholesale/"
+      },
+      {
+        "types": [
+          "wholesale-furniture"
+        ],
+        "category": "Example Category",
+        "title": "Sourcing Restaurant Furniture Wholesale: 7 Expert Tips for F&B Buyers",
+        "excerpt": "For leaders in the F&B sector, sourcing restaurant furniture wholesale is a decision that directly impacts both brand identity and operational p...",
+        "date": "28/10/2025",
+        "readingTime": "9 min read",
+        "image": "/images/modern-coffee-shop-furniture-wholesale-1.png",
+        "alt": "Sourcing Restaurant Furniture Wholesale: 7 Expert Tips for F&B Buyers",
+        "href": "/restaurant-furniture-wholesale-tips/"
+      },
+      {
+        "types": [
+          "wholesale-furniture"
+        ],
+        "category": "Example Category",
+        "title": "Outdoor Furniture Wholesale Trends for 2026: A Complete Buyer's Guide",
+        "excerpt": "For wholesale buyers, tracking outdoor furniture wholesale trends is not an exercise in aesthetics; it is a critical analysis of market data that pr...",
+        "date": "28/10/2025",
+        "readingTime": "8 min read",
+        "image": "/images/modern-patio-furniture-trends-2026.png",
+        "alt": "Outdoor Furniture Wholesale Trends for 2026: A Complete Buyer's Guide",
+        "href": "/outdoor-furniture-wholesale-trends-2026/"
+      },
+      {
+        "types": [
+          "wholesale-furniture"
+        ],
+        "category": "Example Category",
+        "title": "Sourcing Outdoor Furniture Wholesale: Quality Secrets from China Revealed",
+        "excerpt": "For importers and retailers, sourcing outdoor furniture wholesale is a high-stakes test of material science. Unlike its indoor counterpart, outdoor ...",
+        "date": "28/10/2025",
+        "readingTime": "6 min read",
+        "image": "/images/outdoor-furniture-welding-quality.png",
+        "alt": "Sourcing Outdoor Furniture Wholesale: Quality Secrets from China Revealed",
+        "href": "/outdoor-furniture-wholesale-secrets-china/"
+      },
+      {
+        "types": [
+          "wholesale-furniture"
+        ],
+        "category": "Example Category",
+        "title": "Strategic Sourcing for Wholesale Office Furniture: A Step-by-Step Guide from China",
+        "excerpt": "For corporate leaders and project managers, the procurement of wholesale office furniture is not merely a line item; it is a strategic investment in...",
+        "date": "28/10/2025",
+        "readingTime": "6 min read",
+        "image": "/images/blog-fallback.png",
+        "alt": "Strategic Sourcing for Wholesale Office Furniture: A Step-by-Step Guide from China",
+        "href": "/strategic-sourcing-wholesale-office-furniture/"
+      },
+      {
+        "types": [],
+        "category": "Example Category",
+        "title": "Niche Wholesale Furniture: A Strategic Sourcing Guide to Office, Outdoor & Cafe Niches [2026]",
+        "excerpt": "Niche wholesale furniture is now the defining advantage for leaders in the global furniture market, marking the end of the era of generalist sourcin...",
+        "date": "16/10/2025",
+        "readingTime": "8 min read",
+        "image": "/images/niche-furniture-sourcing-office-outdoor-cafe.png",
+        "alt": "Niche Wholesale Furniture: A Strategic Sourcing Guide to Office, Outdoor & Cafe Niches [2026]",
+        "href": "/niche-wholesale-furniture-strategic-guide/"
+      },
+      {
+        "types": [],
+        "category": "Example Category",
+        "title": "Landed Cost Mastery for Wholesale Furniture: A Complete Breakdown of China Import Costs [2026]",
+        "excerpt": "For leaders in the wholesale furniture sector, the factory's FOB price is a vanity metric. The only number that truly matters is the final landed co...",
+        "date": "16/10/2025",
+        "readingTime": "5 min read",
+        "image": "/images/landed-cost-mastery-for-wholesale-furniture.png",
+        "alt": "Landed Cost Mastery for Wholesale Furniture: A Complete Breakdown of China Import Costs [2026]",
+        "href": "/wholesale-furniture-china-import-costs-2026/"
+      },
+      {
+        "types": [],
+        "category": "Example Category",
+        "title": "Furniture Wholesale Suppliers: The Ultimate Framework to Vet Top Manufacturers in China [2026]",
+        "excerpt": "For leaders in the furniture wholesale suppliers industry, a polished Alibaba profile or impressive product brochure are vanity metrics. The true me...",
+        "date": "16/10/2025",
+        "readingTime": "9 min read",
+        "image": "/images/10-point-framework-vetting-furniture-wholesale-suppliers.png",
+        "alt": "Furniture Wholesale Suppliers: The Ultimate Framework to Vet Top Manufacturers in China [2026]",
+        "href": "/vetting-furniture-wholesale-suppliers-in-china/"
+      },
+      {
+        "types": [],
+        "category": "Example Category",
+        "title": "What is MOQ in Furniture Sourcing? (+ Proven Negotiation Tips) [2026]",
+        "excerpt": "Minimum Order Quantity - MOQ in furniture sourcing is one of the most strategically misunderstood concepts in international trade. For furniture imp...",
+        "date": "16/10/2025",
+        "readingTime": "8 min read",
+        "image": "/images/what-is-moq-in-furniture-sourcing-infographic.png",
+        "alt": "What is MOQ in Furniture Sourcing? (+ Proven Negotiation Tips) [2026]",
+        "href": "/moq-in-furniture-sourcing-tips-2026/"
+      },
+      {
+        "types": [
+          "wholesale-furniture"
+        ],
+        "category": "Example Category",
+        "title": "Alibaba vs 1688 Furniture: Which B2B Platform is Best? [2026]",
+        "excerpt": "In the vast digital landscape of Chinese manufacturing, two platforms stand as undisputed titans: Alibaba and 1688.com. Both are owned by the Alibab...",
+        "date": "16/10/2025",
+        "readingTime": "8 min read",
+        "image": "/images/alibaba-vs-1688-for-furniture-sourcing.png",
+        "alt": "Alibaba vs 1688 Furniture: Which B2B Platform is Best? [2026]",
+        "href": "/alibaba-vs-1688-furniture/"
+      },
+      {
+        "types": [
+          "wholesale-furniture"
+        ],
+        "category": "Example Category",
+        "title": "Wholesale Furniture Suppliers: A Strategic Guide to China's Top 5 Furniture Cities",
+        "excerpt": "For international buyers and large-scale distributors, the first step in finding elite wholesale furniture suppliers is not asking \"who,\" but \"where...",
+        "date": "16/10/2025",
+        "readingTime": "9 min read",
+        "image": "/images/china-furniture-manufacturing-hubs-map.png",
+        "alt": "Wholesale Furniture Suppliers: A Strategic Guide to China's Top 5 Furniture Cities",
+        "href": "/strategic-guide-to-chinas-top-5-furniture-cities/"
+      },
+      {
+        "types": [
+          "wholesale-furniture"
+        ],
+        "category": "Example Category",
+        "title": "Wholesale Furniture from China: The A-Z Sourcing Guide [2026]",
+        "excerpt": "For business leaders and importers, sourcing wholesale furniture from China is not a simple procurement task; it is a high-stakes, multi-faceted str...",
+        "date": "16/10/2025",
+        "readingTime": "9 min read",
+        "image": "/images/wholesale-furniture-supply-chain-overview-1.png",
+        "alt": "Wholesale Furniture from China: The A-Z Sourcing Guide [2026]",
+        "href": "/wholesale-furniture-from-china-the-a-z-sourcing-guide-2026/"
+      },
+      {
+        "types": [
+          "wholesale-furniture"
+        ],
+        "category": "Example Category",
+        "title": "China Furniture Sourcing: The Ultimate Hub [2025]",
+        "excerpt": "The ultimate hub for China furniture sourcing. This page acts as the central navigation to our definitive guides on the A-Z process, niche markets, advanced logistics, and expert supply chain analysis.",
+        "date": "16/10/2025",
+        "readingTime": "6 min read",
+        "image": "/images/china-furniture-sourcing-the-ultimate-hub-2025-1.png",
+        "alt": "China Furniture Sourcing: The Ultimate Hub [2025]",
+        "href": "/china-furniture-sourcing-the-ultimate-hub-2025-2/"
+      },
+      {
+        "types": [
+          "canton-fair"
+        ],
+        "category": "Blog",
+        "title": "Canton Fair Phase 3 2026: Explore Textiles, Fashion and Healthcare",
+        "excerpt": "After the industrial focus of Phase 1 and the lifestyle-centric Phase 2, Canton Fair Phase 3 shifts gears to the personal and essential. This final ...",
+        "date": "29/07/2025",
+        "readingTime": "5 min read",
+        "image": "/images/canton-fair-phase-3-2025-1.png",
+        "alt": "Canton Fair Phase 3 2026: Explore Textiles, Fashion and Healthcare",
+        "href": "/canton-fair-phase-3-2026/"
+      },
+      {
+        "types": [
+          "canton-fair"
+        ],
+        "category": "Blog",
+        "title": "A Field Manual for the Canton Fair Complex 2026",
+        "excerpt": "The Canton Fair Complex is not just a venue; it's a city. Spanning over 1.1 million square meters, with more than 60,000 booths spread across dozens...",
+        "date": "25/07/2025",
+        "readingTime": "8 min read",
+        "image": "/images/field-manual-for-the-canton-fair-complex-1.png",
+        "alt": "A Field Manual for the Canton Fair Complex 2026",
+        "href": "/field-manual-for-the-canton-fair-complex/"
+      },
+      {
+        "types": [
+          "canton-fair"
+        ],
+        "category": "Blog",
+        "title": "The Complete Canton Fair Registration Guide for 2026",
+        "excerpt": "If this is your first time attending Canton Fair 2026, welcome and prepare well. The Canton Fair registration is not just a formality; it's the firs...",
+        "date": "23/07/2025",
+        "readingTime": "6 min read",
+        "image": "/images/canton-fair-registration-guide-3.png",
+        "alt": "The Complete Canton Fair Registration Guide for 2026",
+        "href": "/canton-fair-registration-guide/"
+      },
+      {
+        "types": [
+          "canton-fair"
+        ],
+        "category": "Blog",
+        "title": "The Best Guide to Canton Fair Hotels (2026 Edition)",
+        "excerpt": "Booking the right hotel is one of the most critical strategic decisions for your Canton Fair 2026 trip. Your choice among the many Canton Fair hotel...",
+        "date": "23/07/2025",
+        "readingTime": "6 min read",
+        "image": "/images/guide-to-canton-fair-hotels-3-1.png",
+        "alt": "The Best Guide to Canton Fair Hotels (2026 Edition)",
+        "href": "/guide-to-canton-fair-hotels/"
+      },
+      {
+        "types": [
+          "canton-fair"
+        ],
+        "category": "Blog",
+        "title": "Canton Fair 2026 Phase 2: A Deep Dive Into Home, Decor and Gifts",
+        "excerpt": "If Canton Fair Phase 1 is the \"engine room\" of industry, then Canton Fair 2026 Phase 2 is where the heart and soul of daily life take center stage. ...",
+        "date": "17/07/2025",
+        "readingTime": "5 min read",
+        "image": "/images/canton-fair-2025-phase-2.png",
+        "alt": "Canton Fair 2026 Phase 2: A Deep Dive Into Home, Decor and Gifts",
+        "href": "/canton-fair-2026-phase-2/"
+      },
+      {
+        "types": [
+          "canton-fair"
+        ],
+        "category": "Blog",
+        "title": "Canton Fair 2026 Phase 1: What You'll Find and Who Should Attend",
+        "excerpt": "Welcome to the engine room of global manufacturing. Canton Fair 2026 Phase 1 is the premier event for anyone involved in the electronics, machinery,...",
+        "date": "17/07/2025",
+        "readingTime": "7 min read",
+        "image": "/images/canton-fair-2025-phase-1.png",
+        "alt": "Canton Fair 2026 Phase 1: What You'll Find and Who Should Attend",
+        "href": "/canton-fair-2026-phase-1/"
+      },
+      {
+        "types": [
+          "canton-fair"
+        ],
+        "category": "Blog",
+        "title": "Canton Fair 2026: The Ultimate Guide for International Buyers",
+        "excerpt": "For any entrepreneur, importer, or business owner looking to tap into the world's manufacturing powerhouse, the Canton Fair 2026 is not just an even...",
+        "date": "16/07/2025",
+        "readingTime": "8 min read",
+        "image": "/images/canton-fair-2025-ultimate-guide.png",
+        "alt": "Canton Fair 2026: The Ultimate Guide for International Buyers",
+        "href": "/canton-fair-2026-ultimate-guide/"
+      },
+      {
+        "types": [],
+        "category": "Blog",
+        "title": "Understanding the Different Types of Product Sourcing Models for E-commerce",
+        "excerpt": "Looking for the best product sourcing model for your e-commerce business? Check out our comprehensive guide on \"Understanding the Different Types of P...",
+        "date": "19/06/2025",
+        "readingTime": "8 min read",
+        "image": "/images/Understanding-the-Different-Types-of-Product-Sourcing-Models-for-E-commerce-scaled-1.jpg",
+        "alt": "Understanding the Different Types of Product Sourcing Models for E-commerce",
+        "href": "/understanding-the-different-types-of-product-sourcing-models-for-e-commerce/"
+      },
+      {
+        "types": [
+          "sourcing-guide"
+        ],
+        "category": "Blog",
+        "title": "Electronics Sourcing in China: Navigating IP Risks and Supplier Vetting",
+        "excerpt": "As the global leader in electronics manufacturing, electronics sourcing in China offers immense advantages for businesses looking to access cost-eff...",
+        "date": "10/04/2025",
+        "readingTime": "8 min read",
+        "image": "/images/electronics-sourcing-in-china-navigating-risks.jpeg",
+        "alt": "Electronics Sourcing in China: Navigating IP Risks and Supplier Vetting",
+        "href": "/electronics-sourcing-in-china-navigating-risks/"
+      },
+      {
+        "types": [
+          "sourcing-guide"
+        ],
+        "category": "Blog",
+        "title": "Packaging Sourcing in China: Secure High-Quality Packaging at Competitive Prices",
+        "excerpt": "As the global demand for high-quality packaging continues to grow, packaging sourcing in China has emerged as a strategic solution for businesses lo...",
+        "date": "04/04/2025",
+        "readingTime": "8 min read",
+        "image": "/images/packaging-sourcing-in-china-high-quality.jpeg",
+        "alt": "Packaging Sourcing in China: Secure High-Quality Packaging at Competitive Prices",
+        "href": "/packaging-sourcing-in-china-high-quality/"
+      },
+      {
+        "types": [
+          "sourcing-guide"
+        ],
+        "category": "Blog",
+        "title": "Building Materials Sourcing in China: How to Find Reliable Suppliers at the Best Price",
+        "excerpt": "When it comes to building materials sourcing in China, businesses worldwide are increasingly recognizing the advantages of tapping into China’s vast...",
+        "date": "28/03/2025",
+        "readingTime": "12 min read",
+        "image": "/images/building-materials-sourcing-in-china.png",
+        "alt": "Building Materials Sourcing in China: How to Find Reliable Suppliers at the Best Price",
+        "href": "/building-materials-sourcing-in-china/"
+      },
+      {
+        "types": [
+          "basic-blog-functions"
+        ],
+        "category": "Blog",
+        "title": "Sourcing Manufacturers in China: The Ultimate Guide to Finding the Best Factories",
+        "excerpt": "Sourcing manufacturers in China continues to be a key strategy for businesses across industries, offering cost savings, diverse product offerings, a...",
+        "date": "28/03/2025",
+        "readingTime": "9 min read",
+        "image": "/images/sourcing-manufacturers-in-china-ultimate-guide-1.jpeg",
+        "alt": "Sourcing Manufacturers in China: The Ultimate Guide to Finding the Best Factories",
+        "href": "/sourcing-manufacturers-in-china-ultimate-guide/"
+      },
+      {
+        "types": [
+          "sourcing-guide"
+        ],
+        "category": "Blog",
+        "title": "Furniture Sourcing Agent China: How to Source High-Quality Furniture at the Best Price",
+        "excerpt": "Furniture sourcing agent China offers numerous advantages, from cost savings to access to a vast range of styles and materials. In 2023, China's furn...",
+        "date": "19/03/2025",
+        "readingTime": "10 min read",
+        "image": "/images/furniture-sourcing-agent-china-at-best-price.jpeg",
+        "alt": "Furniture Sourcing Agent China: How to Source High-Quality Furniture at the Best Price",
+        "href": "/furniture-sourcing-agent-china-at-best-price/"
+      },
+      {
+        "types": [
+          "basic-blog-functions"
+        ],
+        "category": "Blog",
+        "title": "China Wholesale Suppliers List Unlock the Best Deals and Long-Term Partnerships",
+        "excerpt": "1. The Truth About China’s Wholesale Market: What You Need to Know Before SourcingChina’s wholesale market is a goldmine – but only for those who...",
+        "date": "18/03/2025",
+        "readingTime": "16 min read",
+        "image": "/images/china-wholesale-suppliers-list-deals.jpeg",
+        "alt": "China Wholesale Suppliers List Unlock the Best Deals and Long-Term Partnerships ",
+        "href": "/china-wholesale-suppliers-list-deals/"
+      },
+      {
+        "types": [
+          "basic-blog-functions"
+        ],
+        "category": "Blog",
+        "title": "Which Sourcing Hubs in China is Best for Your Business?",
+        "excerpt": "When considering sourcing hubs in China, three cities often come up as top choices: Guangzhou, Shenzhen, and Yiwu. Each hub has carved out a specific...",
+        "date": "17/03/2025",
+        "readingTime": "9 min read",
+        "image": "/images/sourcing-hub-in-china-is-best-for-business.jpeg",
+        "alt": "Which Sourcing Hubs in China is Best for Your Business?",
+        "href": "/sourcing-hubs-in-china-is-best-for-business/"
+      },
+      {
+        "types": [
+          "basic-blog-functions"
+        ],
+        "category": "Blog",
+        "title": "Best China Sourcing Agent: How to Choose the Right One for Your Business",
+        "excerpt": "Sourcing products from China has become a cornerstone for many businesses worldwide, given China's status as the largest exporter of goods. According...",
+        "date": "14/03/2025",
+        "readingTime": "8 min read",
+        "image": "/images/how-to-choose-best-china-sourcing-agent.jpeg",
+        "alt": "Best China Sourcing Agent: How to Choose the Right One for Your Business",
+        "href": "/how-to-choose-best-china-sourcing-agent/"
+      },
+      {
+        "types": [
+          "basic-blog-functions"
+        ],
+        "category": "Blog",
+        "title": "China Sourcing: How to Source from China Without Losing Money",
+        "excerpt": "1. The Reality of China Sourcing: Profits or Pitfalls? China remains the world's largest manufacturing hub, offering competitive prici...",
+        "date": "13/03/2025",
+        "readingTime": "7 min read",
+        "image": "/images/china-sourcing-how-to-source-from-china-without-losing-money.jpeg",
+        "alt": "China Sourcing: How to Source from China Without Losing Money",
+        "href": "/china-sourcing-without-losing-money/"
+      },
+      {
+        "types": [
+          "basic-blog-functions"
+        ],
+        "category": "Blog",
+        "title": "Sourcing in China: A C-Level Playbook for Cost Efficiency, Risk Mitigation, and Supply Chain Optimisation",
+        "excerpt": "Introduction: Why Sourcing in China Remains a Strategic AdvantageFor over three decades, China has been at the centre of global manufacturing, pr...",
+        "date": "14/02/2025",
+        "readingTime": "15 min read",
+        "image": "/images/Sourcing-in-China.jpg",
+        "alt": "Sourcing in China: A C-Level Playbook for Cost Efficiency, Risk Mitigation, and Supply Chain Optimisation",
+        "href": "/sourcing-in-china-to-boost-profitability/"
+      },
+      {
+        "types": [
+          "ecommerce"
+        ],
+        "category": "Blog",
+        "title": "E-commerce Shipping and Fulfillment: Best Practices for a Seamless Experience",
+        "excerpt": "Fulfillment Looking to enhance your e-commerce shipping and fulfillment process? Discover the best practices for a seamless experience in our compreh...",
+        "date": "01/06/2023",
+        "readingTime": "6 min read",
+        "image": "/images/E-commerce-Shipping-and-Fulfillment_-Best-Practices-for-a-Seamless-Experience-_-OneLink-Holdings-scaled-2.jpg",
+        "alt": "E-commerce Shipping and Fulfillment: Best Practices for a Seamless Experience",
+        "href": "/e-commerce-shipping-and-fulfillment-best-practices-for-a-seamless-experience-onelink-holdings/"
+      },
+      {
+        "types": [
+          "manufacturing"
+        ],
+        "category": "Blog",
+        "title": "Sustainable Manufacturing: A Comprehensive Guide",
+        "excerpt": "As businesses around the world become increasingly aware of the impact of their operations on the environment, sustainable manufacturing has become an...",
+        "date": "30/05/2023",
+        "readingTime": "5 min read",
+        "image": "/images/Sustainable-Manufacturing_-A-Comprehensive-Guidepg-scaled-1.jpg",
+        "alt": "Sustainable Manufacturing: A Comprehensive Guide",
+        "href": "/sustainable-manufacturing-a-comprehensive-guide/"
+      },
+      {
+        "types": [
+          "freight-logistics"
+        ],
+        "category": "Blog",
+        "title": "Avoiding Common Mistakes in Freight and Logistics when Doing Business in Asia",
+        "excerpt": "Doing business in Asia can be highly rewarding, but navigating the freight and logistics landscape can be challenging. In this blog post, we explore t...",
+        "date": "26/05/2023",
+        "readingTime": "6 min read",
+        "image": "/images/Avoiding-Common-Mistakes-in-Freight-and-Logistics-when-Doing-Business-in-Asia-scaled-2.jpg",
+        "alt": "Avoiding Common Mistakes in Freight and Logistics when Doing Business in Asia",
+        "href": "/common-mistakes-doing-business-in-asia/"
+      },
+      {
+        "types": [
+          "basic-blog-functions"
+        ],
+        "category": "Blog",
+        "title": "Going Global: Expanding Your Product Sourcing and Manufacturing to Asia",
+        "excerpt": "Manufacturing Looking to expand your business globally? Look no further than Asia. In this comprehensive blog post, we explore the pros and cons of e...",
+        "date": "24/05/2023",
+        "readingTime": "5 min read",
+        "image": "/images/Going-Global_-Expanding-Your-Product-Sourcing-and-Manufacturing-to-Asia-scaled-2.jpg",
+        "alt": "Going Global: Expanding Your Product Sourcing and Manufacturing to Asia",
+        "href": "/going-global-expanding-your-product-sourcing-and-manufacturing-to-asia-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "3PL & Fulfilment",
+        "title": "Understanding the Different Types of Product Sourcing Models for E-commerce | OneLink Holdings",
+        "excerpt": "Looking for the best product sourcing model for your e-commerce business? Check out our comprehensive guide on \"Understanding the Different Types of P...",
+        "date": "22/05/2023",
+        "readingTime": "8 min read",
+        "image": "/images/Understanding-the-Different-Types-of-Product-Sourcing-Models-for-E-commerce-scaled-1.jpg",
+        "alt": "Understanding the Different Types of Product Sourcing Models for E-commerce | OneLink Holdings",
+        "href": "/understanding-the-different-types-of-product-sourcing-models-for-e-commerce-onelink-holdings/"
+      },
+      {
+        "types": [
+          "ecommerce"
+        ],
+        "category": "Blog",
+        "title": "The Pros and Cons of Sourcing Products Internationally for Your E-commerce Store | OneLink Holdings",
+        "excerpt": "eCommerce Looking to expand your e-commerce store's product offerings and lower costs? Sourcing products internationally may be a viable option, but ...",
+        "date": "10/05/2023",
+        "readingTime": "6 min read",
+        "image": "/images/The-Pros-and-Cons-of-Sourcing-Products-Internationally-for-Your-E-commerce-Store-scaled-1.jpg",
+        "alt": "The Pros and Cons of Sourcing Products Internationally for Your E-commerce Store | OneLink Holdings",
+        "href": "/the-pros-and-cons-of-sourcing-products-internationally-for-your-e-commerce-store-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Digital marketing",
+        "title": "How to Use SEO to Drive Traffic to Your eCommerce Store | OneLink Holdings",
+        "excerpt": "eCommerce Learn how to attract more organic traffic, increase visibility, and drive sales for your eCommerce store with Search Engine Optimization (S...",
+        "date": "03/05/2023",
+        "readingTime": "6 min read",
+        "image": "/images/How-to-Use-SEO-to-Drive-Traffic-to-Your-eCommerce-Store-scaled-1.jpg",
+        "alt": "How to Use SEO to Drive Traffic to Your eCommerce Store | OneLink Holdings",
+        "href": "/how-to-use-seo-to-drive-traffic-to-your-ecommerce-store-onelink-holdings/"
+      },
+      {
+        "types": [
+          "ecommerce"
+        ],
+        "category": "Blog",
+        "title": "10 Best E-commerce Platforms for Small Businesses | OneLink Holdings",
+        "excerpt": "E-Commerce Looking for the best e-commerce platforms for your small business? Look no further than our comprehensive guide to the 10 Best E-commerce ...",
+        "date": "28/04/2023",
+        "readingTime": "8 min read",
+        "image": "/images/10-Best-E-commerce-Platforms-for-Small-Businesses-scaled-1.jpg",
+        "alt": "10 Best E-commerce Platforms for Small Businesses | OneLink Holdings",
+        "href": "/10-best-e-commerce-platforms-for-small-businesses-onelink-holdings/"
+      },
+      {
+        "types": [
+          "manufacturing"
+        ],
+        "category": "Blog",
+        "title": "10 Common Mistakes to Avoid in Product Sourcing and Manufacturing",
+        "excerpt": "Manufacturing Avoid costly mistakes in product sourcing and manufacturing with our guide to the 10 most common errors. From failing to conduct proper...",
+        "date": "26/04/2023",
+        "readingTime": "5 min read",
+        "image": "/images/10-Common-Mistakes-to-Avoid-in-Product-Sourcing-and-Manufacturing-scaled-2.jpg",
+        "alt": "10 Common Mistakes to Avoid in Product Sourcing and Manufacturing",
+        "href": "/10-common-mistakes-to-avoid-in-product-sourcing-and-manufacturing/"
+      },
+      {
+        "types": [
+          "freight-logistics"
+        ],
+        "category": "Blog",
+        "title": "Understanding Freight Rates: A breakdown of the various components that make up freight rates",
+        "excerpt": "Freight & Logistics In this blog post, we provide a comprehensive breakdown of the various components that make up freight rates, including fuel ...",
+        "date": "25/04/2023",
+        "readingTime": "5 min read",
+        "image": "/images/Understanding-Freight-Rates_-A-breakdown-of-the-various-components-that-make-up-freight-rates-scaled-1.jpg",
+        "alt": "Understanding Freight Rates: A breakdown of the various components that make up freight rates",
+        "href": "/understanding-freight-rates-a-breakdown-of-the-various-components-that-make-up-freight-rates/"
+      },
+      {
+        "types": [],
+        "category": "Manufacturing",
+        "title": "Navigating Intellectual Property Protection in Vietnam Manufacturing | OneLink Holdings",
+        "excerpt": "Manufacturing Discover the essential steps for safeguarding your intellectual property in Vietnam's manufacturing industry. Our latest blog post delv...",
+        "date": "21/04/2023",
+        "readingTime": "6 min read",
+        "image": "/images/Navigating-Intellectual-Property-Protection-in-Vietnam-Manufacturing-scaled-1.jpg",
+        "alt": "Navigating Intellectual Property Protection in Vietnam Manufacturing | OneLink Holdings",
+        "href": "/navigating-intellectual-property-protection-in-vietnam-manufacturing-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Logistics",
+        "title": "Vietnam Manufacturing and the Global Market: Trends and Insights | OneLink Holdings",
+        "excerpt": "Manufacturing Vietnam's manufacturing industry has been growing rapidly in recent years, driven by a combination of factors such as low labour costs,...",
+        "date": "20/04/2023",
+        "readingTime": "6 min read",
+        "image": "/images/Vietnam-Manufacturing-and-the-Global-Market_-Trends-and-Insights-scaled-1.jpg",
+        "alt": "Vietnam Manufacturing and the Global Market: Trends and Insights | OneLink Holdings",
+        "href": "/vietnam-manufacturing-and-the-global-market-trends-and-insights-onelink-holdings/"
+      },
+      {
+        "types": [
+          "manufacturing"
+        ],
+        "category": "Blog",
+        "title": "China's Manufacturing Infrastructure: A Backbone of the World's Factory",
+        "excerpt": "Manufacturing China's manufacturing industry has become the world's factory, thanks in part to its transportation, energy, and logistics infrastructu...",
+        "date": "17/04/2023",
+        "readingTime": "8 min read",
+        "image": "/images/Chinas-Manufacturing-Infrastructure_-A-Backbone-of-the-Worlds-Factory-_-OneLink-Holdings-scaled-1.jpg",
+        "alt": "China's Manufacturing Infrastructure: A Backbone of the World's Factory",
+        "href": "/chinas-manufacturing-infrastructure-a-backbone-of-the-worlds-factory/"
+      },
+      {
+        "types": [],
+        "category": "User generated content",
+        "title": "eCommerce Design Best Practices: Tips for Designing a User-Friendly and Visually Appealing eCommerce Website | OneLink Holdings",
+        "excerpt": "Web Development Discover the top eCommerce design best practices for creating a user-friendly and visually appealing website that will help increase ...",
+        "date": "14/04/2023",
+        "readingTime": "6 min read",
+        "image": "/images/eCommerce-Design-Best-Practices_-Tips-for-Designing-a-User-Friendly-and-Visually-Appealing-eCommerce-Website-scaled-1.jpg",
+        "alt": "eCommerce Design Best Practices: Tips for Designing a User-Friendly and Visually Appealing eCommerce Website | OneLink Holdings",
+        "href": "/ecommerce-design-best-practices-tips-for-designing-a-user-friendly-and-visually-appealing-ecommerce-website-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Freight & Logistics",
+        "title": "Discovering the Secret to Finding Reliable Suppliers in Manufacturing | OneLink Holdings",
+        "excerpt": "Manufacturing Find the best suppliers for your manufacturing operation with our comprehensive guide. Learn about key factors to consider, such as cos...",
+        "date": "13/04/2023",
+        "readingTime": "5 min read",
+        "image": "/images/Discovering-the-Secret-to-Finding-Reliable-Suppliers-in-Manufacturing-scaled-1.jpg",
+        "alt": "Discovering the Secret to Finding Reliable Suppliers in Manufacturing | OneLink Holdings",
+        "href": "/discovering-the-secret-to-finding-reliable-suppliers-in-manufacturing-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Manufacturing",
+        "title": "Vietnam's Manufacturing Hubs for Top Brand Names | OneLink Holdings",
+        "excerpt": "Manufacturing Vietnam has quickly become a top destination for brand name manufacturers. Learn why and see some of the biggest brands who h...",
+        "date": "11/04/2023",
+        "readingTime": "5 min read",
+        "image": "/images/Vietnams-Manufacturing-Hubs-for-Top-Brand-Names-scaled-1.jpg",
+        "alt": "Vietnam's Manufacturing Hubs for Top Brand Names | OneLink Holdings",
+        "href": "/vietnams-manufacturing-hubs-for-top-brand-names-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Freight & Logistics",
+        "title": "The Impact of Technology on Logistics | OneLink Holdings",
+        "excerpt": "Logistics This blog post explores the impact of technology on the freight and logistics industry, focusing on the ways in which the Internet of Thing...",
+        "date": "07/04/2023",
+        "readingTime": "7 min read",
+        "image": "/images/The-Impact-of-Technology-on-Logistics-scaled-1.jpg",
+        "alt": "The Impact of Technology on Logistics | OneLink Holdings",
+        "href": "/the-impact-of-technology-on-logistics-onelink-holdings/"
+      },
+      {
+        "types": [
+          "market-insights"
+        ],
+        "category": "Blog",
+        "title": "The Future of Product Sourcing and Manufacturing in Asia: Trends and Predictions",
+        "excerpt": "Manufacturing This blog post explores the latest trends and predictions for the future of product sourcing and manufacturing in Asia. Discover how in...",
+        "date": "05/04/2023",
+        "readingTime": "5 min read",
+        "image": "/images/The-Future-of-Product-Sourcing-and-Manufacturing-in-Asia_-Trends-and-Predictions.jpg",
+        "alt": "The Future of Product Sourcing and Manufacturing in Asia: Trends and Predictions",
+        "href": "/the-future-of-product-sourcing-and-manufacturing-in-asia-trends-and-predictions/"
+      },
+      {
+        "types": [],
+        "category": "Manufacturing",
+        "title": "Cultural Considerations for Doing Business in Vietnam - OneLink Holdings",
+        "excerpt": "Tips Looking to do business in Vietnam? It's essential to understand the country's cultural norms and customs. This blog post explores the key cultur...",
+        "date": "03/04/2023",
+        "readingTime": "6 min read",
+        "image": "/images/Cultural-Considerations-for-Doing-Business-in-Vietnam-scaled-1.jpg",
+        "alt": "Cultural Considerations for Doing Business in Vietnam - OneLink Holdings",
+        "href": "/cultural-considerations-for-doing-business-in-vietnamcultural-considerations-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Digital marketing",
+        "title": "Creating a Content Marketing Strategy: Tips and Best Practices | OneLink Holdings",
+        "excerpt": "Tips Looking to create a successful content marketing strategy? Our blog post provides tips and best practices to help you define your goals, target ...",
+        "date": "15/03/2023",
+        "readingTime": "7 min read",
+        "image": "/images/Creating-a-Content-Marketing-Strategy_-Tips-and-Best-Practices-scaled-1.jpg",
+        "alt": "Creating a Content Marketing Strategy: Tips and Best Practices | OneLink Holdings",
+        "href": "/creating-a-content-marketing-strategy-tips-and-best-practices-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Freight & Logistics",
+        "title": "Rules and Regulations for Importing and Exporting from Vietnam | OneLink Holdings",
+        "excerpt": "Trade Learn about the essential rules and regulations for importing and exporting goods to and from Vietnam. This comprehensive guide covers import a...",
+        "date": "13/03/2023",
+        "readingTime": "11 min read",
+        "image": "/images/Rules-and-Regulations-for-Importing-and-Exporting-from-Vietnam-_-scaled-1.jpg",
+        "alt": "Rules and Regulations for Importing and Exporting from Vietnam | OneLink Holdings",
+        "href": "/rules-and-regulations-for-importing-and-exporting-from-vietnam-onelink-holdings/"
+      },
+      {
+        "types": [
+          "manufacturing"
+        ],
+        "category": "Blog",
+        "title": "Tips for Sourcing and Working with Chinese Manufacturers",
+        "excerpt": "Tips Maximize the benefits of sourcing from Chinese manufacturers with these helpful tips. Learn how to conduct research, establish clear c...",
+        "date": "11/03/2023",
+        "readingTime": "5 min read",
+        "image": "/images/Tips-for-Sourcing-and-Working-with-Chinese-Manufacturers-scaled-1.jpg",
+        "alt": "Tips for Sourcing and Working with Chinese Manufacturers",
+        "href": "/tips-for-sourcing-and-working-with-chinese-manufacturers/"
+      },
+      {
+        "types": [
+          "market-insights"
+        ],
+        "category": "Trade",
+        "title": "The Impact of US-China Trade Tensions on China Manufacturing: What You Need to Know",
+        "excerpt": "Trade Learn about the impact of US-China trade tensions on China's manufacturing sector. Discover the key areas affected, including reduced export de...",
+        "date": "07/03/2023",
+        "readingTime": "5 min read",
+        "image": "/images/The-Impact-of-US-China-Trade-Tensions-on-China-Manufacturing_-What-You-Need-to-Know-scaled-1.jpg",
+        "alt": "The Impact of US-China Trade Tensions on China Manufacturing: What You Need to Know",
+        "href": "/the-impact-of-us-china-trade-tensions-on-china-manufacturing-what-you-need-to-know/"
+      },
+      {
+        "types": [
+          "basic-blog-functions"
+        ],
+        "category": "Blog",
+        "title": "The Product Sourcing Process: A Step-by-Step Guide",
+        "excerpt": "Manufacturing Learn the ins and outs of the product sourcing process with OneLink Holdings' step-by-step guide. Discover best practices for researchi...",
+        "date": "03/03/2023",
+        "readingTime": "8 min read",
+        "image": "/images/The-Product-Sourcing-Process_-A-Step-by-Step-Guide-from-OneLink-Holdings1-scaled-1.jpg",
+        "alt": "The Product Sourcing Process: A Step-by-Step Guide",
+        "href": "/the-product-sourcing-process-a-step-by-step-guide/"
+      },
+      {
+        "types": [],
+        "category": "Manufacturing",
+        "title": "Finding the Right Custom Merchandise for Your Business in Asia | OneLink Holdings",
+        "excerpt": "Manufacturing Finding the Right Custom Merchandise for Your Business in Asia | OneLink Holdings Are you looking to source custom merchandise for you...",
+        "date": "20/02/2023",
+        "readingTime": "6 min read",
+        "image": "/images/Finding-the-Right-Custom-Merchandise-for-Your-Business-in-Asia-scaled-1.jpg",
+        "alt": "Finding the Right Custom Merchandise for Your Business in Asia | OneLink Holdings ",
+        "href": "/finding-the-right-custom-merchandise-for-your-business-in-asia-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Freight & Logistics",
+        "title": "What Is Logistics and Why Does It Matter? | OneLink Holdings",
+        "excerpt": "Freight & Logistics What Is Logistics and Why Does It Matter? | OneLink Holdings Logistics is the art and science of planning, organizing, and m...",
+        "date": "15/02/2023",
+        "readingTime": "4 min read",
+        "image": "/images/What-Is-Logistics-and-Why-Does-It-Matter_-scaled-1.jpg",
+        "alt": "What Is Logistics and Why Does It Matter? | OneLink Holdings ",
+        "href": "/what-is-logistics-and-why-does-it-matter-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Digital marketing",
+        "title": "10 Marketing Trends to Keep Your Business Ahead of the Curve in 2023 | OneLink Holdings",
+        "excerpt": "Marketing 10 Marketing Trends to Keep Your Business Ahead of the Curve in 2023 | OneLink Holdings Want to make sure your business is ahead of the cu...",
+        "date": "13/02/2023",
+        "readingTime": "6 min read",
+        "image": "/images/10-Marketing-Trends-to-Keep-Your-Business-Ahead-of-the-Curve-in-2023-scaled-1.jpg",
+        "alt": "10 Marketing Trends to Keep Your Business Ahead of the Curve in 2023 | OneLink Holdings",
+        "href": "/10-marketing-trends-to-keep-your-business-ahead-of-the-curve-in-2023-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Manufacturing",
+        "title": "Sourcing Pet Products from Asia - The Complete Guide | OneLink Holdings",
+        "excerpt": "Manufacturing Sourcing Pet Products from Asia - The Complete Guide Learn everything you need to know about sourcing pet products from Asia, includin...",
+        "date": "10/02/2023",
+        "readingTime": "6 min read",
+        "image": "/images/Sourcing-Pet-Products-from-Asia-–-The-Complete-Guide-scaled-1.jpg",
+        "alt": "Sourcing Pet Products from Asia - The Complete Guide | OneLink Holdings",
+        "href": "/sourcing-pet-products-from-asia-the-complete-guide-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "3PL & Fulfilment",
+        "title": "The Future of Freight Forwarding in 2023 | OneLink Holdings",
+        "excerpt": "Freight & Logistics The Future of Freight Forwarding in 2023 | OneLink Holdings Wondering who the top freight forwarders will be in 2023? Look n...",
+        "date": "07/02/2023",
+        "readingTime": "5 min read",
+        "image": "/images/The-Future-of-Freight-Forwarding-in-2023-scaled-1.jpg",
+        "alt": "The Future of Freight Forwarding in 2023 | OneLink Holdings ",
+        "href": "/the-future-of-freight-forwarding-in-2023-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Manufacturing",
+        "title": "Sourcing Activewear in Vietnam: An Overview | OneLink Holdings",
+        "excerpt": "Manufacturing Sourcing Activewear in Vietnam: An Overview | OneLink Holdings Are you looking to source activewear in Vietnam? This overview will giv...",
+        "date": "03/02/2023",
+        "readingTime": "7 min read",
+        "image": "/images/Sourcing-Activewear-in-Vietnam_-An-Overview-scaled-1.jpg",
+        "alt": "Sourcing Activewear in Vietnam: An Overview | OneLink Holdings",
+        "href": "/sourcing-activewear-in-vietnam-an-overview-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "3PL & Fulfilment",
+        "title": "What is Demand Forecasting and Why It's Important for Businesses | OneLink Holdings",
+        "excerpt": "Tips What is Demand Forecasting and Why It's Important for Businesses | OneLink Holdings Demand forecasting is the process of predicting future sale...",
+        "date": "01/02/2023",
+        "readingTime": "8 min read",
+        "image": "/images/What-is-Demand-Forecasting-and-Why-Its-Important-for-Businesses-scaled-1.jpg",
+        "alt": "What is Demand Forecasting and Why It's Important for Businesses | OneLink Holdings",
+        "href": "/what-is-demand-forecasting-and-why-its-important-for-businesses-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Freight & Logistics",
+        "title": "Understanding Shipping Delays: Causes and Solutions | OneLink Holdings",
+        "excerpt": "Freight & Logistics Understanding Shipping Delays: Causes and Solutions | OneLink Holdings When your shipments are delayed, it can be frustratin...",
+        "date": "31/01/2023",
+        "readingTime": "6 min read",
+        "image": "/images/Understanding-Shipping-Delays_-Causes-and-Solutions-scaled-1.jpg",
+        "alt": "Understanding Shipping Delays: Causes and Solutions | OneLink Holdings",
+        "href": "/understanding-shipping-delays-causes-and-solutions-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Freight & Logistics",
+        "title": "Designing Custom Packaging for Your Business | OneLink Holdings",
+        "excerpt": "Manufacturing Designing Custom Packaging for Your Business | OneLink Holdings Want to create custom packaging for your business? Here's everything y...",
+        "date": "30/01/2023",
+        "readingTime": "6 min read",
+        "image": "/images/Designing-Custom-Packaging-for-Your-Business-scaled-1.jpg",
+        "alt": "Designing Custom Packaging for Your Business | OneLink Holdings",
+        "href": "/designing-custom-packaging-for-your-business-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Freight & Logistics",
+        "title": "5 Reasons to Relocate Your Supply Chain to Vietnam | OneLink Holdings",
+        "excerpt": "Manufacturing 5 Reasons to Relocate Your Supply Chain to Vietnam | OneLink Holdings A great post on why you should relocate your supply chain to Vie...",
+        "date": "27/01/2023",
+        "readingTime": "8 min read",
+        "image": "/images/5-Reasons-to-Relocate-Your-Supply-Chain-to-Vietnam.jpg",
+        "alt": "5 Reasons to Relocate Your Supply Chain to Vietnam | OneLink Holdings",
+        "href": "/5-reasons-to-relocate-your-supply-chain-to-vietnam-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Manufacturing",
+        "title": "All You Need to Know About Finding and Manufacturing Home Décor in Vietnam | OneLink Holdings",
+        "excerpt": "Manufacturing All You Need to Know About Finding and Manufacturing Home Décor in Vietnam | OneLink Holdings Here is a guide on how you can source an...",
+        "date": "26/01/2023",
+        "readingTime": "5 min read",
+        "image": "/images/All-You-Need-to-Know-About-Finding-and-Manufacturing-Home-Decor-in-Vietnam-scaled-1.jpg",
+        "alt": "All You Need to Know About Finding and Manufacturing Home Décor in Vietnam | OneLink Holdings",
+        "href": "/all-you-need-to-know-about-finding-and-manufacturing-home-decor-in-vietnam-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Freight & Logistics",
+        "title": "Freight Insurance: Your Questions Answered | OneLink Holdings",
+        "excerpt": "Freight & Logistics Freight Insurance: Your Questions Answered | OneLink Holdings Unsure if you need freight insurance? Here's everything you ne...",
+        "date": "18/01/2023",
+        "readingTime": "5 min read",
+        "image": "/images/Freight-Insurance_-Your-Questions-Answered-scaled-1.jpg",
+        "alt": "Freight Insurance: Your Questions Answered | OneLink Holdings ",
+        "href": "/freight-insurance-your-questions-answered-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Manufacturing",
+        "title": "A Closer Look at Luxury Packaging in Asia | OneLink Holdings",
+        "excerpt": "Manufacturing A Closer Look at Luxury Packaging in Asia | OneLink Holdings Asia is quickly becoming a powerhouse in the luxury goods market. Here's ...",
+        "date": "16/01/2023",
+        "readingTime": "6 min read",
+        "image": "/images/A-Closer-Look-at-Luxury-Packaging-in-Asia.webp",
+        "alt": "A Closer Look at Luxury Packaging in Asia | OneLink Holdings",
+        "href": "/a-closer-look-at-luxury-packaging-in-asia-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "3PL & Fulfilment",
+        "title": "Understanding Third-Party Warehousing | OneLink Holdings",
+        "excerpt": "Freight & Logistics Understanding Third-Party Warehousing | OneLink Holdings Are you looking for a 3PL warehouse? Here's what you need to know a...",
+        "date": "11/01/2023",
+        "readingTime": "6 min read",
+        "image": "/images/Understanding-Third-Party-Warehousing.webp",
+        "alt": "Understanding Third-Party Warehousing | OneLink Holdings ",
+        "href": "/understanding-third-party-warehousing-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Freight & Logistics",
+        "title": "Why Chinese Manufacturing is World-Renowned | OneLink Holdings",
+        "excerpt": "Manufacturing Why Chinese Manufacturing is World-Renowned | OneLink Holdings China has risen to be one of the world's largest manufacturers, but it ...",
+        "date": "10/01/2023",
+        "readingTime": "5 min read",
+        "image": "/images/Why-Chinese-Manufacturing-is-World-Renowned.webp",
+        "alt": "Why Chinese Manufacturing is World-Renowned | OneLink Holdings",
+        "href": "/why-chinese-manufacturing-is-world-renowned-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Freight & Logistics",
+        "title": "Sea Freight Vs Air Freight: Which Is The Best For Your Business? | OneLink Holdings",
+        "excerpt": "Freight & Logistics Sea Freight Vs Air Freight: Which Is The Best For Your Business? | OneLink Holdings The value of logistics outsourcing is be...",
+        "date": "09/01/2023",
+        "readingTime": "7 min read",
+        "image": "/images/Sea-Freight-Vs-Air-Freight_-Which-Is-The-Best-For-Your-Business_.webp",
+        "alt": "Sea Freight Vs Air Freight: Which Is The Best For Your Business? | OneLink Holdings",
+        "href": "/sea-freight-vs-air-freight-which-is-the-best-for-your-business-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Manufacturing",
+        "title": "Understanding Minimum Order Quantities (MOQ) | OneLink Holdings",
+        "excerpt": "Manufacturing Understanding Minimum Order Quantities (MOQ) | OneLink Holdings As a new buyer, it is important to learn about minimum order quantitie...",
+        "date": "07/01/2023",
+        "readingTime": "7 min read",
+        "image": "/images/Understanding-Minimum-Order-Quantities-MOQ.webp",
+        "alt": "Understanding Minimum Order Quantities (MOQ) | OneLink Holdings",
+        "href": "/understanding-minimum-order-quantities-moq-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Freight & Logistics",
+        "title": "Everything You Need to Know About Vietnam's Free Trade Agreements | OneLink Holdings",
+        "excerpt": "Trade Everything You Need to Know About Vietnam's Free Trade Agreements | OneLink Holdings A comprehensive guide to Vietnam's free trade agreements,...",
+        "date": "04/01/2023",
+        "readingTime": "5 min read",
+        "image": "/images/Everything-You-Need-to-Know-About-Vietnams-Free-Trade-Agreements.webp",
+        "alt": "Everything You Need to Know About Vietnam's Free Trade Agreements | OneLink Holdings",
+        "href": "/everything-you-need-to-know-about-vietnams-free-trade-agreements-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "3PL & Fulfilment",
+        "title": "5 Tips on How to Package Your Goods for International Shipping | OneLink Holdings",
+        "excerpt": "Tips 5 Tips on How to Package Your Goods for International Shipping | OneLink Holdings Don't let your goods get damaged in transit. Follow these fiv...",
+        "date": "02/01/2023",
+        "readingTime": "6 min read",
+        "image": "/images/5-Tips-on-How-to-Package-Your-Goods-for-International-Shipping.webp",
+        "alt": "5 Tips on How to Package Your Goods for International Shipping | OneLink Holdings",
+        "href": "/5-tips-on-how-to-package-your-goods-for-international-shipping-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Freight & Logistics",
+        "title": "A Comprehensive Look at the Vietnam Furniture | OneLink Holdings",
+        "excerpt": "Manufacturing A Comprehensive Look at the Vietnam Furniture Industry | OneLink Holdings The workforce has been steadily growing and wages are rising...",
+        "date": "31/12/2022",
+        "readingTime": "5 min read",
+        "image": "/images/A-Comprehensive-Look-at-the-Vietnam-Furniture.webp",
+        "alt": "A Comprehensive Look at the Vietnam Furniture | OneLink Holdings",
+        "href": "/a-comprehensive-look-at-the-vietnam-furniture-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Manufacturing",
+        "title": "The Importance of Ethical Manufacturing in Asia | OneLink Holdings",
+        "excerpt": "Manufacturing The Importance of Ethical Manufacturing in Asia | OneLink Holdings Find out how to make sure your company is meeting ethical manufactu...",
+        "date": "30/12/2022",
+        "readingTime": "6 min read",
+        "image": "/images/The-Importance-of-Ethical-Manufacturing-in-Asia.webp",
+        "alt": "The Importance of Ethical Manufacturing in Asia | OneLink Holdings",
+        "href": "/the-importance-of-ethical-manufacturing-in-asia-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Quality Control",
+        "title": "A Guide to Vietnam Food and Beverage Manufacturing | OneLink Holdings",
+        "excerpt": "Manufacturing A Guide to Vietnam Food and Beverage Manufacturing | OneLink Holdings Wondering what's manufactured in Vietnam and where? This guide w...",
+        "date": "24/12/2022",
+        "readingTime": "7 min read",
+        "image": "/images/A-Guide-to-Vietnam-Food-and-Beverage-Manufacturing.webp",
+        "alt": "A Guide to Vietnam Food and Beverage Manufacturing | OneLink Holdings",
+        "href": "/a-guide-to-vietnam-food-and-beverage-manufacturing-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Graphic design",
+        "title": "Taking Your Product from Concept to Market: A How-To Guide | OneLink Holdings",
+        "excerpt": "Product Design Taking Your Product from Concept to Market: A How-To Guide | OneLink Holdings Learn everything you need to know about taking your pro...",
+        "date": "22/12/2022",
+        "readingTime": "7 min read",
+        "image": "/images/Taking-Your-Product-from-Concept-to-Market_-A-How-To-Guide.webp",
+        "alt": "Taking Your Product from Concept to Market: A How-To Guide | OneLink Holdings",
+        "href": "/taking-your-product-from-concept-to-market-a-how-to-guide-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Manufacturing",
+        "title": "How to Cut Manufacturing Costs Without Compromising Quality | OneLink Holdings",
+        "excerpt": "Manufacturing How to Cut Manufacturing Costs Without Compromising Quality | OneLink Holdings Are you looking for ways to reduce manufacturing costs ...",
+        "date": "19/12/2022",
+        "readingTime": "5 min read",
+        "image": "/images/How-to-Cut-Manufacturing-Costs-Without-Compromising-Quality.webp",
+        "alt": "How to Cut Manufacturing Costs Without Compromising Quality | OneLink Holdings",
+        "href": "/how-to-cut-manufacturing-costs-without-compromising-quality-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Freight & Logistics",
+        "title": "Lunar New Year and your business: What you Need to Know | OneLink Holdings",
+        "excerpt": "Manufacturing Lunar New Year and your business: What you Need to Know | OneLink Holdings Asia's biggest holiday is just around the corner, and it's ...",
+        "date": "16/12/2022",
+        "readingTime": "7 min read",
+        "image": "/images/Lunar-New-Year-and-your-business_-What-you-Need-to-Know.webp",
+        "alt": "Lunar New Year and your business: What you Need to Know | OneLink Holdings",
+        "href": "/lunar-new-year-and-your-business-what-you-need-to-know-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Freight & Logistics",
+        "title": "How to Simplify the Process of International Shipping and Freight | One Link Holdings",
+        "excerpt": "Freight & Logistics How to Simplify the Process of International Shipping and Freight | One Link Holdings The process of international shipping ...",
+        "date": "14/12/2022",
+        "readingTime": "8 min read",
+        "image": "/images/How-to-Simplify-the-Process-of-International-Shipping-and-Freight.webp",
+        "alt": "How to Simplify the Process of International Shipping and Freight | One Link Holdings",
+        "href": "/how-to-simplify-the-process-of-international-shipping-and-freight-one-link-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Freight & Logistics",
+        "title": "All You Need to Know About Incoterm's | OneLink Holdings",
+        "excerpt": "Freight & Logistics All You Need to Know About Incoterm's | OneLink Holdings Learn about the 11 different international commercial terms (Incote...",
+        "date": "13/12/2022",
+        "readingTime": "9 min read",
+        "image": "/images/All-You-Need-to-Know-About-Incoterms.webp",
+        "alt": "All You Need to Know About Incoterm's | OneLink Holdings",
+        "href": "/all-you-need-to-know-about-incoterms-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Manufacturing",
+        "title": "Why manufacturing in Vietnam is a great choice for electronics | OneLink Holdings",
+        "excerpt": "Manufacturing Why manufacturing in Vietnam is a great choice for electronics | OneLink Holdings Discover why manufacturing in Vietnam makes sense, h...",
+        "date": "12/12/2022",
+        "readingTime": "7 min read",
+        "image": "/images/Why-manufacturing-in-Vietnam-is-a-great-choice-for-electronics.webp",
+        "alt": "Why manufacturing in Vietnam is a great choice for electronics | OneLink Holdings",
+        "href": "/why-manufacturing-in-vietnam-is-a-great-choice-for-electronics-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "3PL & Fulfilment",
+        "title": "E-commerce 101: A Beginner's Guide to Getting Started with OneLink Holdings",
+        "excerpt": "E-commerce E-commerce 101: A Beginner's Guide to Getting Started | OneLink Holdings Need help starting an e-commerce business? Read this guide from ...",
+        "date": "07/12/2022",
+        "readingTime": "8 min read",
+        "image": "/images/E-commerce-101_-A-Beginners-Guide-to-Getting-Started-with-OneLink-Holdings.webp",
+        "alt": "E-commerce 101: A Beginner's Guide to Getting Started with OneLink Holdings",
+        "href": "/e-commerce-101-a-beginners-guide-to-getting-started-with-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Manufacturing",
+        "title": "How to ensure you're getting the highest quality products possible when sourcing from Asia",
+        "excerpt": "Quality Control How to ensure you're getting the highest quality products possible when sourcing from Asia | OneLink Holdings Quality assurance is a...",
+        "date": "05/12/2022",
+        "readingTime": "6 min read",
+        "image": "/images/How-to-ensure-youre-getting-the-highest-quality-products-possible-when-sourcing-from-Asia.webp",
+        "alt": "How to ensure you're getting the highest quality products possible when sourcing from Asia ",
+        "href": "/how-to-ensure-youre-getting-the-highest-quality-products-possible-when-sourcing-from-asia/"
+      },
+      {
+        "types": [],
+        "category": "Freight & Logistics",
+        "title": "The Top Low Cost Sourcing Countries for your Business| OneLink Holdings",
+        "excerpt": "Manufacturing The Top Low Cost Sourcing Countries for your Business| OneLink Holdings Every business wants the best value for their money and this u...",
+        "date": "02/12/2022",
+        "readingTime": "9 min read",
+        "image": "/images/The-Top-Low-Cost-Sourcing-Countries-for-your-Business.webp",
+        "alt": "The Top Low Cost Sourcing Countries for your Business| OneLink Holdings",
+        "href": "/the-top-low-cost-sourcing-countries-for-your-business-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Freight & Logistics",
+        "title": "10 Tips To Reduce Freight Transportation Costs |OneLink Holdings",
+        "excerpt": "Freight & Logistics 10 Tips To Reduce Freight Transportation Costs |OneLink Holdings Shipping your goods is no easy task. With the amount of cos...",
+        "date": "30/11/2022",
+        "readingTime": "7 min read",
+        "image": "/images/10-Tips-To-Reduce-Freight-Transportation-Costs.webp",
+        "alt": "10 Tips To Reduce Freight Transportation Costs |OneLink Holdings",
+        "href": "/10-tips-to-reduce-freight-transportation-costs-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Freight & Logistics",
+        "title": "Why import from China? The benefits and drawbacks that might surprise you | OneLink Holdings",
+        "excerpt": "Importing Why import from China? The benefits and drawbacks that might surprise you | OneLink Holdings When it comes to importing goods, China is of...",
+        "date": "29/11/2022",
+        "readingTime": "7 min read",
+        "image": "/images/Why-import-from-China_-The-benefits-and-drawbacks-that-might-surprise-you.webp",
+        "alt": "Why import from China? The benefits and drawbacks that might surprise you | OneLink Holdings",
+        "href": "/why-import-from-china-the-benefits-and-drawbacks-that-might-surprise-you-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Manufacturing",
+        "title": "The Perfect Product: How to find and manufacture the right product for your business | One Link Holdings",
+        "excerpt": "Tips The Perfect Product: How to find and manufacture the right product for your business | One Link Holdings Learn how to identify a market need an...",
+        "date": "28/11/2022",
+        "readingTime": "6 min read",
+        "image": "/images/The-Perfect-Product_-How-to-find-and-manufacture-the-right-product-for-your-business.webp",
+        "alt": "The Perfect Product: How to find and manufacture the right product for your business | One Link Holdings",
+        "href": "/the-perfect-product-how-to-find-and-manufacture-the-right-product-for-your-business-one-link-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Freight & Logistics",
+        "title": "10 Tips to Negotiate like a Pro and Get the Best Deals from Suppliers | OneLink Holdings",
+        "excerpt": "Tips 10 Tips to Negotiate like a Pro and Get the Best Deals from Suppliers | OneLink Holdings Want to get the best deals from your suppliers? Check ...",
+        "date": "24/11/2022",
+        "readingTime": "8 min read",
+        "image": "/images/10-Tips-to-Negotiate-like-a-Pro-and-Get-the-Best-Deals-from-Suppliers.webp",
+        "alt": "10 Tips to Negotiate like a Pro and Get the Best Deals from Suppliers | OneLink Holdings",
+        "href": "/10-tips-to-negotiate-like-a-pro-and-get-the-best-deals-from-suppliers-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Manufacturing",
+        "title": "OneLink Holdings Guide to The Textile and Garment industry in Vietnam | OneLink Holdings",
+        "excerpt": "Manufacturing Guide to The Textile and Garment industry in Vietnam | OneLink Holdings A comprehensive guide to the textile and garment manufacturing...",
+        "date": "22/11/2022",
+        "readingTime": "6 min read",
+        "image": "/images/OneLink-Holdings-Guide-to-The-Textile-and-Garment-industry-in-Vietnam.webp",
+        "alt": "OneLink Holdings Guide to The Textile and Garment industry in Vietnam | OneLink Holdings",
+        "href": "/onelink-holdings-guide-to-the-textile-and-garment-industry-in-vietnam-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "3PL & Fulfilment",
+        "title": "Why choosing the right supply chain management company is critical for businesses | OneLink Holdings",
+        "excerpt": "Supply Chain Why choosing the right supply chain management company is critical for businesses | OneLink Holdings When it comes to the success of yo...",
+        "date": "21/11/2022",
+        "readingTime": "5 min read",
+        "image": "/images/calendar.svg",
+        "alt": "calendar",
+        "href": "/why-choosing-the-right-supply-chain-management-company-is-critical-for-businesses-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Freight & Logistics",
+        "title": "Sourcing and Manufacturing Products in Asia – What You Need to Know | One Link Holdings",
+        "excerpt": "Sourcing Sourcing and Manufacturing Products in Asia – What You Need to Know | One Link Holdings Find out what you need to know about sourcing and m...",
+        "date": "17/11/2022",
+        "readingTime": "6 min read",
+        "image": "/images/calendar.svg",
+        "alt": "calendar",
+        "href": "/sourcing-and-manufacturing-products-in-asia-what-you-need-to-know-one-link-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Manufacturing",
+        "title": "The Rise of the H&M Empire | One Link Holdings",
+        "excerpt": "Success Story The Rise of the H&M Empire | One Link Holdings Read the story behind how one of the world's most successful fashion retailers work...",
+        "date": "16/11/2022",
+        "readingTime": "4 min read",
+        "image": "/images/calendar.svg",
+        "alt": "calendar",
+        "href": "/the-rise-of-the-hm-empire-one-link-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Logistics",
+        "title": "Manufacturing in Vietnam – The New China? | OneLink Holdings",
+        "excerpt": "Vietnam Manufacturing Manufacturing in Vietnam – The New China? | OneLink Holdings A recent article in the Economist highlights Vietnam as a rising ...",
+        "date": "15/11/2022",
+        "readingTime": "8 min read",
+        "image": "/images/calendar.svg",
+        "alt": "calendar",
+        "href": "/manufacturing-in-vietnam-the-new-china-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Manufacturing",
+        "title": "5 Tips For Sourcing Products For Your Business | OneLink Holdings",
+        "excerpt": "Sourcing 5 Tips For Sourcing Products For Your Business | OneLink Holdings If you're looking to start or grow a business or procure better for your ...",
+        "date": "10/11/2022",
+        "readingTime": "5 min read",
+        "image": "/images/calendar.svg",
+        "alt": "calendar",
+        "href": "/5-tips-for-sourcing-products-for-your-business-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Freight & Logistics",
+        "title": "How to Import From China: A Guide for Australian Businesses | OneLink Holdings",
+        "excerpt": "China Manufacturing How to Import From China: A Guide for Australian Businesses | OneLink Holdings Australian brands and companies look to China for...",
+        "date": "07/11/2022",
+        "readingTime": "7 min read",
+        "image": "/images/calendar.svg",
+        "alt": "calendar",
+        "href": "/how-to-import-from-china-a-guide-for-australian-businesses-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Freight & Logistics",
+        "title": "The Benefits of Working with a Freight and Logistics Company | OneLink Holdings",
+        "excerpt": "Freight & Logistics The Benefits of Working with a Freight and Logistics Company When it comes to freight and logistics, working with a company ...",
+        "date": "03/11/2022",
+        "readingTime": "5 min read",
+        "image": "/images/calendar.svg",
+        "alt": "calendar",
+        "href": "/the-benefits-of-working-with-a-freight-and-logistics-company-onelink-holdings/"
+      },
+      {
+        "types": [],
+        "category": "Freight & Logistics",
+        "title": "Ultimate Guide to Exporting from Vietnam to Australia, Tariffs and Charges Included | OneLink Holdings",
+        "excerpt": "Freight & Logistics The ultimate guide to exporting from Vietnam to Australia | Tariffs and charges included. The Ultimate Guide to Exporting fr...",
+        "date": "18/10/2022",
+        "readingTime": "8 min read",
+        "image": "/images/calendar.svg",
+        "alt": "calendar",
+        "href": "/onelink-holdings-guide-to-exporting-from-vietnam-to-australia-tariffs-and-charges-included/"
+      }
+    ]
+  },
+  "splitScreen": {
+    "tag": "Free Download",
+    "heading": "Your Gateway to Smarter Sourcing",
+    "body": "Everything you need to source with clarity, cost-efficiency, and confidence.",
+    "ctaLabel": "Download",
+    "image": "/images/china-sourcing-document.png",
+    "alt": "documents"
+  },
+  "faq": {
+    "tag": "Common Questions",
+    "headingParts": [
+      "Frequently Asked",
+      "Questions"
+    ],
+    "intro": "Still have questions? Reach out to us at",
+    "email": "info@chinasourcing.co",
+    "items": [
+      {
+        "question": "Do I Need to Pay to Download These Resources?",
+        "answer": "No, all downloads are completely free - simply provide your email to access them."
+      },
+      {
+        "question": "What Kind of Files Will I Receive?",
+        "answer": "You’ll receive the same resources that multinational brands use to achieve the best results. Just choose the resource that interests you."
+      },
+      {
+        "question": "Are These Resources Suitable for New Importers?",
+        "answer": "Absolutely. Whether you're a first-time buyer or a seasoned sourcing expert, these proven systems are designed to work for everyone."
+      },
+      {
+        "question": "Can I Share These Resources with My Team?",
+        "answer": "Absolutely! We encourage you to share these resources internally to help your team improve processes and source more effectively."
+      },
+      {
+        "question": "Will I Receive Updates When New Resources Are Added?",
+        "answer": "Yes! Stay subscribed, and we’ll keep you informed whenever new resources are available."
+      }
+    ]
+  }
+}

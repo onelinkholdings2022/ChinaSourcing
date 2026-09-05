@@ -1,0 +1,1847 @@
+{
+  "custom-manufacturing": {
+    "hero": {
+      "typedPrefix": "",
+      "typedWords": [],
+      "heading": "Custom Manufacturing",
+      "intro": "We help businesses bring their product ideas to life through our trusted network of experienced manufacturers efficiently and seamlessly.",
+      "ctaLabel": "Get a Free Quote",
+      "ctaHref": "/contact-us",
+      "image": "/images/custom-manufacturing-1.png",
+      "imageAlt": "custom manufacturing"
+    },
+    "simpleCard": {
+      "tag": "Our Offerings",
+      "heading": "What We Offer",
+      "intro": "We provide a fully managed factory sourcing service for global importers. Whether it’s packaging, homeware, fitness products, or custom tech accessories, we handle it all - end to end.",
+      "cards": [
+        {
+          "icon": "/images/cube-01.svg",
+          "title": "OEM/ODM Development",
+          "body": "Bring your product vision to life, whether it’s a redesign or new concept"
+        },
+        {
+          "icon": "/images/cube-01.svg",
+          "title": "Prototype Coordination",
+          "body": "From your idea to a physical prototype, we make it happen"
+        },
+        {
+          "icon": "/images/cube-01.svg",
+          "title": "Factory Selection",
+          "body": "We identify and vet factories that align with your manufacturing needs"
+        },
+        {
+          "icon": "/images/cube-01.svg",
+          "title": "Full Production Management",
+          "body": "We oversee the entire production process to ensure quality, consistency, and timeline adherence"
+        }
+      ]
+    },
+    "verticalTab": {
+      "tag": "Our Products",
+      "heading": "Explore by Category",
+      "intro": "We specialize in sourcing across key industries:",
+      "ctaLabel": "Explore full product categories",
+      "ctaHref": "/products",
+      "tabs": [
+        {
+          "label": "Furniture",
+          "image": "/images/china-sourcing-furniture.png",
+          "alt": "furniture",
+          "body": "From office desks and ergonomic chairs to home sofas, dining sets, and outdoor furniture, we help you source a wide range of high-quality furniture.",
+          "linkLabel": "Explore more",
+          "linkHref": "/product/furniture"
+        },
+        {
+          "label": "Packaging",
+          "image": "/images/china-sourcing-packaging.png",
+          "alt": "Packaging",
+          "body": "From backpacks and laptop sleeves to travel luggage and protective equipment cases, we help you source a diverse range of durable, stylish bags and cases.",
+          "linkLabel": "Explore more",
+          "linkHref": "/product/packaging"
+        },
+        {
+          "label": "Gym & Fitness",
+          "image": "/images/china-sourcing-gym-fitness.png",
+          "alt": "gym and fitness",
+          "body": "From yoga mats and dumbbells to cardio machines and fitness accessories, we help you source a wide variety of high-quality gym and fitness equipment.",
+          "linkLabel": "Explore more",
+          "linkHref": "/product/gym-fitness"
+        },
+        {
+          "label": "Building Materials",
+          "image": "/images/china-sourcing-building-material.png",
+          "alt": "building materials",
+          "body": "From structural steel and timber to insulation and finishing materials, we help you source reliable, high-quality building materials for any project.",
+          "linkLabel": "Explore more",
+          "linkHref": "/product/building-materials-2"
+        },
+        {
+          "label": "Textiles & Garments",
+          "image": "/images/china-sourcing-textiles-garments.png",
+          "alt": "Textiles and Garments",
+          "body": "From fabrics and yarns to finished apparel and custom garments, we help you source high-quality textiles and garments to meet your production needs.",
+          "linkLabel": "Explore more",
+          "linkHref": "/product/textiles-garments"
+        }
+      ]
+    },
+    "flowTrack": {
+      "tag": "Our Process",
+      "heading": "How We Custom Manufacturing",
+      "slides": [
+        {
+          "label": "Conceptualization and Design",
+          "subheading": "Step 1",
+          "title": "Conceptualization and Design",
+          "paragraphs": [
+            "Client Consultation: Collaborate with the client to understand their vision, requirements, and specifications for the custom product. Concept Development: Create initial concepts and sketches based on the client’s input."
+          ],
+          "image": "/images/conceptualization-and-design-1-1024x868.png",
+          "alt": "conceptualization and design",
+          "nextLabel": "Product Design and Engineering"
+        },
+        {
+          "label": "Product Design and Engineering",
+          "subheading": "Step 2",
+          "title": "Product Design and Engineering",
+          "paragraphs": [
+            "Detailed Design: Develop detailed engineering drawings and specifications. Prototyping: Create a prototype to test and validate the design before full-scale production."
+          ],
+          "image": "/images/product-design-and-engineering-1-1024x868.png",
+          "alt": "product design and engineering",
+          "nextLabel": "Material Selection and Sourcing"
+        },
+        {
+          "label": "Material Selection and Sourcing",
+          "subheading": "Step 3",
+          "title": "Material Selection and Sourcing",
+          "paragraphs": [
+            "Material Consultation: Advise the client on suitable materials based on the product’s intended use and requirements. Material Sourcing: Procure the necessary raw materials for production."
+          ],
+          "image": "/images/material-selection-and-sourcing-1-1024x868.png",
+          "alt": "material selection and sourcing",
+          "nextLabel": "Manufacturing Planning"
+        },
+        {
+          "label": "Manufacturing Planning",
+          "subheading": "Step 4",
+          "title": "Manufacturing Planning",
+          "paragraphs": [
+            "Each custom manufacturing project may have unique considerations, and the process can be tailored to fit the specific requirements of the client and the nature of the product being created."
+          ],
+          "image": "/images/manufacturing-planning-1-1024x868.png",
+          "alt": "manufacturing planning",
+          "nextLabel": "Manufacturing and Production"
+        },
+        {
+          "label": "Manufacturing and Production",
+          "subheading": "Step 5",
+          "title": "Manufacturing and Production",
+          "paragraphs": [
+            "Tooling and Setup: Prepare molds, tooling, or equipment necessary for production. Production: Execute the manufacturing processes to create the custom product."
+          ],
+          "image": "/images/manufacturing-and-production-1-1024x868.png",
+          "alt": "manufacturing and production",
+          "nextLabel": "Assembly and Integration"
+        },
+        {
+          "label": "Assembly and Integration",
+          "subheading": "Step 6",
+          "title": "Assembly and Integration",
+          "paragraphs": [
+            "Component Assembly: Assemble various components of the product. Integration: Integrate electronic, mechanical, or other components as needed."
+          ],
+          "image": "/images/assembly-and-integration-1-1024x868.png",
+          "alt": "assembly and integration",
+          "nextLabel": "Packaging Design and Branding"
+        },
+        {
+          "label": "Packaging Design and Branding",
+          "subheading": "Step 7",
+          "title": "Packaging Design and Branding",
+          "paragraphs": [
+            "Packaging Design: Create packaging that aligns with the brand and protects the product during transportation. Branding: Incorporate branding elements into the packaging."
+          ],
+          "image": "/images/packaging-design-and-branding-1-1024x868.png",
+          "alt": "packaging design and branding",
+          "nextLabel": "Testing and Certification"
+        },
+        {
+          "label": "Testing and Certification",
+          "subheading": "Step 8",
+          "title": "Testing and Certification",
+          "paragraphs": [
+            "Product Testing: Conduct comprehensive testing to ensure the product’s functionality and safety. Certification: Assist in obtaining necessary certifications for compliance with industry standards."
+          ],
+          "image": "/images/testing-and-certification-1-1024x868.png",
+          "alt": "testing and certification",
+          "nextLabel": null
+        }
+      ]
+    },
+    "usp": {
+      "tag": "Our USPs",
+      "heading": "Why Choose Us for Custom Manufacturing",
+      "intro": null,
+      "icon": "/images/star-05-1.png",
+      "image": "/images/china-sourcing-container.png",
+      "items": [
+        {
+          "title": "Expertise in Design & Development",
+          "body": "Over a decade of experience turning ideas into tangible products"
+        },
+        {
+          "title": "Local & Global Support",
+          "body": "Our teams in Vietnam and China ensure seamless communication and execution"
+        },
+        {
+          "title": "No MOQ Limitations",
+          "body": "We can work with small orders, whether you’re a startup or an established brand"
+        },
+        {
+          "title": "Full Transparency",
+          "body": "You see the costs, timelines and quality control processes upfront"
+        },
+        {
+          "title": "Factory Flexibility",
+          "body": "We match your product to the right factory, no matter how complex the requirements"
+        }
+      ]
+    },
+    "testimonials": {
+      "tag": "Testimonials",
+      "heading": "Explore Real Businesses",
+      "tabs": [
+        {
+          "label": "Furniture & Interior",
+          "items": [
+            {
+              "image": "/images/testimonial-furniture-1-300x204.png",
+              "alt": "Testimonial from author Hanz Amada",
+              "quote": "Over 300 bespoke items were procured for our boutique hotel chain via China Sourcing Co. The entire process, encompassing factory sampling and container consolidation, was executed flawlessly.",
+              "avatar": "/images/Untitled-design-2.png",
+              "name": "Hanz Amada",
+              "role": "Founder, GetZ (Singapore)"
+            },
+            {
+              "image": "/images/testimonial-furniture-2-1-300x204.png",
+              "alt": "Testimonial from author Ken Fitzgerald",
+              "quote": "China Sourcing Co facilitated the expansion of our direct-to-consumer furniture range across five international markets. Their personnel meticulously managed raw material procurement, design optimization, and quality control.",
+              "avatar": "/images/customer-testimonials.png",
+              "name": "Ken Fitzgerald",
+              "role": "Co-Founder, UrbanNest Interiors (Australia)"
+            }
+          ]
+        },
+        {
+          "label": "Gym & Fitness Products",
+          "items": [
+            {
+              "image": "/images/china-sourcing-testimonial-gym-fitness-1-300x204.png",
+              "alt": "Testimonial from author Samuel Roberts",
+              "quote": "Partner selection was driven by the need to scale our home fitness equipment line without sacrificing quality standards. China Sourcing facilitated a connection with a Nantong-based manufacturer that supplies prominent Poland brands.",
+              "avatar": "/images/customer-testimonials-13.png",
+              "name": "Samuel Roberts",
+              "role": "Product Director, CoreHaus (Poland)"
+            },
+            {
+              "image": "/images/china-sourcing-testimonial-gym-fitness-300x204.png",
+              "alt": "Testimonial from author Miguel Torres",
+              "quote": "Quality concerns regarding weight accuracy and surface finish for kettlebells and plates were addressed. Their team organized independent testing and refined the mold design to mitigate shipping-related damage.",
+              "avatar": "/images/customer-testimonials-14.png",
+              "name": "Miguel Torres",
+              "role": "Co-founder, Iron Ritual (Canada)"
+            }
+          ]
+        },
+        {
+          "label": "Promotional Products",
+          "items": [
+            {
+              "image": "/images/china-sourcing-testimonial-corporate-promotional-products-1-300x204.png",
+              "alt": "Testimonial from author Rachel Tan",
+              "quote": "For a regional product launch across APAC, requiring 5,000 environmentally sustainable gift sets, China Sourcing Co successfully provided a range of items including bamboo pens and bespoke packaged notebooks, all aligning with our brand's aesthetic and adhering to strict deadlines.",
+              "avatar": "/images/customer-testimonials-7.png",
+              "name": "Rachel Tan",
+              "role": "Regional Marketing Director, GreenSense Labs (Singapore)"
+            },
+            {
+              "image": "/images/china-sourcing-testimonial-corporate-promotional-products-300x204.png",
+              "alt": "Testimonial from author Craig Bolton",
+              "quote": "Initial concerns regarding branding quality were alleviated upon delivery. The standard of embroidery on the polo shirts and the laser engraving of the logo on the water bottles was exemplary, leading to two subsequent orders for European trade exhibitions.",
+              "avatar": "/images/customer-testimonials-8.png",
+              "name": "Craig Bolton",
+              "role": "Brand & Events Manager, Nexon Systems (UK)"
+            }
+          ]
+        },
+        {
+          "label": "Point of Sale",
+          "items": [
+            {
+              "image": "/images/china-sourcing-testimonial-point-of-sale-300x204.png",
+              "alt": "Testimonial from author Anand Meta",
+              "quote": "For our Southeast Asian expansion of 40 convenience stores, we required point-of-sale (POS) terminals, barcode scanners, and receipt printers compatible with our software. China Sourcing Co facilitated the procurement of dependable and economical hardware. Integration was seamless across all operational markets.",
+              "avatar": "/images/customer-testimonials-21.png",
+              "name": "Anand Meta",
+              "role": "Chief Technology Officer, QuickMart Retail Group (UK)"
+            },
+            {
+              "image": "/images/china-sourcing-testimonial-point-of-sale-1-300x204.png",
+              "alt": "Testimonial from author Linh Tran",
+              "quote": "In our transition to brick-and-mortar stores, we sought sophisticated and contemporary POS systems aligned with our brand image. The China Sourcing Co team provided not only the requisite equipment but also customized the enclosures to correspond to our brand colors. Their service was exceptional, with meticulous attention to design.",
+              "avatar": "/images/customer-testimonials-19.png",
+              "name": "Linh Tran",
+              "role": "Retail Expansion Manager, Sora Apparel (Vietnam)"
+            }
+          ]
+        },
+        {
+          "label": "Machinery",
+          "items": [
+            {
+              "image": "/images/china-sourcing-testimonial-automotive-machinery-300x204.png",
+              "alt": "Testimonial from author Rebeca Hsu",
+              "quote": "Our organization procures specialized engine components for the aftermarket performance automotive sector. The China Sourcing Co team facilitated the identification of manufacturers capable of meeting stringent machining tolerances, thereby optimizing cost efficiency. Comprehensive and consistent quality control documentation was provided.",
+              "avatar": "/images/customer-testimonials-23.png",
+              "name": "Rebeca Hsu",
+              "role": "Procurement Manager, Apex Motorsports (USA)"
+            },
+            {
+              "image": "/images/china-sourcing-testimonial-automotive-machinery-1-300x204.png",
+              "alt": "Testimonial from author Jean-Baptiste Leclerc",
+              "quote": "Our agricultural machinery division necessitated bespoke hydraulic assemblies. Previous direct supplier engagements were hampered by inefficient communication and specification deviations. The transition to China Sourcing Co has resulted in streamlined operations characterized by transparency and cost effectiveness. Their proficiency in technical terminology and linguistic translation has been invaluable.",
+              "avatar": "/images/customer-testimonials-24.png",
+              "name": "Jean-Baptiste Leclerc",
+              "role": "Technical Director, AgroNova Machines (France)"
+            }
+          ]
+        },
+        {
+          "label": "Hospitality Items",
+          "items": [
+            {
+              "image": "/images/china-sourcing-testimonial-hospitality-items-300x204.png",
+              "alt": "Testimonial from author Emma ",
+              "quote": "For the establishment of our new resort chain within Southeast Asia, a reliable and consistent supply chain for bathrobes, slippers, and in-room kettles was imperative across five distinct countries. China Sourcing Co expertly managed the comprehensive process, encompassing sourcing, branding, and logistical operations with notable efficiency. Guests have subsequently expressed positive observations regarding the elevated quality of these amenities.",
+              "avatar": "/images/customer-testimonials-22.png",
+              "name": "Emma",
+              "role": "Procurement Director, Banyan Retreats (Italia)"
+            },
+            {
+              "image": "/images/china-sourcing-testimonial-hospitality-items-1-300x204.png",
+              "alt": "Testimonial from author Julien Moreau",
+              "quote": "Our hotel conglomerate necessitated bespoke minibar provisions and environmentally sustainable toiletries for deployment across a substantial portfolio of over 2,000 guest accommodations. The personnel at China Sourcing Co orchestrated the entire procurement cycle, from the initial stages of sample validation through to the definitive packaging configuration. Their service was characterized by professionalism and meticulous attention to detail.",
+              "avatar": "/images/customer-testimonials-20.png",
+              "name": "Julien Moreau",
+              "role": "Operations Manager, L’Horizon Hotels (France)"
+            }
+          ]
+        },
+        {
+          "label": "Household Appliances",
+          "items": [
+            {
+              "image": "/images/china-sourcing-testimonial-household-appliances-300x204.png",
+              "alt": "Testimonial from author Laura Mitchell",
+              "quote": "A reliable supplier of smart air fryers with Wi-Fi integration was required. China Sourcing Co identified a vetted manufacturing facility in Guangdong and facilitated the customization of the user interface for Western users, resulting in a doubling of sales in the second quarter.",
+              "avatar": "/images/customer-testimonials-17.png",
+              "name": "Laura Mitchell",
+              "role": "Category Lead, UrbanHome Appliances (UK)"
+            },
+            {
+              "image": "/images/china-sourcing-testimonial-household-appliances-1-300x204.png",
+              "alt": "Testimonial from author Carlos Rivera",
+              "quote": "Assistance was provided in sourcing a comprehensive line of budget-friendly blenders and rice cookers for the South American market. The sourcing team successfully negotiated more favorable minimum order quantity terms and coordinated the production of bilingual user manuals for regulatory compliance.",
+              "avatar": "/images/customer-testimonials-18.png",
+              "name": "Carlos Rivera",
+              "role": "COO, Vitale Homeware (Chile)"
+            }
+          ]
+        }
+      ]
+    },
+    "faq": {
+      "tag": "Our FAQs",
+      "headingLines": [
+        "Frequently Asked",
+        "Questions"
+      ],
+      "email": "info@chinasourcing.co",
+      "items": [
+        {
+          "question": "How long does the prototyping process take?",
+          "answer": "Typically 2-3 weeks for initial samples, depending on complexity."
+        },
+        {
+          "question": "Can I get a custom quote?",
+          "answer": "Yes. We provide custom quotes based on your product specifications."
+        },
+        {
+          "question": "Do you help with branding and packaging?",
+          "answer": "Yes. We offer end-to-end solutions, including custom packaging and branding support."
+        },
+        {
+          "question": "How can I be sure my product quality is high?",
+          "answer": "We perform on-site quality checks at every stage of production to ensure your product meets your expectations."
+        }
+      ]
+    },
+    "resources": {
+      "tag": "Our Resources",
+      "headingLines": [
+        "Related",
+        "Resource"
+      ],
+      "ctaLabel": "See All Resources",
+      "ctaHref": "/resources",
+      "cards": [
+        {
+          "href": "/resource/the-hidden-profit-leak-most-ecommerce-brands-ignore",
+          "image": "/images/blog-fallback.png",
+          "alt": "The Hidden Profit Leak Most Ecommerce Brands Ignore",
+          "category": null,
+          "title": "The Hidden Profit Leak Most Ecommerce Brands Ignore",
+          "excerpt": "The Hidden Profit Leak Most Ecommerce Brands Ignore A data-backed sourcing guide showing how “cheap” manufacturing decisions can lead to higher retu...",
+          "date": "19/05/2026",
+          "readTime": "1 min read"
+        },
+        {
+          "href": "/resource/incoterms-explained",
+          "image": "/images/blog-fallback.png",
+          "alt": "Incoterms Explained",
+          "category": "Logistics Tips",
+          "title": "Incoterms Explained",
+          "excerpt": "FOB, EXW, CIF? Cut through the jargon with this one-page Incoterms guide for importers.",
+          "date": "19/06/2025",
+          "readTime": "1 min read"
+        },
+        {
+          "href": "/canton-fair-the-green-transformation-landmark-of-chinas-industrial-capital",
+          "image": "/images/canton-fair-the-green-transformation-landmark-of-chinas-industrial-capital.jpg",
+          "alt": "Canton Fair: The \"Green Transformation\" Landmark of China’s Industrial Capital",
+          "category": "Blog",
+          "title": "Canton Fair: The \"Green Transformation\" Landmark of China's Industrial Capital",
+          "excerpt": "Held every two years in China’s industrial capital, the Canton Fair trade show has always been a large-scale event. As reported by Xinhua News Agency,...",
+          "date": "10/08/2026",
+          "readTime": "5 min read"
+        }
+      ]
+    },
+    "carousel": {
+      "tag": "Other Services You Might Need",
+      "heading": "Our Services",
+      "ctaLabel": "Explore our full-service overview",
+      "ctaHref": "/services",
+      "intro": "Need more than just Custom Manufacturing?",
+      "cards": [
+        {
+          "href": "/service/sourcing-service",
+          "tag": "Our Core Services",
+          "title": "Sourcing Service",
+          "body": "Factory selection done right with vetted suppliers, verified capabilities, and no middle layer",
+          "ctaLabel": "See Service Detail",
+          "image": "/images/sourcing-service-300x168.png",
+          "alt": "china sourcing service"
+        },
+        {
+          "href": "/service/quality-control",
+          "tag": "Our Core Services",
+          "title": "Quality Control",
+          "body": "Documents the processes carefully and provides detailed reports to customers through real photos and video.",
+          "ctaLabel": "See Service Detail",
+          "image": "/images/china-sourcing-quality-control-300x168.png",
+          "alt": "quality control"
+        },
+        {
+          "href": "/service/freight-logistics",
+          "tag": "Our Core Services",
+          "title": "Freight & Logistics",
+          "body": "Our dedicated team manage the entire process and endless paperwork to getting our goods to do your.",
+          "ctaLabel": "See Service Detail",
+          "image": "/images/freight-and-logistics-1-300x168.png",
+          "alt": "freight and logistics"
+        }
+      ]
+    },
+    "cta": {
+      "sectionClass": "dark-cta px-5 pb-[120px]",
+      "tag": "Contact Us Right Today",
+      "heading": "Ready to work with a sourcing team that’s built for real-world results?",
+      "body": "Let's Talk And Find Your Solution.",
+      "ctaLabel": "Talk to our expert",
+      "ctaHref": "/contact-us"
+    }
+  },
+  "freight-logistics": {
+    "hero": {
+      "typedPrefix": "",
+      "typedWords": [],
+      "heading": "Freight & Logistics",
+      "intro": "Our team manage the entire process and endless paperwork to getting our goods to do your.",
+      "ctaLabel": "Get a Free Quote",
+      "ctaHref": "/contact-us",
+      "image": "/images/freight-and-logistics.png",
+      "imageAlt": "freight and logistics"
+    },
+    "simpleCard": {
+      "tag": "Our Offerings",
+      "heading": "What We Offer",
+      "intro": "We provide end-to-end freight and logistics services, ensuring smooth international transportation for your products. Our comprehensive services include a hassle-free door-to-door delivery, managing all documentation and customs clearances.",
+      "cards": [
+        {
+          "icon": "/images/cube-01.svg",
+          "title": "International Freight Forwarding",
+          "body": "We manage shipping from the factory to your warehouse, across all modes of transport (sea, air, rail, road)."
+        },
+        {
+          "icon": "/images/cube-01.svg",
+          "title": "Customs Clearance & Documentation",
+          "body": "We handle all necessary customs paperwork to ensure compliance with international regulations."
+        },
+        {
+          "icon": "/images/cube-01.svg",
+          "title": "Warehousing & Distribution",
+          "body": "We store your goods in secure warehouses and manage domestic and international distribution."
+        },
+        {
+          "icon": "/images/cube-01.svg",
+          "title": "Insurance & Risk Management",
+          "body": "We offer cargo insurance options to protect your products during transit."
+        },
+        {
+          "icon": "/images/cube-01.svg",
+          "title": "Supply Chain Optimization",
+          "body": "We use data to plan the best shipping routes, manage lead times, and reduce logistics costs."
+        }
+      ]
+    },
+    "verticalTab": {
+      "tag": "Our Products",
+      "heading": "Explore by Category",
+      "intro": "We specialize in sourcing across key industries:",
+      "ctaLabel": "Explore full product categories",
+      "ctaHref": "/products",
+      "tabs": [
+        {
+          "label": "Furniture",
+          "image": "/images/china-sourcing-furniture.png",
+          "alt": "furniture",
+          "body": "From office desks and ergonomic chairs to home sofas, dining sets, and outdoor furniture, we help you source a wide range of high-quality furniture.",
+          "linkLabel": "Explore more",
+          "linkHref": "/product/furniture"
+        },
+        {
+          "label": "Packaging",
+          "image": "/images/china-sourcing-packaging.png",
+          "alt": "Packaging",
+          "body": "From custom boxes and protective materials to eco-friendly options, we help you source reliable packaging solutions that fit your product and brand.",
+          "linkLabel": "Explore more",
+          "linkHref": "/product/packaging"
+        },
+        {
+          "label": "Gym & Fitness",
+          "image": "/images/china-sourcing-gym-fitness.png",
+          "alt": "gym and fitness",
+          "body": "From yoga mats and dumbbells to cardio machines and fitness accessories, we help you source a wide variety of high-quality gym and fitness equipment.",
+          "linkLabel": "Explore more",
+          "linkHref": "/product/gym-fitness"
+        },
+        {
+          "label": "Building Materials",
+          "image": "/images/china-sourcing-building-material.png",
+          "alt": "Building Materials",
+          "body": "From structural steel and timber to insulation panels and finishing materials, we help you source a broad selection of reliable, high-quality, certified building materials.",
+          "linkLabel": "Explore more",
+          "linkHref": "/product/building-materials"
+        },
+        {
+          "label": "Textiles & Garments",
+          "image": "/images/china-sourcing-textiles-garments.png",
+          "alt": "textiles and garments",
+          "body": "From fabrics and yarns to finished apparel and custom garments, we help you source high-quality textiles and garments to meet your production needs.",
+          "linkLabel": "Explore more",
+          "linkHref": "/product/textiles-garments"
+        }
+      ]
+    },
+    "flowTrack": {
+      "tag": "Our Process",
+      "heading": "How We Freight & Logistics",
+      "slides": [
+        {
+          "label": "Air freight",
+          "subheading": "Option 1",
+          "title": "Air freight",
+          "paragraphs": [
+            "Air freight is chosen by customers when speed is paramount. While it is the most expensive option, it offers the advantage of delivering goods to your door in approximately one week. This rapid transportation method is favored for time-sensitive shipments where the benefits of swift delivery outweigh the higher cost."
+          ],
+          "image": "/images/air-freight-1-1024x868.png",
+          "alt": "air freight",
+          "nextLabel": "Sea freight"
+        },
+        {
+          "label": "Sea freight",
+          "subheading": "Option 2",
+          "title": "Sea freight",
+          "paragraphs": [
+            "Sea freight is the preferred choice for customers due to its popularity and the availability of various cost-reducing options. This shipping method, while generally more time-consuming, offers flexibility and cost-effectiveness, making it a favored option for businesses seeking economical transportation solutions."
+          ],
+          "image": "/images/sea-freight-1-1024x868.png",
+          "alt": "sea freight",
+          "nextLabel": "Road freight"
+        },
+        {
+          "label": "Road freight",
+          "subheading": "Option 3",
+          "title": "Road freight",
+          "paragraphs": [
+            "When possible, road freight proves to be a reliable and flexible option. However, due to geographical constraints and road connectivity, it is often integrated with other modes of transport to establish a comprehensive and efficient supply chain."
+          ],
+          "image": "/images/road-freight-1-1024x868.png",
+          "alt": "road freight",
+          "nextLabel": "Rail freight"
+        },
+        {
+          "label": "Rail freight",
+          "subheading": "Option 4",
+          "title": "Rail freight",
+          "paragraphs": [
+            "Rail freight excels in efficiently transporting heavy and bulky cargo across long distances. Its cost-effectiveness is notable, provided there is robust infrastructure in place. The low carbon footprint of rail freight positions it as an environmentally friendly option, suggesting a growing trend of increased utilization across borders and oceans in the future."
+          ],
+          "image": "/images/rail-freight-1-1024x868.png",
+          "alt": " rail freight",
+          "nextLabel": null
+        }
+      ]
+    },
+    "usp": {
+      "tag": "Our USPs",
+      "heading": "Why Choose Us for Freight & Logistics",
+      "intro": null,
+      "icon": "/images/star-05-1.png",
+      "image": "/images/china-sourcing-container.png",
+      "items": [
+        {
+          "title": "Global Network",
+          "body": "Access to top freight carriers and shipping partners worldwide."
+        },
+        {
+          "title": "Real-Time Tracking",
+          "body": "Stay updated on your shipments with our tracking system."
+        },
+        {
+          "title": "No Hidden Fees",
+          "body": "Transparent pricing with no surprise costs at the final stage."
+        },
+        {
+          "title": "Custom Solutions",
+          "body": "We tailor our logistics services to your specific needs"
+        },
+        {
+          "title": "On-Time Delivery",
+          "body": "We meet your deadlines, every time"
+        }
+      ]
+    },
+    "testimonials": {
+      "tag": "Testimonials",
+      "heading": "Explore Real Businesses",
+      "tabs": [
+        {
+          "label": "Furniture & Interior",
+          "items": [
+            {
+              "image": "/images/testimonial-furniture-1-300x204.png",
+              "alt": "Testimonial from author Hanz Amada",
+              "quote": "Over 300 bespoke items were procured for our boutique hotel chain via China Sourcing Co. The entire process, encompassing factory sampling and container consolidation, was executed flawlessly.",
+              "avatar": "/images/Untitled-design-2.png",
+              "name": "Hanz Amada",
+              "role": "Founder, GetZ (Singapore)"
+            },
+            {
+              "image": "/images/testimonial-furniture-2-1-300x204.png",
+              "alt": "Testimonial from author Ken Fitzgerald",
+              "quote": "China Sourcing Co facilitated the expansion of our direct-to-consumer furniture range across five international markets. Their personnel meticulously managed raw material procurement, design optimization, and quality control.",
+              "avatar": "/images/customer-testimonials.png",
+              "name": "Ken Fitzgerald",
+              "role": "Co-Founder, UrbanNest Interiors (Australia)"
+            }
+          ]
+        },
+        {
+          "label": "Gym & Fitness Products",
+          "items": [
+            {
+              "image": "/images/china-sourcing-testimonial-gym-fitness-1-300x204.png",
+              "alt": "Testimonial from author Samuel Roberts",
+              "quote": "Partner selection was driven by the need to scale our home fitness equipment line without sacrificing quality standards. China Sourcing facilitated a connection with a Nantong-based manufacturer that supplies prominent Poland brands.",
+              "avatar": "/images/customer-testimonials-13.png",
+              "name": "Samuel Roberts",
+              "role": "Product Director, CoreHaus (Poland)"
+            },
+            {
+              "image": "/images/china-sourcing-testimonial-gym-fitness-300x204.png",
+              "alt": "Testimonial from author Miguel Torres",
+              "quote": "Quality concerns regarding weight accuracy and surface finish for kettlebells and plates were addressed. Their team organized independent testing and refined the mold design to mitigate shipping-related damage.",
+              "avatar": "/images/customer-testimonials-14.png",
+              "name": "Miguel Torres",
+              "role": "Co-founder, Iron Ritual (Canada)"
+            }
+          ]
+        },
+        {
+          "label": "Promotional Products",
+          "items": [
+            {
+              "image": "/images/china-sourcing-testimonial-corporate-promotional-products-1-300x204.png",
+              "alt": "Testimonial from author Rachel Tan",
+              "quote": "For a regional product launch across APAC, requiring 5,000 environmentally sustainable gift sets, China Sourcing Co successfully provided a range of items including bamboo pens and bespoke packaged notebooks, all aligning with our brand's aesthetic and adhering to strict deadlines.",
+              "avatar": "/images/customer-testimonials-7.png",
+              "name": "Rachel Tan",
+              "role": "Regional Marketing Director, GreenSense Labs (Singapore)"
+            },
+            {
+              "image": "/images/china-sourcing-testimonial-corporate-promotional-products-300x204.png",
+              "alt": "Testimonial from author Craig Bolton",
+              "quote": "Initial concerns regarding branding quality were alleviated upon delivery. The standard of embroidery on the polo shirts and the laser engraving of the logo on the water bottles was exemplary, leading to two subsequent orders for European trade exhibitions.",
+              "avatar": "/images/customer-testimonials-8.png",
+              "name": "Craig Bolton",
+              "role": "Brand & Events Manager, Nexon Systems (UK)"
+            }
+          ]
+        },
+        {
+          "label": "Point of Sale",
+          "items": [
+            {
+              "image": "/images/china-sourcing-testimonial-point-of-sale-300x204.png",
+              "alt": "Testimonial from author Anand Meta",
+              "quote": "For our Southeast Asian expansion of 40 convenience stores, we required point-of-sale (POS) terminals, barcode scanners, and receipt printers compatible with our software. China Sourcing Co facilitated the procurement of dependable and economical hardware. Integration was seamless across all operational markets.",
+              "avatar": "/images/customer-testimonials-21.png",
+              "name": "Anand Meta",
+              "role": "Chief Technology Officer, QuickMart Retail Group (UK)"
+            },
+            {
+              "image": "/images/china-sourcing-testimonial-point-of-sale-1-300x204.png",
+              "alt": "Testimonial from author Linh Tran",
+              "quote": "In our transition to brick-and-mortar stores, we sought sophisticated and contemporary POS systems aligned with our brand image. The China Sourcing Co team provided not only the requisite equipment but also customized the enclosures to correspond to our brand colors. Their service was exceptional, with meticulous attention to design.",
+              "avatar": "/images/customer-testimonials-19.png",
+              "name": "Linh Tran",
+              "role": "Retail Expansion Manager, Sora Apparel (Vietnam)"
+            }
+          ]
+        },
+        {
+          "label": "Machinery",
+          "items": [
+            {
+              "image": "/images/china-sourcing-testimonial-automotive-machinery-300x204.png",
+              "alt": "Testimonial from author Rebeca Hsu",
+              "quote": "Our organization procures specialized engine components for the aftermarket performance automotive sector. The China Sourcing Co team facilitated the identification of manufacturers capable of meeting stringent machining tolerances, thereby optimizing cost efficiency. Comprehensive and consistent quality control documentation was provided.",
+              "avatar": "/images/customer-testimonials-23.png",
+              "name": "Rebeca Hsu",
+              "role": "Procurement Manager, Apex Motorsports (USA)"
+            },
+            {
+              "image": "/images/china-sourcing-testimonial-automotive-machinery-1-300x204.png",
+              "alt": "Testimonial from author Jean-Baptiste Leclerc",
+              "quote": "Our agricultural machinery division necessitated bespoke hydraulic assemblies. Previous direct supplier engagements were hampered by inefficient communication and specification deviations. The transition to China Sourcing Co has resulted in streamlined operations characterized by transparency and cost effectiveness. Their proficiency in technical terminology and linguistic translation has been invaluable.",
+              "avatar": "/images/customer-testimonials-24.png",
+              "name": "Jean-Baptiste Leclerc",
+              "role": "Technical Director, AgroNova Machines (France)"
+            }
+          ]
+        },
+        {
+          "label": "Hospitality Items",
+          "items": [
+            {
+              "image": "/images/china-sourcing-testimonial-hospitality-items-300x204.png",
+              "alt": "Testimonial from author Emma ",
+              "quote": "For the establishment of our new resort chain within Southeast Asia, a reliable and consistent supply chain for bathrobes, slippers, and in-room kettles was imperative across five distinct countries. China Sourcing Co expertly managed the comprehensive process, encompassing sourcing, branding, and logistical operations with notable efficiency. Guests have subsequently expressed positive observations regarding the elevated quality of these amenities.",
+              "avatar": "/images/customer-testimonials-22.png",
+              "name": "Emma",
+              "role": "Procurement Director, Banyan Retreats (Italia)"
+            },
+            {
+              "image": "/images/china-sourcing-testimonial-hospitality-items-1-300x204.png",
+              "alt": "Testimonial from author Julien Moreau",
+              "quote": "Our hotel conglomerate necessitated bespoke minibar provisions and environmentally sustainable toiletries for deployment across a substantial portfolio of over 2,000 guest accommodations. The personnel at China Sourcing Co orchestrated the entire procurement cycle, from the initial stages of sample validation through to the definitive packaging configuration. Their service was characterized by professionalism and meticulous attention to detail.",
+              "avatar": "/images/customer-testimonials-20.png",
+              "name": "Julien Moreau",
+              "role": "Operations Manager, L’Horizon Hotels (France)"
+            }
+          ]
+        },
+        {
+          "label": "Household Appliances",
+          "items": [
+            {
+              "image": "/images/china-sourcing-testimonial-household-appliances-300x204.png",
+              "alt": "Testimonial from author Laura Mitchell",
+              "quote": "A reliable supplier of smart air fryers with Wi-Fi integration was required. China Sourcing Co identified a vetted manufacturing facility in Guangdong and facilitated the customization of the user interface for Western users, resulting in a doubling of sales in the second quarter.",
+              "avatar": "/images/customer-testimonials-17.png",
+              "name": "Laura Mitchell",
+              "role": "Category Lead, UrbanHome Appliances (UK)"
+            },
+            {
+              "image": "/images/china-sourcing-testimonial-household-appliances-1-300x204.png",
+              "alt": "Testimonial from author Carlos Rivera",
+              "quote": "Assistance was provided in sourcing a comprehensive line of budget-friendly blenders and rice cookers for the South American market. The sourcing team successfully negotiated more favorable minimum order quantity terms and coordinated the production of bilingual user manuals for regulatory compliance.",
+              "avatar": "/images/customer-testimonials-18.png",
+              "name": "Carlos Rivera",
+              "role": "COO, Vitale Homeware (Chile)"
+            }
+          ]
+        }
+      ]
+    },
+    "faq": {
+      "tag": "Our FAQs",
+      "headingLines": [
+        "Frequently Asked",
+        "Questions"
+      ],
+      "email": "info@chinasourcing.co",
+      "items": [
+        {
+          "question": "How much will shipping cost?",
+          "answer": "Shipping costs depend on your product type, destination and transport mode. We offer competitive rates based on your needs."
+        },
+        {
+          "question": "Can you handle hazardous materials?",
+          "answer": "Yes. We have the expertise to manage hazardous shipments, ensuring compliance with regulations."
+        },
+        {
+          "question": "How long will it take to get my goods?",
+          "answer": "Delivery times vary depending on the transport route, but we aim for the fastest and most reliable options."
+        },
+        {
+          "question": "Do you handle customs?",
+          "answer": "Yes. We manage the full customs process, ensuring smooth delivery with no delays."
+        }
+      ]
+    },
+    "resources": {
+      "tag": "Our Resources",
+      "headingLines": [
+        "Related",
+        "Resource"
+      ],
+      "ctaLabel": "See All Resources",
+      "ctaHref": "/resources",
+      "cards": [
+        {
+          "href": "/resource/the-hidden-profit-leak-most-ecommerce-brands-ignore",
+          "image": "/images/blog-fallback.png",
+          "alt": "The Hidden Profit Leak Most Ecommerce Brands Ignore",
+          "category": null,
+          "title": "The Hidden Profit Leak Most Ecommerce Brands Ignore",
+          "excerpt": "The Hidden Profit Leak Most Ecommerce Brands Ignore A data-backed sourcing guide showing how “cheap” manufacturing decisions can lead to higher retu...",
+          "date": "19/05/2026",
+          "readTime": "1 min read"
+        },
+        {
+          "href": "/resource/incoterms-explained",
+          "image": "/images/blog-fallback.png",
+          "alt": "Incoterms Explained",
+          "category": "Logistics Tips",
+          "title": "Incoterms Explained",
+          "excerpt": "FOB, EXW, CIF? Cut through the jargon with this one-page Incoterms guide for importers.",
+          "date": "19/06/2025",
+          "readTime": "1 min read"
+        },
+        {
+          "href": "/canton-fair-the-green-transformation-landmark-of-chinas-industrial-capital",
+          "image": "/images/canton-fair-the-green-transformation-landmark-of-chinas-industrial-capital.jpg",
+          "alt": "Canton Fair: The \"Green Transformation\" Landmark of China’s Industrial Capital",
+          "category": "Blog",
+          "title": "Canton Fair: The \"Green Transformation\" Landmark of China's Industrial Capital",
+          "excerpt": "Held every two years in China’s industrial capital, the Canton Fair trade show has always been a large-scale event. As reported by Xinhua News Agency,...",
+          "date": "10/08/2026",
+          "readTime": "5 min read"
+        }
+      ]
+    },
+    "carousel": {
+      "tag": "Other Services You Might Need",
+      "heading": "Our Services",
+      "ctaLabel": "Explore our full-service overview",
+      "ctaHref": "/services",
+      "intro": "Need more than just Freight & Logistics?",
+      "cards": [
+        {
+          "href": "/service/sourcing-service",
+          "tag": "Our Core Services",
+          "title": "Sourcing Service",
+          "body": "Factory selection done right with vetted suppliers, verified capabilities, and no middle layer",
+          "ctaLabel": "See Service Detail",
+          "image": "/images/sourcing-service-300x168.png",
+          "alt": "china sourcing service"
+        },
+        {
+          "href": "/service/custom-manufacturing",
+          "tag": "Our Core Services",
+          "title": "Custom Manufacturing",
+          "body": "Turn product ideas into production ready files and samples, even if you are starting from scratch.",
+          "ctaLabel": "See Service Detail",
+          "image": "/images/custom-manufacturing-300x168.png",
+          "alt": "china sourcing custom manufacturing"
+        },
+        {
+          "href": "/service/quality-control",
+          "tag": "Our Core Services",
+          "title": "Quality Control",
+          "body": "Documents the processes carefully and provides detailed reports to customers through real photos and video.",
+          "ctaLabel": "See Service Detail",
+          "image": "/images/china-sourcing-quality-control-300x168.png",
+          "alt": "quality control"
+        }
+      ]
+    },
+    "cta": {
+      "sectionClass": "dark-cta px-5 pb-[120px]",
+      "tag": "Contact Us Right Today",
+      "heading": "Ready to work with a sourcing team that’s built for real-world results?",
+      "body": "Let's Talk And Find Your Solution.",
+      "ctaLabel": "Talk to our Expert",
+      "ctaHref": "/contact-us"
+    }
+  },
+  "quality-control": {
+    "hero": {
+      "typedPrefix": "",
+      "typedWords": [],
+      "heading": "Quality Control",
+      "intro": "We enforce a comprehensive set of quality control measures to make sure your product meets the highest standards across the entire supply chain.",
+      "ctaLabel": "Get a Free Quote",
+      "ctaHref": "/contact-us",
+      "image": "/images/quality-control-1.png",
+      "imageAlt": "quality control"
+    },
+    "simpleCard": {
+      "tag": "Our Offerings",
+      "heading": "What We Offer",
+      "intro": "We provide on-site quality control at every stage of production, ensuring your product matches specifications before it’s shipped. We manage quality from start to finish, so you don’t have to worry about anything.",
+      "cards": [
+        {
+          "icon": "/images/cube-01.svg",
+          "title": "Inline Quality Checks",
+          "body": "Ensuring every unit meets quality standards as production happens"
+        },
+        {
+          "icon": "/images/cube-01.svg",
+          "title": "Pre-shipment Inspections",
+          "body": "A final check to verify quantity, quality, and packaging before shipment"
+        },
+        {
+          "icon": "/images/cube-01.svg",
+          "title": "Supplier Audits",
+          "body": "Vetting factories based on their production processes, compliance, and past track records"
+        },
+        {
+          "icon": "/images/cube-01.svg",
+          "title": "Factory Visits & Reporting",
+          "body": "We visit the factories and provide you with clear reports with photos and videos"
+        }
+      ]
+    },
+    "verticalTab": {
+      "tag": "Our Products",
+      "heading": "Explore by Category",
+      "intro": "We specialize in sourcing across key industries:",
+      "ctaLabel": "Explore full product categories",
+      "ctaHref": "/products",
+      "tabs": [
+        {
+          "label": "Furniture",
+          "image": "/images/china-sourcing-furniture.png",
+          "alt": "furniture",
+          "body": "From office desks and ergonomic chairs to home sofas, dining sets, and outdoor furniture, we help you source a wide range of high-quality furniture.",
+          "linkLabel": "Explore more",
+          "linkHref": "/product/furniture"
+        },
+        {
+          "label": "Packaging",
+          "image": "/images/china-sourcing-packaging.png",
+          "alt": "Packaging",
+          "body": "From custom boxes and protective materials to eco-friendly options, we help you source reliable packaging solutions that fit your product and brand.",
+          "linkLabel": "Explore more",
+          "linkHref": "/product/packaging"
+        },
+        {
+          "label": "Gym & Fitness",
+          "image": "/images/china-sourcing-gym-fitness.png",
+          "alt": "Gym & Fitness",
+          "body": "From yoga mats and dumbbells to cardio machines and fitness accessories, we help you source a wide variety of high-quality gym and fitness equipment.",
+          "linkLabel": "Explore more",
+          "linkHref": "/product/gym-fitness"
+        },
+        {
+          "label": "Building Materials",
+          "image": "/images/china-sourcing-building-material.png",
+          "alt": "Building Materials",
+          "body": "From structural steel and timber to insulation panels and finishing materials, we help you source a broad selection of reliable, high-quality, certified building materials.",
+          "linkLabel": "Explore more",
+          "linkHref": "/product/building-materials"
+        },
+        {
+          "label": "Textiles & Garments",
+          "image": "/images/china-sourcing-textiles-garments.png",
+          "alt": "Textiles and Garments",
+          "body": "From fabrics and yarns to finished apparel and custom garments, we help you source high-quality textiles and garments to meet your production needs.",
+          "linkLabel": "Explore more",
+          "linkHref": "/product/textiles-garments"
+        }
+      ]
+    },
+    "flowTrack": {
+      "tag": "Our Process",
+      "heading": "How We Quality Control",
+      "slides": [
+        {
+          "label": "Factory audit",
+          "subheading": "Step 1",
+          "title": "Factory audit",
+          "paragraphs": [
+            "A factory audit is a thorough evaluation of a manufacturing facility to assess its capabilities, processes, and adherence to quality standards. The purpose of a factory audit is to ensure that a supplier or manufacturer meets the specified requirements and standards set by the client."
+          ],
+          "image": "/images/factory-audit-1-1024x868.png",
+          "alt": "factory audit",
+          "nextLabel": "Pre production inspection (PPI)"
+        },
+        {
+          "label": "Pre production inspection (PPI)",
+          "subheading": "Step 2",
+          "title": "Pre production inspection (PPI)",
+          "paragraphs": [
+            "The purpose of a PPI check is to assess the initial stages of production to ensure that the production processes are set up correctly, materials meet specifications, and potential issues are identified and addressed early."
+          ],
+          "image": "/images/pre-production-inspection-1-1024x868.png",
+          "alt": "pre production inspection",
+          "nextLabel": "During production inspection (DUPRO)"
+        },
+        {
+          "label": "During production inspection (DUPRO)",
+          "subheading": "Step 3",
+          "title": "During production inspection (DUPRO)",
+          "paragraphs": [
+            "A DUPRO is a quality control measure conducted at various stages of the manufacturing process to assess the ongoing production and identify and rectify any potential issues in real-time. This inspection is crucial for ensuring that the production is progressing according to the approved specifications, quality standards, and client requirements."
+          ],
+          "image": "/images/during-production-inspection-1-1024x868.png",
+          "alt": "during production inspection",
+          "nextLabel": "Pre shipment inspection (PSI)"
+        },
+        {
+          "label": "Pre shipment inspection (PSI)",
+          "subheading": "Step 4",
+          "title": "Pre shipment inspection (PSI)",
+          "paragraphs": [
+            "The primary purpose of a pre-shipment inspection is to verify that the finished products meet the required quality standards, specifications, and contractual agreements before they are shipped to the client."
+          ],
+          "image": "/images/pre-shipment-inspection-1-1024x868.png",
+          "alt": "pre shipment inspection",
+          "nextLabel": "Container loading check (CLC)"
+        },
+        {
+          "label": "Container loading check (CLC)",
+          "subheading": "Step 5",
+          "title": "Container loading check (CLC)",
+          "paragraphs": [
+            "A CLC is a quality control measure conducted at the final stage of the shipping process, specifically when goods are being loaded into shipping containers for transport. The primary objective of a container loading check is to ensure that the products are correctly and securely loaded into the containers to prevent damage during transit and to verify that the correct quantity of goods is being shipped."
+          ],
+          "image": "/images/container-loading-check.png",
+          "alt": "container loading check",
+          "nextLabel": null
+        }
+      ]
+    },
+    "usp": {
+      "tag": "Our USPs",
+      "heading": "Why Choose Us for Quality Control",
+      "intro": null,
+      "icon": "/images/star-05-1.png",
+      "image": "/images/china-sourcing-container.png",
+      "items": [
+        {
+          "title": "On-The-Ground Presence",
+          "body": "Our teams in China and Vietnam ensure we’re always monitoring quality, on-site."
+        },
+        {
+          "title": "Real-Time Reporting",
+          "body": "Receive instant updates on the inspection process with video/photo proof."
+        },
+        {
+          "title": "No Surprises",
+          "body": "We catch issues early to prevent costly mistakes and delays."
+        },
+        {
+          "title": "Expert Inspectors",
+          "body": "Quality inspectors with years of experience in the manufacturing process."
+        },
+        {
+          "title": "Customized Inspections",
+          "body": "We tailor our inspections to your needs, whether it’s functionality or packaging."
+        }
+      ]
+    },
+    "testimonials": {
+      "tag": "Testimonials",
+      "heading": "Explore Real Businesses",
+      "tabs": [
+        {
+          "label": "Furniture & Interior",
+          "items": [
+            {
+              "image": "/images/testimonial-furniture-1-300x204.png",
+              "alt": "Testimonial from author Hanz Amada",
+              "quote": "Over 300 bespoke items were procured for our boutique hotel chain via China Sourcing Co. The entire process, encompassing factory sampling and container consolidation, was executed flawlessly.",
+              "avatar": "/images/Untitled-design-2.png",
+              "name": "Hanz Amada",
+              "role": "Founder, GetZ (Singapore)"
+            },
+            {
+              "image": "/images/testimonial-furniture-2-1-300x204.png",
+              "alt": "Testimonial from author Ken Fitzgerald",
+              "quote": "China Sourcing Co facilitated the expansion of our direct-to-consumer furniture range across five international markets. Their personnel meticulously managed raw material procurement, design optimization, and quality control.",
+              "avatar": "/images/customer-testimonials.png",
+              "name": "Ken Fitzgerald",
+              "role": "Co-Founder, UrbanNest Interiors (Australia)"
+            }
+          ]
+        },
+        {
+          "label": "Gym & Fitness Products",
+          "items": [
+            {
+              "image": "/images/china-sourcing-testimonial-gym-fitness-1-300x204.png",
+              "alt": "Testimonial from author Samuel Roberts",
+              "quote": "Partner selection was driven by the need to scale our home fitness equipment line without sacrificing quality standards. China Sourcing facilitated a connection with a Nantong-based manufacturer that supplies prominent Poland brands.",
+              "avatar": "/images/customer-testimonials-13.png",
+              "name": "Samuel Roberts",
+              "role": "Product Director, CoreHaus (Poland)"
+            },
+            {
+              "image": "/images/china-sourcing-testimonial-gym-fitness-300x204.png",
+              "alt": "Testimonial from author Miguel Torres",
+              "quote": "Quality concerns regarding weight accuracy and surface finish for kettlebells and plates were addressed. Their team organized independent testing and refined the mold design to mitigate shipping-related damage.",
+              "avatar": "/images/customer-testimonials-14.png",
+              "name": "Miguel Torres",
+              "role": "Co-founder, Iron Ritual (Canada)"
+            }
+          ]
+        },
+        {
+          "label": "Promotional Products",
+          "items": [
+            {
+              "image": "/images/china-sourcing-testimonial-corporate-promotional-products-1-300x204.png",
+              "alt": "Testimonial from author Rachel Tan",
+              "quote": "For a regional product launch across APAC, requiring 5,000 environmentally sustainable gift sets, China Sourcing Co successfully provided a range of items including bamboo pens and bespoke packaged notebooks, all aligning with our brand's aesthetic and adhering to strict deadlines.",
+              "avatar": "/images/customer-testimonials-7.png",
+              "name": "Rachel Tan",
+              "role": "Regional Marketing Director, GreenSense Labs (Singapore)"
+            },
+            {
+              "image": "/images/china-sourcing-testimonial-corporate-promotional-products-300x204.png",
+              "alt": "Testimonial from author Craig Bolton",
+              "quote": "Initial concerns regarding branding quality were alleviated upon delivery. The standard of embroidery on the polo shirts and the laser engraving of the logo on the water bottles was exemplary, leading to two subsequent orders for European trade exhibitions.",
+              "avatar": "/images/customer-testimonials-8.png",
+              "name": "Craig Bolton",
+              "role": "Brand & Events Manager, Nexon Systems (UK)"
+            }
+          ]
+        },
+        {
+          "label": "Point of Sale",
+          "items": [
+            {
+              "image": "/images/testimonial-furniture-2-1-300x204.png",
+              "alt": "Testimonial from author Ken Fitzgerald",
+              "quote": "China Sourcing Co facilitated the expansion of our direct-to-consumer furniture range across five international markets. Their personnel meticulously managed raw material procurement, design optimization, and quality control.",
+              "avatar": "/images/customer-testimonials.png",
+              "name": "Ken Fitzgerald",
+              "role": "Co-Founder, UrbanNest Interiors (Australia)"
+            },
+            {
+              "image": "/images/testimonial-furniture-1-300x204.png",
+              "alt": "Testimonial from author Hanz Amada",
+              "quote": "Over 300 bespoke items were procured for our boutique hotel chain via China Sourcing Co. The entire process, encompassing factory sampling and container consolidation, was executed flawlessly.",
+              "avatar": "/images/Untitled-design-2.png",
+              "name": "Hanz Amada",
+              "role": "Founder, GetZ (Singapore)"
+            }
+          ]
+        },
+        {
+          "label": "Machinery",
+          "items": [
+            {
+              "image": "/images/china-sourcing-testimonial-automotive-machinery-300x204.png",
+              "alt": "Testimonial from author Rebeca Hsu",
+              "quote": "Our organization procures specialized engine components for the aftermarket performance automotive sector. The China Sourcing Co team facilitated the identification of manufacturers capable of meeting stringent machining tolerances, thereby optimizing cost efficiency. Comprehensive and consistent quality control documentation was provided.",
+              "avatar": "/images/customer-testimonials-23.png",
+              "name": "Rebeca Hsu",
+              "role": "Procurement Manager, Apex Motorsports (USA)"
+            },
+            {
+              "image": "/images/china-sourcing-testimonial-automotive-machinery-1-300x204.png",
+              "alt": "Testimonial from author Jean-Baptiste Leclerc",
+              "quote": "Our agricultural machinery division necessitated bespoke hydraulic assemblies. Previous direct supplier engagements were hampered by inefficient communication and specification deviations. The transition to China Sourcing Co has resulted in streamlined operations characterized by transparency and cost effectiveness. Their proficiency in technical terminology and linguistic translation has been invaluable.",
+              "avatar": "/images/customer-testimonials-24.png",
+              "name": "Jean-Baptiste Leclerc",
+              "role": "Technical Director, AgroNova Machines (France)"
+            }
+          ]
+        },
+        {
+          "label": "Hospitality Items",
+          "items": [
+            {
+              "image": "/images/china-sourcing-testimonial-hospitality-items-300x204.png",
+              "alt": "Testimonial from author Emma ",
+              "quote": "For the establishment of our new resort chain within Southeast Asia, a reliable and consistent supply chain for bathrobes, slippers, and in-room kettles was imperative across five distinct countries. China Sourcing Co expertly managed the comprehensive process, encompassing sourcing, branding, and logistical operations with notable efficiency. Guests have subsequently expressed positive observations regarding the elevated quality of these amenities.",
+              "avatar": "/images/customer-testimonials-22.png",
+              "name": "Emma",
+              "role": "Procurement Director, Banyan Retreats (Italia)"
+            },
+            {
+              "image": "/images/china-sourcing-testimonial-hospitality-items-1-300x204.png",
+              "alt": "Testimonial from author Julien Moreau",
+              "quote": "Our hotel conglomerate necessitated bespoke minibar provisions and environmentally sustainable toiletries for deployment across a substantial portfolio of over 2,000 guest accommodations. The personnel at China Sourcing Co orchestrated the entire procurement cycle, from the initial stages of sample validation through to the definitive packaging configuration. Their service was characterized by professionalism and meticulous attention to detail.",
+              "avatar": "/images/customer-testimonials-20.png",
+              "name": "Julien Moreau",
+              "role": "Operations Manager, L’Horizon Hotels (France)"
+            }
+          ]
+        },
+        {
+          "label": "Household Appliances",
+          "items": [
+            {
+              "image": "/images/china-sourcing-testimonial-household-appliances-300x204.png",
+              "alt": "Testimonial from author Laura Mitchell",
+              "quote": "A reliable supplier of smart air fryers with Wi-Fi integration was required. China Sourcing Co identified a vetted manufacturing facility in Guangdong and facilitated the customization of the user interface for Western users, resulting in a doubling of sales in the second quarter.",
+              "avatar": "/images/customer-testimonials-17.png",
+              "name": "Laura Mitchell",
+              "role": "Category Lead, UrbanHome Appliances (UK)"
+            },
+            {
+              "image": "/images/china-sourcing-testimonial-household-appliances-1-300x204.png",
+              "alt": "Testimonial from author Carlos Rivera",
+              "quote": "Assistance was provided in sourcing a comprehensive line of budget-friendly blenders and rice cookers for the South American market. The sourcing team successfully negotiated more favorable minimum order quantity terms and coordinated the production of bilingual user manuals for regulatory compliance.",
+              "avatar": "/images/customer-testimonials-18.png",
+              "name": "Carlos Rivera",
+              "role": "COO, Vitale Homeware (Chile)"
+            }
+          ]
+        }
+      ]
+    },
+    "faq": {
+      "tag": "Our FAQs",
+      "headingLines": [
+        "Frequently Asked",
+        "Questions"
+      ],
+      "email": "info@chinasourcing.co",
+      "items": [
+        {
+          "question": "What is the cost of quality control services?",
+          "answer": "We provide custom pricing based on the product type, production volume and inspection needs."
+        },
+        {
+          "question": "Do you handle quality control for small orders?",
+          "answer": "Yes! We tailor our services for orders of all sizes, from small batch to large-scale production."
+        },
+        {
+          "question": "How soon can I get inspection results?",
+          "answer": "You’ll receive detailed inspection reports with photos and videos within 24 hours of inspection."
+        },
+        {
+          "question": "Can I use my own inspector?",
+          "answer": "Yes, but we recommend our local experts for better control and faster turnaround times."
+        }
+      ]
+    },
+    "resources": {
+      "tag": "Our Resources",
+      "headingLines": [
+        "Related",
+        "Resource"
+      ],
+      "ctaLabel": "See All Resources",
+      "ctaHref": "/resources",
+      "cards": [
+        {
+          "href": "/resource/the-hidden-profit-leak-most-ecommerce-brands-ignore",
+          "image": "/images/blog-fallback.png",
+          "alt": "The Hidden Profit Leak Most Ecommerce Brands Ignore",
+          "category": null,
+          "title": "The Hidden Profit Leak Most Ecommerce Brands Ignore",
+          "excerpt": "The Hidden Profit Leak Most Ecommerce Brands Ignore A data-backed sourcing guide showing how “cheap” manufacturing decisions can lead to higher retu...",
+          "date": "19/05/2026",
+          "readTime": "1 min read"
+        },
+        {
+          "href": "/resource/incoterms-explained",
+          "image": "/images/blog-fallback.png",
+          "alt": "Incoterms Explained",
+          "category": "Logistics Tips",
+          "title": "Incoterms Explained",
+          "excerpt": "FOB, EXW, CIF? Cut through the jargon with this one-page Incoterms guide for importers.",
+          "date": "19/06/2025",
+          "readTime": "1 min read"
+        },
+        {
+          "href": "/canton-fair-the-green-transformation-landmark-of-chinas-industrial-capital",
+          "image": "/images/canton-fair-the-green-transformation-landmark-of-chinas-industrial-capital.jpg",
+          "alt": "Canton Fair: The \"Green Transformation\" Landmark of China’s Industrial Capital",
+          "category": "Blog",
+          "title": "Canton Fair: The \"Green Transformation\" Landmark of China's Industrial Capital",
+          "excerpt": "Held every two years in China’s industrial capital, the Canton Fair trade show has always been a large-scale event. As reported by Xinhua News Agency,...",
+          "date": "10/08/2026",
+          "readTime": "5 min read"
+        }
+      ]
+    },
+    "carousel": {
+      "tag": "Other Services You Might Need",
+      "heading": "Our Services",
+      "ctaLabel": "Explore our full-service overview",
+      "ctaHref": "/services",
+      "intro": "Need more than just Quality Control?",
+      "cards": [
+        {
+          "href": "/service/sourcing-service",
+          "tag": "Our Core Services",
+          "title": "Sourcing Service",
+          "body": "Factory selection done right with vetted suppliers, verified capabilities, and no middle layer",
+          "ctaLabel": "See Service Detail",
+          "image": "/images/sourcing-service-300x168.png",
+          "alt": "china sourcing service"
+        },
+        {
+          "href": "/service/custom-manufacturing",
+          "tag": "Our Core Services",
+          "title": "Custom Manufacturing",
+          "body": "Turn product ideas into production ready files and samples, even if you are starting from scratch.",
+          "ctaLabel": "See Service Detail",
+          "image": "/images/custom-manufacturing-300x168.png",
+          "alt": "china sourcing custom manufacturing"
+        },
+        {
+          "href": "/service/freight-logistics",
+          "tag": "Our Core Services",
+          "title": "Freight & Logistics",
+          "body": "Our dedicated team manage the entire process and endless paperwork to getting our goods to do your.",
+          "ctaLabel": "See Service Detail",
+          "image": "/images/freight-and-logistics-1-300x168.png",
+          "alt": "freight and logistics"
+        }
+      ]
+    },
+    "cta": {
+      "sectionClass": "dark-cta px-5 pb-[120px]",
+      "tag": "Contact Us Right Today",
+      "heading": "Ready to work with a sourcing team that’s built for real-world results?",
+      "body": "Let's Talk And Find Your Solution.",
+      "ctaLabel": "Talk to our Expert",
+      "ctaHref": "/contact-us"
+    }
+  },
+  "sourcing-service": {
+    "hero": {
+      "typedPrefix": "",
+      "typedWords": [],
+      "heading": "Smarter Sourcing Starts with the Right Factory",
+      "intro": "Our expertise spans various sourcing categories, ensuring a tailored approach to meet your unique requirements.",
+      "ctaLabel": "Get a Free Quote",
+      "ctaHref": "/contact-us",
+      "image": "/images/sourcing-service-2.png",
+      "imageAlt": "sourcing service"
+    },
+    "simpleCard": {
+      "tag": "Our Offerings",
+      "heading": "What We Offer",
+      "intro": "Situated strategically in close proximity to Asia’s major manufacturing hubs and bustling markets, our on-the-ground team is positioned to seamlessly connect you with the precise products you need.",
+      "cards": [
+        {
+          "icon": "/images/cube-01.svg",
+          "title": "Factory Sourcing",
+          "body": "Factory identification and shortlisting (not marketplace scraping)"
+        },
+        {
+          "icon": "/images/cube-01.svg",
+          "title": "Supplier Audits",
+          "body": "Supplier audits: capability, certificates, past clients"
+        },
+        {
+          "icon": "/images/cube-01.svg",
+          "title": "Negotiation Support",
+          "body": "MOQ, price, and lead time negotiation"
+        },
+        {
+          "icon": "/images/cube-01.svg",
+          "title": "Sample Management",
+          "body": "Sample coordination and quality checks"
+        },
+        {
+          "icon": "/images/cube-01.svg",
+          "title": "Transparent Pricing",
+          "body": "Transparent quotations and timelines"
+        }
+      ]
+    },
+    "verticalTab": {
+      "tag": "Our Products",
+      "heading": "Explore by Category",
+      "intro": "We specialize in sourcing across key industries:",
+      "ctaLabel": "Explore full product categories",
+      "ctaHref": "/products",
+      "tabs": [
+        {
+          "label": "Furniture",
+          "image": "/images/china-sourcing-furniture.png",
+          "alt": "furniture",
+          "body": "From office desks and ergonomic chairs to home sofas, dining sets, and outdoor furniture, we help you source a wide range of high-quality furniture.",
+          "linkLabel": "Explore more",
+          "linkHref": "/product/furniture"
+        },
+        {
+          "label": "Packaging",
+          "image": "/images/china-sourcing-packaging.png",
+          "alt": "Packaging",
+          "body": "From custom boxes and protective materials to eco-friendly options, we help you source reliable packaging solutions that fit your product and brand.",
+          "linkLabel": "Explore more",
+          "linkHref": "/product/packaging"
+        },
+        {
+          "label": "Gym & Fitness",
+          "image": "/images/china-sourcing-gym-fitness.png",
+          "alt": "Gym & Fitness",
+          "body": "From yoga mats and dumbbells to cardio machines and fitness accessories – we help you source a wide variety of high-quality gym and fitness equipment.",
+          "linkLabel": "Explore more",
+          "linkHref": "/product/gym-fitness"
+        },
+        {
+          "label": "Building Materials",
+          "image": "/images/china-sourcing-building-material.png",
+          "alt": "Building Materials",
+          "body": "From structural steel and timber to insulation panels and finishing materials, we help you source a broad selection of reliable, high-quality, certified building materials.",
+          "linkLabel": "Explore more",
+          "linkHref": "/product/building-materials"
+        },
+        {
+          "label": "Textiles & Garments",
+          "image": "/images/china-sourcing-textiles-garments.png",
+          "alt": "Textiles and Garments",
+          "body": "From eco-friendly boxes and flexible films to custom labels and protective packaging, we help you source a full range of packaging solutions tailored to your needs.",
+          "linkLabel": "Explore more",
+          "linkHref": "/product/textiles-garments"
+        }
+      ]
+    },
+    "flowTrack": {
+      "tag": "Our Process",
+      "heading": "How We Source",
+      "slides": [
+        {
+          "label": "Enquire",
+          "subheading": "Step 1",
+          "title": "Enquire",
+          "paragraphs": [
+            "Speak to our team to align on your requirement and build out your product brief."
+          ],
+          "image": "/images/sourcing-service-enquire-1-1024x868.png",
+          "alt": "people in meeting room",
+          "nextLabel": "Quoting Stage"
+        },
+        {
+          "label": "Quoting Stage",
+          "subheading": "Step 2",
+          "title": "Quoting Stage",
+          "paragraphs": [
+            "Once we have negotiated your requirements with our preferred manufacturers, we will promptly submit our price proposal to you."
+          ],
+          "image": "/images/sourcing-service-quoting-stage-1-1024x868.png",
+          "alt": "people in meeting room",
+          "nextLabel": "Sample & Design"
+        },
+        {
+          "label": "Sample & Design",
+          "subheading": "Step 3",
+          "title": "Sample & Design",
+          "paragraphs": [
+            "Sample and design confirmation are integral elements that instill confidence in the product you will receive. By thoroughly reviewing and validating samples and designs, we ensure that the final product meets your expectations."
+          ],
+          "image": "/images/sourcing-service-sample-and-design-1-1024x868.png",
+          "alt": "sample and design",
+          "nextLabel": "Confirmation"
+        },
+        {
+          "label": "Confirmation",
+          "subheading": "Step 4",
+          "title": "Confirmation",
+          "paragraphs": [
+            "Order confirmation is finalized upon receipt of your deposit payment."
+          ],
+          "image": "/images/sourcing-service-confirmation-1-1024x868.png",
+          "alt": "confirmation stage",
+          "nextLabel": "Production"
+        },
+        {
+          "label": "Production",
+          "subheading": "Step 5",
+          "title": "Production",
+          "paragraphs": [
+            "Production commences on the goods and the agreed-upon production timeline (roughly around 3-6 weeks) which is closely monitored by our on-the-ground team."
+          ],
+          "image": "/images/sourcing-service-production-1-1024x868.png",
+          "alt": "production stage",
+          "nextLabel": "Quality Assurances"
+        },
+        {
+          "label": "Quality Assurances",
+          "subheading": "Step 6",
+          "title": "Quality Assurances",
+          "paragraphs": [
+            "Our team is on hand to offer various quality assurance methods: audits of pre-production/raw materials, during production inspections, post-production inspections, and pre-loading inspections."
+          ],
+          "image": "/images/sourcing-service-quality-assurances-1-1024x868.png",
+          "alt": "quality assurances",
+          "nextLabel": "Final inspection and balance"
+        },
+        {
+          "label": "Final inspection and balance",
+          "subheading": "Step 7",
+          "title": "Final inspection and balance",
+          "paragraphs": [
+            "Upon the completion of production, our team will conduct a thorough quality inspection to ensure the goods meet the highest standards before the balance is paid."
+          ],
+          "image": "/images/sourcing-service-final-inspection-and-balance-2-1024x868.png",
+          "alt": "final inspection and balance",
+          "nextLabel": "Freight and Logistics"
+        },
+        {
+          "label": "Freight and Logistics",
+          "subheading": "Step 8",
+          "title": "Freight and Logistics",
+          "paragraphs": [
+            "Once the final payment is received, we organize freight and delivery from our warehouse to your specified address."
+          ],
+          "image": "/images/sourcing-service-freight-and-logistics-1-1024x868.png",
+          "alt": "freight and logistics",
+          "nextLabel": null
+        }
+      ]
+    },
+    "usp": {
+      "tag": "Our USPs",
+      "heading": "Why Choose Us for Sourcing",
+      "intro": null,
+      "icon": "/images/star-05-1.png",
+      "image": "/images/china-sourcing-container.png",
+      "items": [
+        {
+          "title": "Work With Local Experts",
+          "body": "Manage all parts of the supply chain to ensure you are truly happy with the results."
+        },
+        {
+          "title": "Remove Language Barriers",
+          "body": "Communicate effortlessly with our fluent, English-speaking local team."
+        },
+        {
+          "title": "Simplify Communication",
+          "body": "Coordinate all moving parts of the supply chain through a single point of contact for faster, smoother execution."
+        },
+        {
+          "title": "Reduce Sourcing Costs",
+          "body": "Leverage our trusted supplier network to secure more competitive pricing."
+        },
+        {
+          "title": "Use Trusted Factories",
+          "body": "Work with vetted factories we’ve already tested and approved."
+        },
+        {
+          "title": "Ensure Product Quality",
+          "body": "Conduct inspections at every stage to guarantee consistent, high-quality products."
+        }
+      ]
+    },
+    "testimonials": {
+      "tag": "Testimonials",
+      "heading": "Explore Real Businesses",
+      "tabs": [
+        {
+          "label": "Furniture & Interior",
+          "items": [
+            {
+              "image": "/images/testimonial-furniture-1-300x204.png",
+              "alt": "Testimonial from author Hanz Amada",
+              "quote": "Over 300 bespoke items were procured for our boutique hotel chain via China Sourcing Co. The entire process, encompassing factory sampling and container consolidation, was executed flawlessly.",
+              "avatar": "/images/Untitled-design-2.png",
+              "name": "Hanz Amada",
+              "role": "Founder, GetZ (Singapore)"
+            },
+            {
+              "image": "/images/testimonial-furniture-2-1-300x204.png",
+              "alt": "Testimonial from author Ken Fitzgerald",
+              "quote": "China Sourcing Co facilitated the expansion of our direct-to-consumer furniture range across five international markets. Their personnel meticulously managed raw material procurement, design optimization, and quality control.",
+              "avatar": "/images/customer-testimonials.png",
+              "name": "Ken Fitzgerald",
+              "role": "Co-Founder, UrbanNest Interiors (Australia)"
+            }
+          ]
+        },
+        {
+          "label": "Gym & Fitness Products",
+          "items": [
+            {
+              "image": "/images/china-sourcing-testimonial-gym-fitness-1-300x204.png",
+              "alt": "Testimonial from author Samuel Roberts",
+              "quote": "Partner selection was driven by the need to scale our home fitness equipment line without sacrificing quality standards. China Sourcing facilitated a connection with a Nantong-based manufacturer that supplies prominent Poland brands.",
+              "avatar": "/images/customer-testimonials-13.png",
+              "name": "Samuel Roberts",
+              "role": "Product Director, CoreHaus (Poland)"
+            },
+            {
+              "image": "/images/china-sourcing-testimonial-gym-fitness-300x204.png",
+              "alt": "Testimonial from author Miguel Torres",
+              "quote": "Quality concerns regarding weight accuracy and surface finish for kettlebells and plates were addressed. Their team organized independent testing and refined the mold design to mitigate shipping-related damage.",
+              "avatar": "/images/customer-testimonials-14.png",
+              "name": "Miguel Torres",
+              "role": "Co-founder, Iron Ritual (Canada)"
+            }
+          ]
+        },
+        {
+          "label": "Promotional Products",
+          "items": [
+            {
+              "image": "/images/china-sourcing-testimonial-corporate-promotional-products-1-300x204.png",
+              "alt": "Testimonial from author Rachel Tan",
+              "quote": "For a regional product launch across APAC, requiring 5,000 environmentally sustainable gift sets, China Sourcing Co successfully provided a range of items including bamboo pens and bespoke packaged notebooks, all aligning with our brand's aesthetic and adhering to strict deadlines.",
+              "avatar": "/images/customer-testimonials-7.png",
+              "name": "Rachel Tan",
+              "role": "Regional Marketing Director, GreenSense Labs (Singapore)"
+            },
+            {
+              "image": "/images/china-sourcing-testimonial-corporate-promotional-products-300x204.png",
+              "alt": "Testimonial from author Craig Bolton",
+              "quote": "Initial concerns regarding branding quality were alleviated upon delivery. The standard of embroidery on the polo shirts and the laser engraving of the logo on the water bottles was exemplary, leading to two subsequent orders for European trade exhibitions.",
+              "avatar": "/images/customer-testimonials-8.png",
+              "name": "Craig Bolton",
+              "role": "Brand & Events Manager, Nexon Systems (UK)"
+            }
+          ]
+        },
+        {
+          "label": "Point of Sale",
+          "items": [
+            {
+              "image": "/images/china-sourcing-testimonial-point-of-sale-300x204.png",
+              "alt": "Testimonial from author Anand Meta",
+              "quote": "For our Southeast Asian expansion of 40 convenience stores, we required point-of-sale (POS) terminals, barcode scanners, and receipt printers compatible with our software. China Sourcing Co facilitated the procurement of dependable and economical hardware. Integration was seamless across all operational markets.",
+              "avatar": "/images/customer-testimonials-21.png",
+              "name": "Anand Meta",
+              "role": "Chief Technology Officer, QuickMart Retail Group (UK)"
+            },
+            {
+              "image": "/images/china-sourcing-testimonial-point-of-sale-1-300x204.png",
+              "alt": "Testimonial from author Linh Tran",
+              "quote": "In our transition to brick-and-mortar stores, we sought sophisticated and contemporary POS systems aligned with our brand image. The China Sourcing Co team provided not only the requisite equipment but also customized the enclosures to correspond to our brand colors. Their service was exceptional, with meticulous attention to design.",
+              "avatar": "/images/customer-testimonials-19.png",
+              "name": "Linh Tran",
+              "role": "Retail Expansion Manager, Sora Apparel (Vietnam)"
+            }
+          ]
+        },
+        {
+          "label": "Machinery",
+          "items": [
+            {
+              "image": "/images/china-sourcing-testimonial-automotive-machinery-300x204.png",
+              "alt": "Testimonial from author Rebeca Hsu",
+              "quote": "Our organization procures specialized engine components for the aftermarket performance automotive sector. The China Sourcing Co team facilitated the identification of manufacturers capable of meeting stringent machining tolerances, thereby optimizing cost efficiency. Comprehensive and consistent quality control documentation was provided.",
+              "avatar": "/images/customer-testimonials-23.png",
+              "name": "Rebeca Hsu",
+              "role": "Procurement Manager, Apex Motorsports (USA)"
+            },
+            {
+              "image": "/images/china-sourcing-testimonial-automotive-machinery-1-300x204.png",
+              "alt": "Testimonial from author Jean-Baptiste Leclerc",
+              "quote": "Our agricultural machinery division necessitated bespoke hydraulic assemblies. Previous direct supplier engagements were hampered by inefficient communication and specification deviations. The transition to China Sourcing Co has resulted in streamlined operations characterized by transparency and cost effectiveness. Their proficiency in technical terminology and linguistic translation has been invaluable.",
+              "avatar": "/images/customer-testimonials-24.png",
+              "name": "Jean-Baptiste Leclerc",
+              "role": "Technical Director, AgroNova Machines (France)"
+            }
+          ]
+        },
+        {
+          "label": "Hospitality Items",
+          "items": [
+            {
+              "image": "/images/china-sourcing-testimonial-hospitality-items-300x204.png",
+              "alt": "Testimonial from author Emma ",
+              "quote": "For the establishment of our new resort chain within Southeast Asia, a reliable and consistent supply chain for bathrobes, slippers, and in-room kettles was imperative across five distinct countries. China Sourcing Co expertly managed the comprehensive process, encompassing sourcing, branding, and logistical operations with notable efficiency. Guests have subsequently expressed positive observations regarding the elevated quality of these amenities.",
+              "avatar": "/images/customer-testimonials-22.png",
+              "name": "Emma",
+              "role": "Procurement Director, Banyan Retreats (Italia)"
+            },
+            {
+              "image": "/images/china-sourcing-testimonial-hospitality-items-1-300x204.png",
+              "alt": "Testimonial from author Julien Moreau",
+              "quote": "Our hotel conglomerate necessitated bespoke minibar provisions and environmentally sustainable toiletries for deployment across a substantial portfolio of over 2,000 guest accommodations. The personnel at China Sourcing Co orchestrated the entire procurement cycle, from the initial stages of sample validation through to the definitive packaging configuration. Their service was characterized by professionalism and meticulous attention to detail.",
+              "avatar": "/images/customer-testimonials-20.png",
+              "name": "Julien Moreau",
+              "role": "Operations Manager, L’Horizon Hotels (France)"
+            }
+          ]
+        },
+        {
+          "label": "Household Appliances",
+          "items": [
+            {
+              "image": "/images/china-sourcing-testimonial-household-appliances-300x204.png",
+              "alt": "Testimonial from author Laura Mitchell",
+              "quote": "A reliable supplier of smart air fryers with Wi-Fi integration was required. China Sourcing Co identified a vetted manufacturing facility in Guangdong and facilitated the customization of the user interface for Western users, resulting in a doubling of sales in the second quarter.",
+              "avatar": "/images/customer-testimonials-17.png",
+              "name": "Laura Mitchell",
+              "role": "Category Lead, UrbanHome Appliances (UK)"
+            },
+            {
+              "image": "/images/china-sourcing-testimonial-household-appliances-1-300x204.png",
+              "alt": "Testimonial from author Carlos Rivera",
+              "quote": "Assistance was provided in sourcing a comprehensive line of budget-friendly blenders and rice cookers for the South American market. The sourcing team successfully negotiated more favorable minimum order quantity terms and coordinated the production of bilingual user manuals for regulatory compliance.",
+              "avatar": "/images/customer-testimonials-18.png",
+              "name": "Carlos Rivera",
+              "role": "COO, Vitale Homeware (Chile)"
+            }
+          ]
+        }
+      ]
+    },
+    "faq": {
+      "tag": "Our FAQs",
+      "headingLines": [
+        "Frequently Asked",
+        "Questions"
+      ],
+      "email": "info@chinasourcing.co",
+      "items": [
+        {
+          "question": "What are your lead times?",
+          "answer": "Our standard production lead time is 21 – 27 days for custom manufactured products.\n\nHaving said that, the actual lead times can differ based on the specific product or products you need. Before providing a quote, we engage in negotiations with the factory on your behalf. This ensures that you have a clear understanding and are satisfied with the production lead time before making any commitments to your order."
+        },
+        {
+          "question": "What are your fees and charges?",
+          "answer": "The quoted price we provide you is all-encompassing, covering our fees within the package.\n\nIn an industry renowned for its competitiveness, our customers are familiar with prevailing market rates. Recognizing these benchmarks enables our customers to appreciate the cost-effectiveness of our services and understand our on-the-ground team’s ability to negotiate with our already established networks."
+        },
+        {
+          "question": "Why use a sourcing company?",
+          "answer": "Benefit from our extensive relationships with markets and factories, ensuring that you receive superior prices and services beyond what a first-time buyer might expect.\n\nYour dedicated account manager serves as your singular point of contact throughout the entire supply chain. Backed by our comprehensive team, including price negotiators, designers, quality assurance, and freight experts, your dedicated point of contact has the full support needed to optimize your experience from start to finish."
+        },
+        {
+          "question": "Can you produce custom products which are not on the market?",
+          "answer": "Certainly, if you have a design or an idea in mind our team will help turn that idea into reality.\n\nFrom the initial stages of molding and tooling to the intricacies of research and development (R&D), our team is committed to guiding you through the entire process. We’ll work closely to produce a prototype for your approval, ensuring that every detail meets your expectations. Once the sample receives your green light, we replicate the same level of quality and precision in the final production, delivering a product that aligns seamlessly with your vision."
+        },
+        {
+          "question": "What criteria do you use to select suppliers & manufacturers?",
+          "answer": "When faced with a demand for a product from a factory not yet in our network, our seasoned team excels in selecting the best options using a comprehensive set of key metrics.\n\nThese metrics encompass various crucial aspects, including location, industry experience, financial background audit, certification, track record with previous and current customers, customer service standards, quality checks, factory inspections, and pricing structures. By meticulously evaluating these key metrics, we can pinpoint the most suitable options and offer our customers our suggested/preferred manufacturer."
+        },
+        {
+          "question": "How do you handle product defects?",
+          "answer": "Our team carry out quality control measures at all stages throughout the supply chain, these include pre-production inspections, during production inspections, end of production inspections, prior to loading inspections. We find that if there is a problem (which in some product cases is very likely) that our team is on the ground and able to identify these quality problems before they become an issue for our customers."
+        }
+      ]
+    },
+    "resources": {
+      "tag": "Our Resources",
+      "headingLines": [
+        "Related",
+        "Resource"
+      ],
+      "ctaLabel": "See All Resources",
+      "ctaHref": "/resources",
+      "cards": [
+        {
+          "href": "/resource/the-hidden-profit-leak-most-ecommerce-brands-ignore",
+          "image": "/images/blog-fallback.png",
+          "alt": "The Hidden Profit Leak Most Ecommerce Brands Ignore",
+          "category": null,
+          "title": "The Hidden Profit Leak Most Ecommerce Brands Ignore",
+          "excerpt": "The Hidden Profit Leak Most Ecommerce Brands Ignore A data-backed sourcing guide showing how “cheap” manufacturing decisions can lead to higher retu...",
+          "date": "19/05/2026",
+          "readTime": "1 min read"
+        },
+        {
+          "href": "/resource/incoterms-explained",
+          "image": "/images/blog-fallback.png",
+          "alt": "Incoterms Explained",
+          "category": "Logistics Tips",
+          "title": "Incoterms Explained",
+          "excerpt": "FOB, EXW, CIF? Cut through the jargon with this one-page Incoterms guide for importers.",
+          "date": "19/06/2025",
+          "readTime": "1 min read"
+        },
+        {
+          "href": "/canton-fair-the-green-transformation-landmark-of-chinas-industrial-capital",
+          "image": "/images/canton-fair-the-green-transformation-landmark-of-chinas-industrial-capital.jpg",
+          "alt": "Canton Fair: The \"Green Transformation\" Landmark of China’s Industrial Capital",
+          "category": "Blog",
+          "title": "Canton Fair: The \"Green Transformation\" Landmark of China's Industrial Capital",
+          "excerpt": "Held every two years in China’s industrial capital, the Canton Fair trade show has always been a large-scale event. As reported by Xinhua News Agency,...",
+          "date": "10/08/2026",
+          "readTime": "5 min read"
+        }
+      ]
+    },
+    "carousel": {
+      "tag": "Other Services You Might Need",
+      "heading": "Our Services",
+      "ctaLabel": "Explore our full-service overview",
+      "ctaHref": "/services",
+      "intro": "Need more than just Sourcing ?",
+      "cards": [
+        {
+          "href": "/service/custom-manufacturing",
+          "tag": "Our Core Services",
+          "title": "Custom Manufacturing",
+          "body": "Turn product ideas into production ready files and samples, even if you are starting from scratch.",
+          "ctaLabel": "See Service Detail",
+          "image": "/images/custom-manufacturing-300x168.png",
+          "alt": "china sourcing custom manufacturing"
+        },
+        {
+          "href": "/service/quality-control",
+          "tag": "Our Core Services",
+          "title": "Quality Control",
+          "body": "Documents the processes carefully and provides detailed reports to customers through real photos and video.",
+          "ctaLabel": "See Service Detail",
+          "image": "/images/china-sourcing-quality-control-300x168.png",
+          "alt": "quality control"
+        },
+        {
+          "href": "/service/freight-logistics",
+          "tag": "Our Core Services",
+          "title": "Freight & Logistics",
+          "body": "Our dedicated team manage the entire process and endless paperwork to getting our goods to do your.",
+          "ctaLabel": "See Service Detail",
+          "image": "/images/freight-and-logistics-1-300x168.png",
+          "alt": "freight and logistics"
+        }
+      ]
+    },
+    "cta": {
+      "sectionClass": "dark-cta px-5 pb-[120px]",
+      "tag": "Contact Us Right Today",
+      "heading": "Ready to work with a sourcing team that’s built for real-world results?",
+      "body": "Let's Talk And Find Your Solution.",
+      "ctaLabel": "Talk to our Expert",
+      "ctaHref": "/contact-us"
+    }
+  }
+}

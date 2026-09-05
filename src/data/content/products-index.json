@@ -1,0 +1,206 @@
+{
+  "hero": {
+    "typedPrefix": "Source",
+    "typedWords": [
+      "Textiles & Garments",
+      "Furniture",
+      "Bags & Cases",
+      "Packaging",
+      "Bedding & Home",
+      "Household Appliances",
+      "Food & Drinks",
+      "Corporate & Promotional Products",
+      "Building Materials",
+      "Hospitality Items",
+      "Chemicals & Cleaning",
+      "Gym & Fitness",
+      "Hardware & Tools",
+      "Point of Sale",
+      "Automotive Parts & Machinery"
+    ],
+    "heading": "All in One Place",
+    "intro": "Simplifying Sourcing & Manufacturing Across Industries",
+    "ctaLabel": "Get a Free Quote",
+    "ctaHref": "/contact-us",
+    "image": "/images/china-sourcing-warehouse.png",
+    "imageAlt": "china sourcing warehouse"
+  },
+  "list": {
+    "tag": "Product Categories",
+    "heading": "Our Product Range",
+    "intro": "We source high-quality products across industries. If you don’t see what you need, reach out for custom sourcing solutions.",
+    "cards": [
+      {
+        "image": "/images/china-sourcing-furniture-1.png",
+        "alt": "china sourcing furniture",
+        "title": "Furniture",
+        "body": "From office desks and ergonomic chairs to home sofas, dining sets, and outdoor furniture, China Sourcing Co helps you source a wide range of high-quality furniture.",
+        "href": "/product/furniture",
+        "ctaLabel": "See Product Detail"
+      },
+      {
+        "image": "/images/Image-1-1.png",
+        "alt": "Bags & Cases",
+        "title": "Bags & Cases",
+        "body": "From backpacks and laptop sleeves to travel luggage and protective equipment cases, China Sourcing Co helps you source a diverse range of durable, stylish bags and cases.",
+        "href": "/product/bags-cases",
+        "ctaLabel": "See Product Detail"
+      },
+      {
+        "image": "/images/chemicals-and-cleaning.png",
+        "alt": "chemicals and cleaning products",
+        "title": "Chemicals & Cleaning",
+        "body": "From industrial chemicals and detergents to household cleaners and disinfectants, China Sourcing Co helps you source a wide range of effective, compliant chemicals and cleaning products.",
+        "href": "/product/chemicals-cleaning",
+        "ctaLabel": "See Product Detail"
+      },
+      {
+        "image": "/images/china-sourcing-corporate-promotional-products.png",
+        "alt": "china sourcing corporate and promotional products",
+        "title": "Corporate & Promotional Products",
+        "body": "From branded apparel and custom drinkware to corporate gifts and event giveaways, China Sourcing Co helps you source a variety of promotional products that boost your brand visibility.",
+        "href": "/product/corporate-promotional-products",
+        "ctaLabel": "See Product Detail"
+      },
+      {
+        "image": "/images/packaging-1.png",
+        "alt": "packaging",
+        "title": "Packaging",
+        "body": "From eco-friendly boxes and flexible films to custom labels and protective packaging, China Sourcing Co helps you source a full range of packaging solutions tailored to your needs.",
+        "href": "/product/packaging",
+        "ctaLabel": "See Product Detail"
+      },
+      {
+        "image": "/images/china-sourcing-food-and-drink.png",
+        "alt": "china sourcing food and drink",
+        "title": "Food & Drink Products",
+        "body": "From packaged snacks and beverages to specialty ingredients and bulk food supplies, China Sourcing Co helps you source a diverse range of safe, high-quality food and drink products.",
+        "href": "/product/food-drinks",
+        "ctaLabel": "See Product Detail"
+      },
+      {
+        "image": "/images/china-sourcing-gym-fitness.png",
+        "alt": "china sourcing gym and fitness",
+        "title": "Gym & Fitness",
+        "body": "From yoga mats and dumbbells to cardio machines and fitness accessories, China Sourcing Co helps you source a wide variety of high-quality gym and fitness equipment.",
+        "href": "/product/gym-fitness",
+        "ctaLabel": "See Product Detail"
+      },
+      {
+        "image": "/images/hardware-and-tools.png",
+        "alt": "hardware and tools products",
+        "title": "Hardware & Tools",
+        "body": "From hand tools and power drills to fasteners and workshop equipment, China Sourcing Co helps you source a comprehensive range of durable, reliable hardware and tools.",
+        "href": "/product/hardware-tools",
+        "ctaLabel": "See Product Detail"
+      },
+      {
+        "image": "/images/Image-10.png",
+        "alt": "Household Appliances",
+        "title": "Household Appliances",
+        "body": "From kitchen gadgets and small appliances to heating, cooling, and cleaning devices, China Sourcing Co helps you source a broad selection of reliable, energy-efficient household appliances.",
+        "href": "/product/household-appliances",
+        "ctaLabel": "See Product Detail"
+      },
+      {
+        "image": "/images/Image-11.png",
+        "alt": "Hospitality Items",
+        "title": "Hospitality Items",
+        "body": "From hotel linens and tableware to amenity kits and FF&E, China Sourcing Co helps you source a wide range of quality products tailored for the hospitality industry.",
+        "href": "/product/hospitality-items",
+        "ctaLabel": "See Product Detail"
+      },
+      {
+        "image": "/images/china-sourcing-point-of-sale-1.png",
+        "alt": "china sourcing point of sale",
+        "title": "Point of Sale",
+        "body": "From display stands and digital signage to cash registers and payment terminals, China Sourcing Co helps you source a full range of effective point of sale solutions.",
+        "href": "/product/point-of-sale",
+        "ctaLabel": "See Product Detail"
+      },
+      {
+        "image": "/images/automotive-and-machinery-1.png",
+        "alt": "automotive and machinery products",
+        "title": "Automotive & Machinery",
+        "body": "From vehicle parts and accessories to industrial machinery and equipment, China Sourcing Co helps you source a broad range of durable, high-performance automotive and machinery products.",
+        "href": "/product/automotive-machinery",
+        "ctaLabel": "See Product Detail"
+      },
+      {
+        "image": "/images/bedding-home-1.png",
+        "alt": "bedding and home products",
+        "title": "Bedding & Home",
+        "body": "From mattresses and pillows to home décor and textiles, China Sourcing Co helps you source a diverse range of comfortable, stylish bedding and home products.",
+        "href": "/product/bedding-home",
+        "ctaLabel": "See Product Detail"
+      },
+      {
+        "image": "/images/textiles-garments-1-1024x1024.png",
+        "alt": "textiles and garments",
+        "title": "Textiles & Garments",
+        "body": "From everyday apparel and uniforms to custom fabrics and fashion collections, China Sourcing Co helps you source a wide range of high-quality textiles tailored to your specifications.",
+        "href": "/product/textiles-garments",
+        "ctaLabel": "See Product Detail"
+      },
+      {
+        "image": "/images/building-materials-1024x1024.png",
+        "alt": "building materials",
+        "title": "Building Materials",
+        "body": "From tiles and sanitaryware to insulation and doors, we help builders, contractors and developers source reliable building materials from certified manufacturers in China.",
+        "href": "/product/building-materials-2",
+        "ctaLabel": "See Product Detail"
+      }
+    ]
+  },
+  "faq": {
+    "tag": "Common Questions",
+    "headingLines": [
+      "Frequently Asked",
+      "Questions (FAQs)"
+    ],
+    "email": "info@chinasourcing.co",
+    "items": [
+      {
+        "question": "What types of products can you help me source?",
+        "answer": "We source a wide variety of products across 14+ categories. If your product isn’t listed, speak to our team today - whatever your industry, we’ll find the right suppliers to meet your needs."
+      },
+      {
+        "question": "How do you ensure product quality?",
+        "answer": "We work exclusively with trusted, vetted suppliers and conduct thorough quality checks at multiple stages-before shipment and upon delivery - to ensure your products meet your standards."
+      },
+      {
+        "question": "Can you handle negotiations and supplier communication?",
+        "answer": "Absolutely. Our experienced team handles all negotiations and supplier communications in local languages and dialects to secure the best pricing and terms - saving you time and effort."
+      },
+      {
+        "question": "What are your minimum order quantities (MOQs)?",
+        "answer": "MOQs vary depending on the product and factory. We’ll help you find the best fit and negotiate on your behalf, whether you're ordering small batches or large volumes."
+      },
+      {
+        "question": "Do you assist with shipping and logistics?",
+        "answer": "Yes, our team coordinate cost-effective shipping and handle logistics to deliver your products safely and on time."
+      }
+    ]
+  },
+  "cta": {
+    "tag": "Let’s Build Your China Supply Chain",
+    "heading": "Ready to work with a sourcing team that delivers real-world results?",
+    "body": "From first quote to final delivery, China Sourcing Co helps you simplify sourcing, reduce risks, and scale with confidence.",
+    "ctaLabel": "See real results",
+    "ctaHref": "/case-studies"
+  },
+  "logos": {
+    "tag": "Certifications & Compliance",
+    "heading": "Certified Supply Chains You Can Trust",
+    "intro": "We work with factories that meet international standard",
+    "items": [
+      "/images/image-85.png",
+      "/images/image-88.png",
+      "/images/image-91.png",
+      "/images/image-93.png",
+      "/images/image-89.png",
+      "/images/image-86.png",
+      "/images/image-87.png"
+    ]
+  }
+}
