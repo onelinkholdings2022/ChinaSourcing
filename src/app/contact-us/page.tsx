@@ -1,10 +1,16 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { landingMetadata } from "@/components/LandingPage";
-import { contactFlowTrack, contactHero } from "@/data/contact";
 import { SimpleHero } from "@/components/sections/SimpleHero";
 import { ContactInfo } from "@/components/sections/contact/ContactInfo";
 import { FlowTrackTabs } from "@/components/sections/FlowTrackTabs";
+import { contactPageController, globalController } from "@/lib";
+import {
+  buildContactHeroView,
+  buildContactInfoView,
+  buildContactFlowTrackView,
+} from "@/lib/views/contactView";
+import { buildNavView, buildFooterView } from "@/lib/views/globalView";
 
 export const metadata = landingMetadata("contact-us");
 
@@ -19,26 +25,59 @@ export const metadata = landingMetadata("contact-us");
  * kept in `src/components/sections/contact/` so the band can be put back by
  * re-adding one element.
  */
-export default function Page() {
+export default async function Page() {
+  const [pageResult, globalResult] = await Promise.all([
+    contactPageController.getPage(),
+    globalController.getGlobal(),
+  ]);
+
+  const page = pageResult.data;
+  const global = globalResult.data;
+
+  if (!page) {
+    return (
+      <>
+        <Header solid nav={global ? buildNavView(global) : undefined} />
+        <main>
+          <p className="container py-40 text-center">
+            Không tải được nội dung trang Contact Us. Vui lòng thử lại sau.
+          </p>
+        </main>
+        <Footer footer={global ? buildFooterView(global) : undefined} />
+      </>
+    );
+  }
+
+  const hero = buildContactHeroView(page);
+  const info = buildContactInfoView(page);
+  const flowTrack = buildContactFlowTrackView(page);
+
   return (
     <>
-      <Header solid />
+      <Header solid nav={global ? buildNavView(global) : undefined} />
       <main className="pt-28 lg:pt-32">
         <SimpleHero
-          heading={contactHero.heading}
-          intro={contactHero.intro}
-          image={contactHero.image}
-          imageAlt={contactHero.imageAlt}
+          heading={hero.heading}
+          intro={hero.intro}
+          image={hero.image}
+          imageAlt={hero.imageAlt}
           gradientId="contact-hero-glow"
         />
-        <ContactInfo />
+        <ContactInfo
+          tag={info.tag}
+          heading={info.heading}
+          intro={info.intro}
+          details={info.details}
+          social={info.social}
+          form={info.form}
+        />
         <FlowTrackTabs
-          tag={contactFlowTrack.tag}
-          heading={contactFlowTrack.heading}
-          slides={contactFlowTrack.slides}
+          tag={flowTrack.tag}
+          heading={flowTrack.heading}
+          slides={flowTrack.slides}
         />
       </main>
-      <Footer />
+      <Footer footer={global ? buildFooterView(global) : undefined} />
     </>
   );
 }

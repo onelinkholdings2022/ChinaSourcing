@@ -3,7 +3,22 @@ import { Tag } from "@/components/ui/button";
 import { HubspotForm } from "@/components/sections/contact/HubspotForm";
 import { contactInfo, hubspot } from "@/data/contact";
 
-const { tag, heading, intro, details, social } = contactInfo;
+export type ContactDetailCard = {
+  icon: string;
+  label: string;
+  value: string;
+  href?: string;
+};
+
+export type ContactSocialLink = { href: string; image: string; alt: string };
+
+export type ContactSocial = {
+  icon: string;
+  label: string;
+  links: ContactSocialLink[];
+};
+
+export type ContactHubspotForm = { portalId: string; formId: string; region?: string };
 
 /**
  * The indigo band: contact details on the left, the "Get In Touch" form on the
@@ -23,7 +38,21 @@ const { tag, heading, intro, details, social } = contactInfo;
  *
  * The gaps that survive are 12 / 12 / 48, and 80 at `lg` for the last.
  */
-export function ContactInfo() {
+export function ContactInfo({
+  tag = contactInfo.tag,
+  heading = contactInfo.heading,
+  intro = contactInfo.intro,
+  details = contactInfo.details,
+  social = contactInfo.social,
+  form = { portalId: hubspot.portalId, formId: hubspot.contactFormId, region: hubspot.region },
+}: {
+  tag?: string;
+  heading?: string;
+  intro?: string;
+  details?: ContactDetailCard[];
+  social?: ContactSocial;
+  form?: ContactHubspotForm;
+} = {}) {
   return (
     <section className="bg-dark-blue-950 py-16 md:py-24 lg:py-32 text-white">
       <div className="container">
@@ -105,9 +134,9 @@ export function ContactInfo() {
 
           <div className="bg-cyan-50 p-6 md:p-8 lg:p-10 rounded-lg shadow-lg lg:col-span-5 lg:col-start-8">
             <HubspotForm
-              portalId={hubspot.portalId}
-              formId={hubspot.contactFormId}
-              region={hubspot.region}
+              portalId={form.portalId}
+              formId={form.formId}
+              region={form.region}
             />
           </div>
         </div>

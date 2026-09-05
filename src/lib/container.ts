@@ -12,6 +12,7 @@ import { PartnerRepository } from "./repositories/strapi/PartnerRepository";
 import { AboutPageRepository } from "./repositories/strapi/AboutPageRepository";
 import { TeamMemberRepository } from "./repositories/strapi/TeamMemberRepository";
 import { ProcessPageRepository } from "./repositories/strapi/ProcessPageRepository";
+import { ContactPageRepository } from "./repositories/strapi/ContactPageRepository";
 
 import { GET_HOMEPAGE } from "./cqrs/queries/GetHomepageQuery";
 import { GET_GLOBAL } from "./cqrs/queries/GetGlobalQuery";
@@ -22,6 +23,7 @@ import { GET_CLIENT_LOGOS } from "./cqrs/queries/GetClientLogosQuery";
 import { GET_ABOUT_PAGE } from "./cqrs/queries/GetAboutPageQuery";
 import { GET_FEATURED_TEAM_MEMBERS } from "./cqrs/queries/GetFeaturedTeamMembersQuery";
 import { GET_PROCESS_PAGE } from "./cqrs/queries/GetProcessPageQuery";
+import { GET_CONTACT_PAGE } from "./cqrs/queries/GetContactPageQuery";
 
 import { GetHomepageHandler } from "./cqrs/handlers/queries/GetHomepageHandler";
 import { GetGlobalHandler } from "./cqrs/handlers/queries/GetGlobalHandler";
@@ -32,6 +34,7 @@ import { GetClientLogosHandler } from "./cqrs/handlers/queries/GetClientLogosHan
 import { GetAboutPageHandler } from "./cqrs/handlers/queries/GetAboutPageHandler";
 import { GetFeaturedTeamMembersHandler } from "./cqrs/handlers/queries/GetFeaturedTeamMembersHandler";
 import { GetProcessPageHandler } from "./cqrs/handlers/queries/GetProcessPageHandler";
+import { GetContactPageHandler } from "./cqrs/handlers/queries/GetContactPageHandler";
 
 import { HomepageService } from "./services/HomepageService";
 import { GlobalService } from "./services/GlobalService";
@@ -41,6 +44,7 @@ import { PartnerService } from "./services/PartnerService";
 import { AboutPageService } from "./services/AboutPageService";
 import { TeamMemberService } from "./services/TeamMemberService";
 import { ProcessPageService } from "./services/ProcessPageService";
+import { ContactPageService } from "./services/ContactPageService";
 
 import { HomepageController } from "./controllers/HomepageController";
 import { GlobalController } from "./controllers/GlobalController";
@@ -50,6 +54,7 @@ import { PartnerController } from "./controllers/PartnerController";
 import { AboutPageController } from "./controllers/AboutPageController";
 import { TeamMemberController } from "./controllers/TeamMemberController";
 import { ProcessPageController } from "./controllers/ProcessPageController";
+import { ContactPageController } from "./controllers/ContactPageController";
 
 interface Container {
   homepageController: HomepageController;
@@ -60,6 +65,7 @@ interface Container {
   aboutPageController: AboutPageController;
   teamMemberController: TeamMemberController;
   processPageController: ProcessPageController;
+  contactPageController: ContactPageController;
 }
 
 const CONTAINER_KEY = "__cnsContainer";
@@ -77,6 +83,7 @@ function build(): Container {
   const aboutPageRepo = new AboutPageRepository();
   const teamMemberRepo = new TeamMemberRepository();
   const processPageRepo = new ProcessPageRepository();
+  const contactPageRepo = new ContactPageRepository();
 
   queryBus.register(GET_HOMEPAGE, new GetHomepageHandler(homepageRepo));
   queryBus.register(GET_GLOBAL, new GetGlobalHandler(globalRepo));
@@ -87,6 +94,7 @@ function build(): Container {
   queryBus.register(GET_ABOUT_PAGE, new GetAboutPageHandler(aboutPageRepo));
   queryBus.register(GET_FEATURED_TEAM_MEMBERS, new GetFeaturedTeamMembersHandler(teamMemberRepo));
   queryBus.register(GET_PROCESS_PAGE, new GetProcessPageHandler(processPageRepo));
+  queryBus.register(GET_CONTACT_PAGE, new GetContactPageHandler(contactPageRepo));
 
   return {
     homepageController: new HomepageController(new HomepageService(queryBus)),
@@ -97,6 +105,7 @@ function build(): Container {
     aboutPageController: new AboutPageController(new AboutPageService(queryBus)),
     teamMemberController: new TeamMemberController(new TeamMemberService(queryBus)),
     processPageController: new ProcessPageController(new ProcessPageService(queryBus)),
+    contactPageController: new ContactPageController(new ContactPageService(queryBus)),
   };
 }
 
@@ -117,3 +126,4 @@ export const partnerController = container.partnerController;
 export const aboutPageController = container.aboutPageController;
 export const teamMemberController = container.teamMemberController;
 export const processPageController = container.processPageController;
+export const contactPageController = container.contactPageController;
