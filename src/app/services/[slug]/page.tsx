@@ -12,11 +12,29 @@ import { ResourceCards } from "@/components/sections/ResourceCards";
 import { ServiceCarousel } from "@/components/sections/ServiceCards";
 import { TabbedTestimonial } from "@/components/sections/TabbedTestimonial";
 import { ProductHero } from "@/components/sections/product/ProductHero";
-import { decodeEntities, getEntry } from "@/lib/content";
-import { getServicePage, serviceSlugs } from "@/data/services";
+import {
+  serviceController,
+  serviceSettingController,
+  testimonialController,
+  globalController,
+} from "@/lib";
+import {
+  buildServiceHeroView,
+  buildServiceSimpleCardView,
+  buildCategoryShowcaseView,
+  buildServiceProcessView,
+  buildServiceUspView,
+  buildServiceTestimonialsView,
+  buildServiceFaqView,
+  buildServiceSettingResourcesView,
+  buildOtherServicesView,
+  buildServiceSettingCtaView,
+} from "@/lib/views/serviceView";
+import { buildNavView, buildFooterView } from "@/lib/views/globalView";
 
-export function generateStaticParams() {
-  return serviceSlugs.map((slug) => ({ slug }));
+export async function generateStaticParams() {
+  const result = await serviceController.getAll();
+  return (result.data ?? []).map((s) => ({ slug: s.slug }));
 }
 
 export async function generateMetadata({
@@ -25,10 +43,11 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const entry = getEntry("services", slug);
+  const result = await serviceController.getBySlug(slug);
+  const service = result.data;
   return {
-    title: entry ? `${decodeEntities(entry.title)} | China Sourcing Co` : "China Sourcing Co",
-    description: entry?.excerpt || undefined,
+    title: service ? `${service.title} | China Sourcing Co` : "China Sourcing Co",
+    description: service?.cardDescription || undefined,
   };
 }
 
@@ -42,71 +61,92 @@ export default async function ServicePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const page = getServicePage(slug);
-  if (!page) notFound();
+
+  const [serviceResult, allResult, settingsResult, testimonialsResult, globalResult] = await Promise.all([
+    serviceController.getBySlug(slug),
+    serviceController.getAll(),
+    serviceSettingController.getSettings(),
+    testimonialController.getAll(),
+    globalController.getGlobal(),
+  ]);
+
+  const service = serviceResult.data;
+  if (!service) notFound();
+
+  const allServices = allResult.data ?? [];
+  const settings = settingsResult.data;
+  const allTestimonials = testimonialsResult.data ?? [];
+  const global = globalResult.data;
+
+  const hero = buildServiceHeroView(service);
+  const simpleCard = buildServiceSimpleCardView(service);
+  const verticalTab = settings ? buildCategoryShowcaseView(settings.categoryShowcase) : null;
+  const flowTrack = buildServiceProcessView(service);
+  const usp = buildServiceUspView(service);
+  const testimonials = buildServiceTestimonialsView(settings, allTestimonials);
+  const faq = buildServiceFaqView(service, settings);
+  const resources = buildServiceSettingResourcesView(settings);
+  const carousel = buildOtherServicesView(service, allServices, settings);
+  const cta = buildServiceSettingCtaView(settings);
 
   return (
     <>
-      <Header solid />
+      <Header solid nav={global ? buildNavView(global) : undefined} />
       <main className="pt-28 lg:pt-32">
-        <ProductHero hero={page.hero} />
+        <ProductHero hero={hero} />
         <SimpleCardGrid
-          tag={page.simpleCard.tag}
-          heading={page.simpleCard.heading}
-          intro={page.simpleCard.intro}
-          cards={page.simpleCard.cards}
+          tag={simpleCard.tag}
+          heading={simpleCard.heading}
+          intro={simpleCard.intro}
+          cards={simpleCard.cards}
           align="left"
         />
-        <VerticalTab {...page.verticalTab} />
-        <FlowTrackTabs
-          tag={page.flowTrack.tag}
-          heading={page.flowTrack.heading}
-          slides={page.flowTrack.slides}
-        />
+        {verticalTab && (
+          <VerticalTab
+            tag={verticalTab.tag}
+            heading={verticalTab.heading}
+            intro={verticalTab.intro}
+            ctaLabel={verticalTab.ctaLabel}
+            ctaHref={verticalTab.ctaHref}
+            tabs={verticalTab.tabs}
+          />
+        )}
+        <FlowTrackTabs tag={flowTrack.tag} heading={flowTrack.heading} slides={flowTrack.slides} />
         <UspList
-          tag={page.usp.tag}
-          heading={page.usp.heading}
-          intro={page.usp.intro ?? undefined}
-          icon={page.usp.icon}
-          image={page.usp.image}
-          items={page.usp.items}
+          tag={usp.tag}
+          heading={usp.heading}
+          intro={usp.intro ?? undefined}
+          icon={usp.icon}
+          image={usp.image}
+          items={usp.items}
         />
-        <TabbedTestimonial
-          tag={page.testimonials.tag}
-          heading={page.testimonials.heading}
-          tabs={page.testimonials.tabs}
-        />
-        <Faq
-          tag={page.faq.tag}
-          headingLines={page.faq.headingLines}
-          email={page.faq.email}
-          items={page.faq.items}
-        />
+        <TabbedTestimonial tag={testimonials.tag} heading={testimonials.heading} tabs={testimonials.tabs} />
+        <Faq tag={faq.tag} headingLines={faq.headingLines} email={faq.email} items={faq.items} />
         <ResourceCards
-          tag={page.resources.tag}
-          headingLines={page.resources.headingLines}
-          cards={page.resources.cards}
-          ctaLabel={page.resources.ctaLabel}
-          ctaHref={page.resources.ctaHref}
+          tag={resources.tag}
+          headingLines={resources.headingLines}
+          cards={resources.cards}
+          ctaLabel={resources.ctaLabel}
+          ctaHref={resources.ctaHref}
         />
         <ServiceCarousel
-          tag={page.carousel.tag}
-          heading={page.carousel.heading}
-          intro={page.carousel.intro}
-          cards={page.carousel.cards}
-          ctaLabel={page.carousel.ctaLabel}
-          ctaHref={page.carousel.ctaHref}
+          tag={carousel.tag}
+          heading={carousel.heading}
+          intro={carousel.intro}
+          cards={carousel.cards}
+          ctaLabel={carousel.ctaLabel}
+          ctaHref={carousel.ctaHref}
         />
         <DarkCta
-          tag={page.cta.tag}
-          heading={page.cta.heading}
-          body={page.cta.body}
-          ctaLabel={page.cta.ctaLabel}
-          ctaHref={page.cta.ctaHref}
-          className={page.cta.sectionClass}
+          tag={cta.tag}
+          heading={cta.heading}
+          body={cta.body}
+          ctaLabel={cta.ctaLabel}
+          ctaHref={cta.ctaHref}
+          className={cta.sectionClass}
         />
       </main>
-      <Footer />
+      <Footer footer={global ? buildFooterView(global) : undefined} />
     </>
   );
 }

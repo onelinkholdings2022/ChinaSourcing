@@ -14,6 +14,10 @@ export {
   contactPageController,
   caseStudiesPageController,
   caseStudySettingController,
+  servicesPageController,
+  serviceController,
+  serviceSettingController,
+  testimonialController,
 } from "./container";
 
 export { getMediaUrl, mediaWidth, mediaHeight, mediaAlt } from "./api/media-url";
@@ -28,3 +32,7 @@ export type { Partner, PartnerCategory } from "./types/partner";
 export type { AboutPageData } from "./types/about-page";
 export type { TeamMember } from "./types/team-member";
 export type { StrapiMedia, StrapiButton, StrapiTag, StrapiSeo } from "./types/strapi";
+export type { ServicesPageData, ServiceData, ServiceSettingData } from "./types/services-page";
+export type { Testimonial } from "./types/testimonial";
+export type { Resource } from "./types/resource";
+export type { Category } from "./types/category";

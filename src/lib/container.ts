@@ -15,6 +15,10 @@ import { ProcessPageRepository } from "./repositories/strapi/ProcessPageReposito
 import { ContactPageRepository } from "./repositories/strapi/ContactPageRepository";
 import { CaseStudiesPageRepository } from "./repositories/strapi/CaseStudiesPageRepository";
 import { CaseStudySettingRepository } from "./repositories/strapi/CaseStudySettingRepository";
+import { ServicesPageRepository } from "./repositories/strapi/ServicesPageRepository";
+import { ServiceRepository } from "./repositories/strapi/ServiceRepository";
+import { ServiceSettingRepository } from "./repositories/strapi/ServiceSettingRepository";
+import { TestimonialRepository } from "./repositories/strapi/TestimonialRepository";
 
 import { GET_HOMEPAGE } from "./cqrs/queries/GetHomepageQuery";
 import { GET_GLOBAL } from "./cqrs/queries/GetGlobalQuery";
@@ -30,6 +34,11 @@ import { GET_CASE_STUDIES_PAGE } from "./cqrs/queries/GetCaseStudiesPageQuery";
 import { GET_CASE_STUDY_SETTING } from "./cqrs/queries/GetCaseStudySettingQuery";
 import { GET_ALL_CASE_STUDIES } from "./cqrs/queries/GetAllCaseStudiesQuery";
 import { GET_CASE_STUDY_BY_SLUG } from "./cqrs/queries/GetCaseStudyBySlugQuery";
+import { GET_SERVICES_PAGE } from "./cqrs/queries/GetServicesPageQuery";
+import { GET_ALL_SERVICES } from "./cqrs/queries/GetAllServicesQuery";
+import { GET_SERVICE_BY_SLUG } from "./cqrs/queries/GetServiceBySlugQuery";
+import { GET_SERVICE_SETTING } from "./cqrs/queries/GetServiceSettingQuery";
+import { GET_ALL_TESTIMONIALS } from "./cqrs/queries/GetAllTestimonialsQuery";
 
 import { GetHomepageHandler } from "./cqrs/handlers/queries/GetHomepageHandler";
 import { GetGlobalHandler } from "./cqrs/handlers/queries/GetGlobalHandler";
@@ -45,6 +54,11 @@ import { GetCaseStudiesPageHandler } from "./cqrs/handlers/queries/GetCaseStudie
 import { GetCaseStudySettingHandler } from "./cqrs/handlers/queries/GetCaseStudySettingHandler";
 import { GetAllCaseStudiesHandler } from "./cqrs/handlers/queries/GetAllCaseStudiesHandler";
 import { GetCaseStudyBySlugHandler } from "./cqrs/handlers/queries/GetCaseStudyBySlugHandler";
+import { GetServicesPageHandler } from "./cqrs/handlers/queries/GetServicesPageHandler";
+import { GetAllServicesHandler } from "./cqrs/handlers/queries/GetAllServicesHandler";
+import { GetServiceBySlugHandler } from "./cqrs/handlers/queries/GetServiceBySlugHandler";
+import { GetServiceSettingHandler } from "./cqrs/handlers/queries/GetServiceSettingHandler";
+import { GetAllTestimonialsHandler } from "./cqrs/handlers/queries/GetAllTestimonialsHandler";
 
 import { HomepageService } from "./services/HomepageService";
 import { GlobalService } from "./services/GlobalService";
@@ -57,6 +71,10 @@ import { ProcessPageService } from "./services/ProcessPageService";
 import { ContactPageService } from "./services/ContactPageService";
 import { CaseStudiesPageService } from "./services/CaseStudiesPageService";
 import { CaseStudySettingService } from "./services/CaseStudySettingService";
+import { ServicesPageService } from "./services/ServicesPageService";
+import { ServiceService } from "./services/ServiceService";
+import { ServiceSettingService } from "./services/ServiceSettingService";
+import { TestimonialService } from "./services/TestimonialService";
 
 import { HomepageController } from "./controllers/HomepageController";
 import { GlobalController } from "./controllers/GlobalController";
@@ -69,6 +87,10 @@ import { ProcessPageController } from "./controllers/ProcessPageController";
 import { ContactPageController } from "./controllers/ContactPageController";
 import { CaseStudiesPageController } from "./controllers/CaseStudiesPageController";
 import { CaseStudySettingController } from "./controllers/CaseStudySettingController";
+import { ServicesPageController } from "./controllers/ServicesPageController";
+import { ServiceController } from "./controllers/ServiceController";
+import { ServiceSettingController } from "./controllers/ServiceSettingController";
+import { TestimonialController } from "./controllers/TestimonialController";
 
 interface Container {
   homepageController: HomepageController;
@@ -82,6 +104,10 @@ interface Container {
   contactPageController: ContactPageController;
   caseStudiesPageController: CaseStudiesPageController;
   caseStudySettingController: CaseStudySettingController;
+  servicesPageController: ServicesPageController;
+  serviceController: ServiceController;
+  serviceSettingController: ServiceSettingController;
+  testimonialController: TestimonialController;
 }
 
 const CONTAINER_KEY = "__cnsContainer";
@@ -102,6 +128,10 @@ function build(): Container {
   const contactPageRepo = new ContactPageRepository();
   const caseStudiesPageRepo = new CaseStudiesPageRepository();
   const caseStudySettingRepo = new CaseStudySettingRepository();
+  const servicesPageRepo = new ServicesPageRepository();
+  const serviceRepo = new ServiceRepository();
+  const serviceSettingRepo = new ServiceSettingRepository();
+  const testimonialRepo = new TestimonialRepository();
 
   queryBus.register(GET_HOMEPAGE, new GetHomepageHandler(homepageRepo));
   queryBus.register(GET_GLOBAL, new GetGlobalHandler(globalRepo));
@@ -117,6 +147,11 @@ function build(): Container {
   queryBus.register(GET_CASE_STUDY_SETTING, new GetCaseStudySettingHandler(caseStudySettingRepo));
   queryBus.register(GET_ALL_CASE_STUDIES, new GetAllCaseStudiesHandler(caseStudyRepo));
   queryBus.register(GET_CASE_STUDY_BY_SLUG, new GetCaseStudyBySlugHandler(caseStudyRepo));
+  queryBus.register(GET_SERVICES_PAGE, new GetServicesPageHandler(servicesPageRepo));
+  queryBus.register(GET_ALL_SERVICES, new GetAllServicesHandler(serviceRepo));
+  queryBus.register(GET_SERVICE_BY_SLUG, new GetServiceBySlugHandler(serviceRepo));
+  queryBus.register(GET_SERVICE_SETTING, new GetServiceSettingHandler(serviceSettingRepo));
+  queryBus.register(GET_ALL_TESTIMONIALS, new GetAllTestimonialsHandler(testimonialRepo));
 
   return {
     homepageController: new HomepageController(new HomepageService(queryBus)),
@@ -130,6 +165,10 @@ function build(): Container {
     contactPageController: new ContactPageController(new ContactPageService(queryBus)),
     caseStudiesPageController: new CaseStudiesPageController(new CaseStudiesPageService(queryBus)),
     caseStudySettingController: new CaseStudySettingController(new CaseStudySettingService(queryBus)),
+    servicesPageController: new ServicesPageController(new ServicesPageService(queryBus)),
+    serviceController: new ServiceController(new ServiceService(queryBus)),
+    serviceSettingController: new ServiceSettingController(new ServiceSettingService(queryBus)),
+    testimonialController: new TestimonialController(new TestimonialService(queryBus)),
   };
 }
 
@@ -153,3 +192,7 @@ export const processPageController = container.processPageController;
 export const contactPageController = container.contactPageController;
 export const caseStudiesPageController = container.caseStudiesPageController;
 export const caseStudySettingController = container.caseStudySettingController;
+export const servicesPageController = container.servicesPageController;
+export const serviceController = container.serviceController;
+export const serviceSettingController = container.serviceSettingController;
+export const testimonialController = container.testimonialController;

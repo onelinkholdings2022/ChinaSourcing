@@ -9,7 +9,23 @@ import { ResourceCards } from "@/components/sections/ResourceCards";
 import { ServiceList } from "@/components/sections/ServiceCards";
 import { CaseStudySlider } from "@/components/sections/CaseStudySlider";
 import { ProductHero } from "@/components/sections/product/ProductHero";
-import { servicesIndex } from "@/data/services";
+import {
+  servicesPageController,
+  serviceController,
+  serviceSettingController,
+  globalController,
+} from "@/lib";
+import {
+  buildServicesHeroView,
+  buildServicesProcessView,
+  buildCategoryShowcaseView,
+  buildServicesUspView,
+  buildServiceListView,
+  buildServicesCaseStudiesView,
+  buildServicesResourcesView,
+  buildServicesCtaView,
+} from "@/lib/views/serviceView";
+import { buildNavView, buildFooterView } from "@/lib/views/globalView";
 
 export const metadata = landingMetadata("services");
 
@@ -17,22 +33,57 @@ export const metadata = landingMetadata("services");
  * `/services` — eight sections. Only `service-list` is unique to this page;
  * the rest are the shared components with this page's copy.
  */
-export default function Page() {
-  const { hero, flowTrack, serviceList, verticalTab, usp, resources, cta } =
-    servicesIndex;
+export default async function Page() {
+  const [pageResult, allResult, settingsResult, globalResult] = await Promise.all([
+    servicesPageController.getPage(),
+    serviceController.getAll(),
+    serviceSettingController.getSettings(),
+    globalController.getGlobal(),
+  ]);
+
+  const page = pageResult.data;
+  const allServices = allResult.data ?? [];
+  const settings = settingsResult.data;
+  const global = globalResult.data;
+
+  if (!page) {
+    return (
+      <>
+        <Header solid nav={global ? buildNavView(global) : undefined} />
+        <main>
+          <p className="container py-40 text-center">
+            Không tải được nội dung trang Services. Vui lòng thử lại sau.
+          </p>
+        </main>
+        <Footer footer={global ? buildFooterView(global) : undefined} />
+      </>
+    );
+  }
+
+  const hero = buildServicesHeroView(page);
+  const flowTrack = buildServicesProcessView(page);
+  const verticalTab = buildCategoryShowcaseView(page.categoryShowcase);
+  const usp = buildServicesUspView(page);
+  const serviceList = buildServiceListView(allServices, settings);
+  const caseStudies = buildServicesCaseStudiesView(page);
+  const resources = buildServicesResourcesView(page);
+  const cta = buildServicesCtaView(page);
 
   return (
     <>
-      <Header solid />
+      <Header solid nav={global ? buildNavView(global) : undefined} />
       <main className="pt-28 lg:pt-32">
         <ProductHero hero={hero} />
-        <FlowTrackTabs
-          tag={flowTrack.tag}
-          heading={flowTrack.heading}
-          slides={flowTrack.slides}
+        <FlowTrackTabs tag={flowTrack.tag} heading={flowTrack.heading} slides={flowTrack.slides} />
+        <ServiceList cards={serviceList} />
+        <VerticalTab
+          tag={verticalTab.tag}
+          heading={verticalTab.heading}
+          intro={verticalTab.intro}
+          ctaLabel={verticalTab.ctaLabel}
+          ctaHref={verticalTab.ctaHref}
+          tabs={verticalTab.tabs}
         />
-        <ServiceList cards={serviceList.cards} />
-        <VerticalTab {...verticalTab} />
         <UspList
           tag={usp.tag}
           heading={usp.heading}
@@ -41,7 +92,13 @@ export default function Page() {
           image={usp.image}
           items={usp.items}
         />
-        <CaseStudySlider />
+        <CaseStudySlider
+          tag={caseStudies.tag}
+          headingLines={caseStudies.headingLines}
+          cards={caseStudies.cards}
+          ctaLabel={caseStudies.ctaLabel}
+          ctaHref={caseStudies.ctaHref}
+        />
         <ResourceCards
           tag={resources.tag}
           headingLines={resources.headingLines}
@@ -58,7 +115,7 @@ export default function Page() {
           className={cta.sectionClass}
         />
       </main>
-      <Footer />
+      <Footer footer={global ? buildFooterView(global) : undefined} />
     </>
   );
 }
