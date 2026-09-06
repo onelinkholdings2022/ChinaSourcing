@@ -22,11 +22,17 @@ import { TestimonialRepository } from "./repositories/strapi/TestimonialReposito
 import { ProductsPageRepository } from "./repositories/strapi/ProductsPageRepository";
 import { ProductRepository } from "./repositories/strapi/ProductRepository";
 import { ProductSettingRepository } from "./repositories/strapi/ProductSettingRepository";
+import { ResourcesPageRepository } from "./repositories/strapi/ResourcesPageRepository";
+import { ResourceRepository } from "./repositories/strapi/ResourceRepository";
+import { ResourceSettingRepository } from "./repositories/strapi/ResourceSettingRepository";
+import { CategoryRepository } from "./repositories/strapi/CategoryRepository";
 
 import { GET_HOMEPAGE } from "./cqrs/queries/GetHomepageQuery";
 import { GET_GLOBAL } from "./cqrs/queries/GetGlobalQuery";
 import { GET_FEATURED_CASE_STUDIES } from "./cqrs/queries/GetFeaturedCaseStudiesQuery";
 import { GET_LATEST_BLOG_POSTS } from "./cqrs/queries/GetLatestBlogPostsQuery";
+import { GET_ALL_BLOG_POSTS } from "./cqrs/queries/GetAllBlogPostsQuery";
+import { GET_BLOG_POST_BY_SLUG } from "./cqrs/queries/GetBlogPostBySlugQuery";
 import { GET_ALL_PARTNERS } from "./cqrs/queries/GetAllPartnersQuery";
 import { GET_CLIENT_LOGOS } from "./cqrs/queries/GetClientLogosQuery";
 import { GET_ABOUT_PAGE } from "./cqrs/queries/GetAboutPageQuery";
@@ -46,11 +52,18 @@ import { GET_PRODUCTS_PAGE } from "./cqrs/queries/GetProductsPageQuery";
 import { GET_ALL_PRODUCTS } from "./cqrs/queries/GetAllProductsQuery";
 import { GET_PRODUCT_BY_SLUG } from "./cqrs/queries/GetProductBySlugQuery";
 import { GET_PRODUCT_SETTING } from "./cqrs/queries/GetProductSettingQuery";
+import { GET_RESOURCES_PAGE } from "./cqrs/queries/GetResourcesPageQuery";
+import { GET_RESOURCE_SETTING } from "./cqrs/queries/GetResourceSettingQuery";
+import { GET_ALL_RESOURCES } from "./cqrs/queries/GetAllResourcesQuery";
+import { GET_RESOURCE_BY_SLUG } from "./cqrs/queries/GetResourceBySlugQuery";
+import { GET_ALL_CATEGORIES } from "./cqrs/queries/GetAllCategoriesQuery";
 
 import { GetHomepageHandler } from "./cqrs/handlers/queries/GetHomepageHandler";
 import { GetGlobalHandler } from "./cqrs/handlers/queries/GetGlobalHandler";
 import { GetFeaturedCaseStudiesHandler } from "./cqrs/handlers/queries/GetFeaturedCaseStudiesHandler";
 import { GetLatestBlogPostsHandler } from "./cqrs/handlers/queries/GetLatestBlogPostsHandler";
+import { GetAllBlogPostsHandler } from "./cqrs/handlers/queries/GetAllBlogPostsHandler";
+import { GetBlogPostBySlugHandler } from "./cqrs/handlers/queries/GetBlogPostBySlugHandler";
 import { GetAllPartnersHandler } from "./cqrs/handlers/queries/GetAllPartnersHandler";
 import { GetClientLogosHandler } from "./cqrs/handlers/queries/GetClientLogosHandler";
 import { GetAboutPageHandler } from "./cqrs/handlers/queries/GetAboutPageHandler";
@@ -70,6 +83,11 @@ import { GetProductsPageHandler } from "./cqrs/handlers/queries/GetProductsPageH
 import { GetAllProductsHandler } from "./cqrs/handlers/queries/GetAllProductsHandler";
 import { GetProductBySlugHandler } from "./cqrs/handlers/queries/GetProductBySlugHandler";
 import { GetProductSettingHandler } from "./cqrs/handlers/queries/GetProductSettingHandler";
+import { GetResourcesPageHandler } from "./cqrs/handlers/queries/GetResourcesPageHandler";
+import { GetResourceSettingHandler } from "./cqrs/handlers/queries/GetResourceSettingHandler";
+import { GetAllResourcesHandler } from "./cqrs/handlers/queries/GetAllResourcesHandler";
+import { GetResourceBySlugHandler } from "./cqrs/handlers/queries/GetResourceBySlugHandler";
+import { GetAllCategoriesHandler } from "./cqrs/handlers/queries/GetAllCategoriesHandler";
 
 import { HomepageService } from "./services/HomepageService";
 import { GlobalService } from "./services/GlobalService";
@@ -89,6 +107,10 @@ import { TestimonialService } from "./services/TestimonialService";
 import { ProductsPageService } from "./services/ProductsPageService";
 import { ProductService } from "./services/ProductService";
 import { ProductSettingService } from "./services/ProductSettingService";
+import { ResourcesPageService } from "./services/ResourcesPageService";
+import { ResourceSettingService } from "./services/ResourceSettingService";
+import { ResourceService } from "./services/ResourceService";
+import { CategoryService } from "./services/CategoryService";
 
 import { HomepageController } from "./controllers/HomepageController";
 import { GlobalController } from "./controllers/GlobalController";
@@ -108,6 +130,10 @@ import { TestimonialController } from "./controllers/TestimonialController";
 import { ProductsPageController } from "./controllers/ProductsPageController";
 import { ProductController } from "./controllers/ProductController";
 import { ProductSettingController } from "./controllers/ProductSettingController";
+import { ResourcesPageController } from "./controllers/ResourcesPageController";
+import { ResourceSettingController } from "./controllers/ResourceSettingController";
+import { ResourceController } from "./controllers/ResourceController";
+import { CategoryController } from "./controllers/CategoryController";
 
 interface Container {
   homepageController: HomepageController;
@@ -128,6 +154,10 @@ interface Container {
   productsPageController: ProductsPageController;
   productController: ProductController;
   productSettingController: ProductSettingController;
+  resourcesPageController: ResourcesPageController;
+  resourceSettingController: ResourceSettingController;
+  resourceController: ResourceController;
+  categoryController: CategoryController;
 }
 
 const CONTAINER_KEY = "__cnsContainer";
@@ -155,11 +185,17 @@ function build(): Container {
   const productsPageRepo = new ProductsPageRepository();
   const productRepo = new ProductRepository();
   const productSettingRepo = new ProductSettingRepository();
+  const resourcesPageRepo = new ResourcesPageRepository();
+  const resourceSettingRepo = new ResourceSettingRepository();
+  const resourceRepo = new ResourceRepository();
+  const categoryRepo = new CategoryRepository();
 
   queryBus.register(GET_HOMEPAGE, new GetHomepageHandler(homepageRepo));
   queryBus.register(GET_GLOBAL, new GetGlobalHandler(globalRepo));
   queryBus.register(GET_FEATURED_CASE_STUDIES, new GetFeaturedCaseStudiesHandler(caseStudyRepo));
   queryBus.register(GET_LATEST_BLOG_POSTS, new GetLatestBlogPostsHandler(blogPostRepo));
+  queryBus.register(GET_ALL_BLOG_POSTS, new GetAllBlogPostsHandler(blogPostRepo));
+  queryBus.register(GET_BLOG_POST_BY_SLUG, new GetBlogPostBySlugHandler(blogPostRepo));
   queryBus.register(GET_ALL_PARTNERS, new GetAllPartnersHandler(partnerRepo));
   queryBus.register(GET_CLIENT_LOGOS, new GetClientLogosHandler(aboutPageRepo));
   queryBus.register(GET_ABOUT_PAGE, new GetAboutPageHandler(aboutPageRepo));
@@ -179,6 +215,11 @@ function build(): Container {
   queryBus.register(GET_ALL_PRODUCTS, new GetAllProductsHandler(productRepo));
   queryBus.register(GET_PRODUCT_BY_SLUG, new GetProductBySlugHandler(productRepo));
   queryBus.register(GET_PRODUCT_SETTING, new GetProductSettingHandler(productSettingRepo));
+  queryBus.register(GET_RESOURCES_PAGE, new GetResourcesPageHandler(resourcesPageRepo));
+  queryBus.register(GET_RESOURCE_SETTING, new GetResourceSettingHandler(resourceSettingRepo));
+  queryBus.register(GET_ALL_RESOURCES, new GetAllResourcesHandler(resourceRepo));
+  queryBus.register(GET_RESOURCE_BY_SLUG, new GetResourceBySlugHandler(resourceRepo));
+  queryBus.register(GET_ALL_CATEGORIES, new GetAllCategoriesHandler(categoryRepo));
 
   return {
     homepageController: new HomepageController(new HomepageService(queryBus)),
@@ -199,6 +240,10 @@ function build(): Container {
     productsPageController: new ProductsPageController(new ProductsPageService(queryBus)),
     productController: new ProductController(new ProductService(queryBus)),
     productSettingController: new ProductSettingController(new ProductSettingService(queryBus)),
+    resourcesPageController: new ResourcesPageController(new ResourcesPageService(queryBus)),
+    resourceSettingController: new ResourceSettingController(new ResourceSettingService(queryBus)),
+    resourceController: new ResourceController(new ResourceService(queryBus)),
+    categoryController: new CategoryController(new CategoryService(queryBus)),
   };
 }
 
@@ -229,3 +274,7 @@ export const testimonialController = container.testimonialController;
 export const productsPageController = container.productsPageController;
 export const productController = container.productController;
 export const productSettingController = container.productSettingController;
+export const resourcesPageController = container.resourcesPageController;
+export const resourceSettingController = container.resourceSettingController;
+export const resourceController = container.resourceController;
+export const categoryController = container.categoryController;

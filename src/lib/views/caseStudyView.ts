@@ -1,5 +1,4 @@
 import { getMediaUrl } from "../api/media-url";
-import { stripHtml } from "./textUtils";
 import type { CaseStudiesPageData, CaseStudySettingData } from "../types/case-studies-page";
 import type { CaseStudy } from "../types/case-study";
 import type { CaseStudyCard, FilterOption } from "@/data/case-studies";

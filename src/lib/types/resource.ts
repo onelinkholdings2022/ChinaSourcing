@@ -5,6 +5,7 @@ export interface Resource {
   id: number;
   title: string;
   slug: string;
+  publishedAt: string;
   featureImage: StrapiMedia | null;
   cover: StrapiMedia | null;
   categories: Category[];

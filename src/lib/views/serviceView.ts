@@ -145,12 +145,10 @@ function buildUsp(usp: {
 export const buildServicesUspView = (page: ServicesPageData) => buildUsp(page.usp);
 export const buildServiceUspView = (service: ServiceData) => buildUsp(service.usp);
 
-export interface ServiceListItemViewData extends ServiceCardData {}
-
 export function buildServiceListView(
   services: ServiceData[],
   settings: ServiceSettingData | null
-): ServiceListItemViewData[] {
+): ServiceCardData[] {
   return services.map((s) => ({
     href: `/services/${s.slug}`,
     tag: settings?.cardTag?.label ?? "",

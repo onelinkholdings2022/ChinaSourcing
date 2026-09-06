@@ -1,4 +1,3 @@
-import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ArticleHero } from "@/components/sections/article/ArticleHero";
@@ -6,9 +5,8 @@ import { ArticleBody } from "@/components/sections/article/ArticleBody";
 import { SubscribeForm } from "@/components/sections/article/SubscribeForm";
 import { RelatedResources } from "@/components/sections/article/RelatedResources";
 import { DarkCta } from "@/components/sections/DarkCta";
-import { getArticle } from "@/data/resources";
-
-const SITE = "https://chinasourcing.co";
+import type { ArticleViewData } from "@/lib/views/articleView";
+import type { NavViewItem, FooterViewData } from "@/lib/views/globalView";
 
 /**
  * One template for every editor-authored article — the 12 `/resource/<slug>`
@@ -20,19 +18,20 @@ const SITE = "https://chinasourcing.co";
  * not siblings of it. That is why the CTA is 1448px wide rather than bleeding
  * to the viewport edges the way it does on every other page.
  */
-export function ArticlePage({ slug }: { slug: string }) {
-  const article = getArticle(slug);
-  if (!article) notFound();
-
+export function ArticlePage({
+  article,
+  nav,
+  footer,
+}: {
+  article: ArticleViewData;
+  nav?: NavViewItem[];
+  footer?: FooterViewData;
+}) {
   return (
     <>
-      <Header solid />
+      <Header solid nav={nav} />
       <main>
-        <ArticleHero
-          title={article.title}
-          subtitle={article.subtitle}
-          facts={article.facts}
-        />
+        <ArticleHero title={article.title} subtitle={article.subtitle} facts={article.facts} />
 
         <div className="container mx-auto spacing flex flex-col">
           <ArticleBody
@@ -40,7 +39,7 @@ export function ArticlePage({ slug }: { slug: string }) {
             featuredAlt={article.featuredAlt}
             toc={article.toc}
             html={article.html}
-            shareUrl={`${SITE}${article.path}`}
+            shareUrl={article.shareUrl}
             title={article.title}
           />
 
@@ -67,7 +66,7 @@ export function ArticlePage({ slug }: { slug: string }) {
           />
         </div>
       </main>
-      <Footer />
+      <Footer footer={footer} />
     </>
   );
 }

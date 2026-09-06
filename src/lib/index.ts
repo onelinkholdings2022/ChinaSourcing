@@ -21,6 +21,10 @@ export {
   productsPageController,
   productController,
   productSettingController,
+  resourcesPageController,
+  resourceSettingController,
+  resourceController,
+  categoryController,
 } from "./container";
 
 export { getMediaUrl, mediaWidth, mediaHeight, mediaAlt } from "./api/media-url";
@@ -40,3 +44,4 @@ export type { Testimonial } from "./types/testimonial";
 export type { Resource } from "./types/resource";
 export type { Category } from "./types/category";
 export type { ProductsPageData, ProductData, ProductSettingData } from "./types/products-page";
+export type { ResourcesPageData, ResourceSettingData } from "./types/resources-page";

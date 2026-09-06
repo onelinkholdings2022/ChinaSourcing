@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { ArticlePage } from "@/components/ArticlePage";
-import { articleSlugs, getArticle } from "@/data/resources";
+import { blogPostController, resourceSettingController, globalController } from "@/lib";
+import { buildBlogPostArticleView } from "@/lib/views/articleView";
+import { buildNavView, buildFooterView } from "@/lib/views/globalView";
 
 /**
  * Blog posts sit at the site root (`/some-post-slug`), matching the source
  * permalink structure. The explicit routes (about-us, products, …) take
  * precedence over this catch-all.
  */
-export function generateStaticParams() {
-  return articleSlugs("post");
+export async function generateStaticParams() {
+  const result = await blogPostController.getAll();
+  return (result.data ?? []).map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({
@@ -17,10 +21,11 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const article = getArticle(slug);
+  const result = await blogPostController.getBySlug(slug);
+  const post = result.data;
   return {
-    title: article ? `${article.title} | China Sourcing Co` : "China Sourcing Co",
-    description: article?.subtitle || undefined,
+    title: post ? `${post.title} | China Sourcing Co` : "China Sourcing Co",
+    description: post?.excerpt || undefined,
   };
 }
 
@@ -30,5 +35,28 @@ export default async function PostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  return <ArticlePage slug={slug} />;
+
+  const [postResult, allResult, settingsResult, globalResult] = await Promise.all([
+    blogPostController.getBySlug(slug),
+    blogPostController.getAll(),
+    resourceSettingController.getSettings(),
+    globalController.getGlobal(),
+  ]);
+
+  const post = postResult.data;
+  if (!post) notFound();
+
+  const all = allResult.data ?? [];
+  const settings = settingsResult.data;
+  const global = globalResult.data;
+
+  const article = buildBlogPostArticleView(post, settings, all);
+
+  return (
+    <ArticlePage
+      article={article}
+      nav={global ? buildNavView(global) : undefined}
+      footer={global ? buildFooterView(global) : undefined}
+    />
+  );
 }

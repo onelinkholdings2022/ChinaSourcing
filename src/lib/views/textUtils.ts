@@ -30,3 +30,22 @@ export function formatDate(iso: string | null | undefined): string {
   const mm = String(d.getMonth() + 1).padStart(2, "0");
   return `${dd}/${mm}/${d.getFullYear()}`;
 }
+
+/**
+ * Nội dung blog-post/resource giữ nguyên markup của plugin "Easy Table of
+ * Contents" từ WordPress gốc: mỗi heading được bọc
+ * `<span class="ez-toc-section" id="…"></span>…<span class="ez-toc-section-end">`.
+ * Đọc lại đúng id đó thay vì tự sinh slug mới — anchor `#id` trong HTML và
+ * trong mục lục phải khớp nhau.
+ */
+export function extractToc(html: string | null | undefined): { href: string; label: string }[] {
+  if (!html) return [];
+  const re = /<span class="ez-toc-section" id="([^"]+)"><\/span>([\s\S]*?)<span class="ez-toc-section-end">/g;
+  const items: { href: string; label: string }[] = [];
+  let match: RegExpExecArray | null;
+  while ((match = re.exec(html))) {
+    const label = stripHtml(match[2]).trim();
+    if (label) items.push({ href: `#${match[1]}`, label });
+  }
+  return items;
+}

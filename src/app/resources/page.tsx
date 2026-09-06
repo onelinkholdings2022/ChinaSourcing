@@ -1,16 +1,22 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { landingMetadata } from "@/components/LandingPage";
-import { resourcesIndex } from "@/data/resources";
 import { SimpleHero } from "@/components/sections/SimpleHero";
 import { ResourceListing } from "@/components/sections/resources/ResourceListing";
 import { BlogListing } from "@/components/sections/resources/BlogListing";
 import { SplitScreenDownload } from "@/components/sections/resources/SplitScreenDownload";
 import { Faq } from "@/components/sections/Faq";
+import { resourcesPageController, resourceController, blogPostController, globalController } from "@/lib";
+import {
+  buildResourcesHeroView,
+  buildFreeResourcesView,
+  buildInsightsView,
+  buildDownloadCtaView,
+  buildResourcesFaqView,
+} from "@/lib/views/resourceView";
+import { buildNavView, buildFooterView } from "@/lib/views/globalView";
 
 export const metadata = landingMetadata("resources");
-
-const { hero, resources, blogs, splitScreen, faq } = resourcesIndex;
 
 /**
  * `/resources`, rebuilt as components.
@@ -20,10 +26,42 @@ const { hero, resources, blogs, splitScreen, faq } = resourcesIndex;
  * posts) between the hero and the downloads. It is dropped here at the owner's
  * request — all three posts are in the blog listing further down.
  */
-export default function Page() {
+export default async function Page() {
+  const [pageResult, resourcesResult, postsResult, globalResult] = await Promise.all([
+    resourcesPageController.getPage(),
+    resourceController.getAll(),
+    blogPostController.getAll(),
+    globalController.getGlobal(),
+  ]);
+
+  const page = pageResult.data;
+  const resources = resourcesResult.data ?? [];
+  const posts = postsResult.data ?? [];
+  const global = globalResult.data;
+
+  if (!page) {
+    return (
+      <>
+        <Header solid nav={global ? buildNavView(global) : undefined} />
+        <main>
+          <p className="container py-40 text-center">
+            Không tải được nội dung trang Resources. Vui lòng thử lại sau.
+          </p>
+        </main>
+        <Footer footer={global ? buildFooterView(global) : undefined} />
+      </>
+    );
+  }
+
+  const hero = buildResourcesHeroView(page);
+  const freeResources = buildFreeResourcesView(page, resources);
+  const insights = buildInsightsView(page, posts);
+  const splitScreen = buildDownloadCtaView(page);
+  const faq = buildResourcesFaqView(page);
+
   return (
     <>
-      <Header solid />
+      <Header solid nav={global ? buildNavView(global) : undefined} />
       <main className="pt-28 lg:pt-32">
         <SimpleHero
           heading={hero.heading}
@@ -33,19 +71,19 @@ export default function Page() {
           gradientId="resources-hero-glow"
         />
         <ResourceListing
-          tag={resources.tag}
-          heading={resources.heading}
-          tabs={resources.tabs}
-          cards={resources.cards}
-          perPage={resources.perPage}
+          tag={freeResources.tag}
+          heading={freeResources.heading}
+          tabs={freeResources.tabs}
+          cards={freeResources.cards}
+          perPage={freeResources.perPage}
         />
         <BlogListing
-          tag={blogs.tag}
-          heading={blogs.heading}
-          intro={blogs.intro}
-          tabs={blogs.tabs}
-          cards={blogs.cards}
-          perPage={blogs.perPage}
+          tag={insights.tag}
+          heading={insights.heading}
+          intro={insights.intro}
+          tabs={insights.tabs}
+          cards={insights.cards}
+          perPage={insights.perPage}
         />
         <SplitScreenDownload
           tag={splitScreen.tag}
@@ -55,14 +93,9 @@ export default function Page() {
           image={splitScreen.image}
           alt={splitScreen.alt}
         />
-        <Faq
-          tag={faq.tag}
-          headingLines={faq.headingParts}
-          email={faq.email}
-          items={faq.items}
-        />
+        <Faq tag={faq.tag} headingLines={faq.headingLines} email={faq.email} items={faq.items} />
       </main>
-      <Footer />
+      <Footer footer={global ? buildFooterView(global) : undefined} />
     </>
   );
 }

@@ -10,4 +10,12 @@ export class BlogPostController extends BaseController {
   getLatest(limit = 3): Promise<Result<BlogPost[]>> {
     return this.handle(() => this.service.getLatest(limit));
   }
+
+  getAll(): Promise<Result<BlogPost[]>> {
+    return this.handle(() => this.service.getAll());
+  }
+
+  getBySlug(slug: string): Promise<Result<BlogPost>> {
+    return this.handle(() => this.service.getBySlug(slug));
+  }
 }
