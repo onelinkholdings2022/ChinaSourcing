@@ -1,6 +1,5 @@
 import { Button, Tag } from "@/components/ui/button";
-import { BlogCard } from "@/components/sections/resources/BlogCard";
-import type { BlogCard as BlogCardData } from "@/data/resources";
+import { BlogCard, type BlogCardData } from "@/components/sections/resources/BlogCard";
 
 /**
  * "Explore More Relative Resources" — three post cards and a link back to the

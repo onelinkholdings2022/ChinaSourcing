@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { team } from "@/data/about";
 import { Tag } from "@/components/ui/button";
 import { Reveal } from "@/components/Reveal";
 import { cn } from "@/lib/utils";
@@ -41,20 +40,20 @@ export type TeamMemberCard = {
 export type OfficeCard = { flag: string; alt: string; country: string; body: string };
 
 export function TeamSlider({
-  tag = team.tag,
-  heading = team.heading,
-  intro = team.intro,
-  members: memberCards = team.members,
-  localHeading = team.localHeading,
-  offices = team.offices,
+  tag,
+  heading,
+  intro,
+  members: memberCards,
+  localHeading,
+  offices,
 }: {
-  tag?: string;
-  heading?: string;
-  intro?: string;
-  members?: TeamMemberCard[];
-  localHeading?: string;
-  offices?: OfficeCard[];
-} = {}) {
+  tag: string;
+  heading: string;
+  intro: string;
+  members: TeamMemberCard[];
+  localHeading: string;
+  offices: OfficeCard[];
+}) {
   const members = memberCards;
   const len = members.length;
   const rendered = Array.from({ length: COPIES * len }, (_, i) => ({

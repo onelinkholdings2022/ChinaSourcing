@@ -6,7 +6,9 @@ import type { Partner } from "../types/partner";
 import type { Testimonial as TestimonialModel } from "../types/testimonial";
 import type { ProductListCard } from "@/components/sections/product/ProductListGrid";
 import type { CaseCard } from "@/components/sections/CaseStudySlider";
-import type { ProductImageCard, ProductTestimonial, ProductUsp, ProductFaq } from "@/data/products";
+import type { ProductImageCard } from "@/components/sections/product/ImageCardGrid";
+import type { Testimonial as ProductTestimonial } from "@/components/sections/TestimonialCard";
+import type { UspListItem as ProductUsp } from "@/components/sections/UspList";
 
 const FALLBACK_IMAGE = "/images/blog-fallback.png";
 
@@ -244,7 +246,7 @@ export interface ProductFaqSectionViewData {
   tag: string;
   headingLines: string[];
   email: string | null;
-  items: ProductFaq[];
+  items: { question: string; answer: string }[];
 }
 
 export function buildProductFaqView(product: ProductData, settings: ProductSettingData | null): ProductFaqSectionViewData {

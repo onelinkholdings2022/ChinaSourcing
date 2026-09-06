@@ -2,10 +2,9 @@
 
 import { useMemo, useState } from "react";
 import { Tag } from "@/components/ui/button";
-import { TabRail } from "@/components/sections/resources/TabRail";
+import { TabRail, type ListingTab } from "@/components/sections/resources/TabRail";
 import { ListingPager } from "@/components/sections/resources/ListingPager";
-import { BlogCard } from "@/components/sections/resources/BlogCard";
-import type { BlogCard as BlogCardData, ListingTab } from "@/data/resources";
+import { BlogCard, type BlogCardData } from "@/components/sections/resources/BlogCard";
 
 /**
  * `.blog-listing` — the grey band holding the whole archive.

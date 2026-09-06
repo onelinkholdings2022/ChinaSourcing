@@ -1,7 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import type { BlogCard as BlogCardData } from "@/data/resources";
+
+/** A post card, used by the blog listing and the related-articles row. */
+export type BlogCardData = {
+  types?: string[];
+  category: string | null;
+  title: string;
+  excerpt: string;
+  date: string;
+  readingTime: string;
+  image: string | null;
+  alt: string;
+  href: string;
+};
 
 /**
  * The indigo post card.

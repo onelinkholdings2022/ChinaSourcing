@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { partnerTabs as staticPartnerTabs } from "@/data/site";
 import { Button, Tag } from "@/components/ui/button";
 import { ChevronRightIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
@@ -15,12 +14,12 @@ import { cn } from "@/lib/utils";
 export function Partners({
   tag = "Manufacturing Network",
   headingLines = ["Our Trusted", "Manufacturing Partners"],
-  tabs = staticPartnerTabs,
+  tabs,
 }: {
   tag?: string;
   headingLines?: string[];
-  tabs?: { label: string; logos: string[] }[];
-} = {}) {
+  tabs: { label: string; logos: string[] }[];
+}) {
   const partnerTabs = tabs;
   const [active, setActive] = useState(0);
   const railRef = useRef<HTMLDivElement>(null);

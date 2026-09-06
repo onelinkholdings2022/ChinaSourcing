@@ -3,7 +3,8 @@ import { stripHtml, estimateReadTime, formatDate, extractToc } from "./textUtils
 import type { Resource } from "../types/resource";
 import type { BlogPost } from "../types/blog-post";
 import type { ResourceSettingData } from "../types/resources-page";
-import type { ArticleFact, BlogCard as BlogCardData } from "@/data/resources";
+import type { ArticleFact } from "@/components/sections/article/ArticleHero";
+import type { BlogCardData } from "@/components/sections/resources/BlogCard";
 
 const FALLBACK_IMAGE = "/images/blog-fallback.png";
 const RELATED_COUNT = 3;
@@ -22,6 +23,8 @@ export interface ArticleViewData {
   toc: { href: string; label: string }[];
   html: string;
   shareUrl: string;
+  /** Chỉ resource mới có công tắc này (`resource.gated`) — blog post luôn đọc full, không gate. */
+  gated: boolean;
   subscribe: { tag: string; heading: string; body: string };
   related: { tag: string; heading: string; cards: BlogCardData[]; ctaLabel: string; ctaHref: string };
   cta: { tag: string; heading: string; body: string; ctaLabel: string; sectionClass: string };
@@ -77,6 +80,7 @@ export function buildResourceArticleView(
     toc: extractToc(resource.content),
     html: resource.content ?? "",
     shareUrl: `${SITE}/resources/${resource.slug}/`,
+    gated: resource.gated,
     subscribe: buildSubscribe(settings),
     related: {
       ...buildRelatedMeta(settings),
@@ -116,6 +120,8 @@ export function buildBlogPostArticleView(
     toc: extractToc(post.content),
     html: post.content ?? "",
     shareUrl: `${SITE}/${post.slug}/`,
+    // blog-post không có field `gated` trong Strapi — bài blog luôn đọc full.
+    gated: false,
     subscribe: buildSubscribe(settings),
     related: {
       ...buildRelatedMeta(settings),

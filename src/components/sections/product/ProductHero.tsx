@@ -3,7 +3,17 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useTypewriter, INTERNAL_TYPING } from "@/hooks/useTypewriter";
-import type { ProductPage } from "@/data/products";
+
+export type ProductHeroData = {
+  typedPrefix?: string;
+  typedWords?: string[];
+  heading: string;
+  intro: string;
+  ctaLabel: string | null;
+  ctaHref: string | null;
+  image: string | null;
+  imageAlt: string;
+};
 
 /**
  * Product page opener.
@@ -28,7 +38,7 @@ import type { ProductPage } from "@/data/products";
 export function ProductHero({
   hero,
 }: {
-  hero: ProductPage["hero"] & { typedPrefix?: string; typedWords?: string[] };
+  hero: ProductHeroData;
 }) {
   const words = hero.typedWords ?? [];
   const typed = useTypewriter(words, INTERNAL_TYPING);

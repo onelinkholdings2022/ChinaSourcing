@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { Tag } from "@/components/ui/button";
 import { HubspotForm } from "@/components/sections/contact/HubspotForm";
-import { contactInfo, hubspot } from "@/data/contact";
 
 export type ContactDetailCard = {
   icon: string;
@@ -39,20 +38,20 @@ export type ContactHubspotForm = { portalId: string; formId: string; region?: st
  * The gaps that survive are 12 / 12 / 48, and 80 at `lg` for the last.
  */
 export function ContactInfo({
-  tag = contactInfo.tag,
-  heading = contactInfo.heading,
-  intro = contactInfo.intro,
-  details = contactInfo.details,
-  social = contactInfo.social,
-  form = { portalId: hubspot.portalId, formId: hubspot.contactFormId, region: hubspot.region },
+  tag,
+  heading,
+  intro,
+  details,
+  social,
+  form,
 }: {
-  tag?: string;
-  heading?: string;
-  intro?: string;
-  details?: ContactDetailCard[];
-  social?: ContactSocial;
-  form?: ContactHubspotForm;
-} = {}) {
+  tag: string;
+  heading: string;
+  intro: string;
+  details: ContactDetailCard[];
+  social: ContactSocial;
+  form: ContactHubspotForm;
+}) {
   return (
     <section className="bg-dark-blue-950 py-16 md:py-24 lg:py-32 text-white">
       <div className="container">

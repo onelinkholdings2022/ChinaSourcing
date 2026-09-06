@@ -1,5 +1,7 @@
 import Image from "next/image";
-import type { ArticleFact } from "@/data/resources";
+
+/** One row of the hero's pale blue fact box. */
+export type ArticleFact = { label: string; icon: string | null; value: string };
 
 /**
  * The opener of an article — centred title over a pale blue fact box

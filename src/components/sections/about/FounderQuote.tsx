@@ -1,6 +1,5 @@
 import { Fragment } from "react";
 import Image from "next/image";
-import { founderQuote } from "@/data/about";
 import { Tag } from "@/components/ui/button";
 import { Reveal } from "@/components/Reveal";
 
@@ -13,18 +12,18 @@ import { Reveal } from "@/components/Reveal";
  * z-order but must never intercept a click, hence `pointer-events-none`.
  */
 export function FounderQuote({
-  tag = founderQuote.tag,
-  avatar = founderQuote.avatar,
-  name = founderQuote.name,
-  role = founderQuote.role,
-  paragraphs = founderQuote.paragraphs,
+  tag,
+  avatar,
+  name,
+  role,
+  paragraphs,
 }: {
-  tag?: string;
-  avatar?: string;
-  name?: string;
-  role?: string;
-  paragraphs?: string[];
-} = {}) {
+  tag: string;
+  avatar: string;
+  name: string;
+  role: string;
+  paragraphs: string[];
+}) {
   return (
     <section className="simple-quote spacing">
       <div className="container flex flex-col items-center text-center">

@@ -3,7 +3,9 @@ import { stripHtml, estimateReadTime, formatDate } from "./textUtils";
 import type { ResourcesPageData } from "../types/resources-page";
 import type { Resource } from "../types/resource";
 import type { BlogPost } from "../types/blog-post";
-import type { ListingTab, ResourceCard, BlogCard } from "@/data/resources";
+import type { ListingTab } from "@/components/sections/resources/TabRail";
+import type { ResourceCard } from "@/components/sections/resources/ResourceListing";
+import type { BlogCardData as BlogCard } from "@/components/sections/resources/BlogCard";
 
 const FALLBACK_IMAGE = "/images/blog-fallback.png";
 
@@ -40,7 +42,12 @@ export interface FreeResourcesViewData {
   perPage: number;
 }
 
+/**
+ * "Free Resources" chỉ liệt kê resource KHÔNG gate (`gated: false`) — bài nào
+ * bật công tắc điền form (`gated: true`) thì không thuộc mục "miễn phí" này.
+ */
 export function buildFreeResourcesView(page: ResourcesPageData, resources: Resource[]): FreeResourcesViewData {
+  const free = resources.filter((r) => !r.gated);
   return {
     tag: page.freeResources.tag?.label ?? "",
     heading: page.freeResources.heading ?? "",
@@ -52,7 +59,7 @@ export function buildFreeResourcesView(page: ResourcesPageData, resources: Resou
       { value: "others", label: "Others" },
       { value: "templates", label: "Templates" },
     ],
-    cards: resources.map((r) => ({
+    cards: free.map((r) => ({
       types: [RESOURCE_TYPE_TAB[r.resourceType]],
       category: r.categories[0]?.name ?? null,
       title: r.title,

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { faqs } from "@/data/site";
 import { Tag } from "@/components/ui/button";
 import { PlusMinusIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
@@ -18,15 +17,15 @@ export function Faq({
   tag = "Common Questions",
   headingLines = ["Frequently Asked", "Questions"],
   email = "info@chinasourcing.co",
-  items = faqs,
+  items,
   className = "py-10 lg:pt-20 lg:pb-[120px]",
 }: {
   tag?: string;
   headingLines?: string[];
   email?: string | null;
-  items?: { question: string; answer: string }[];
+  items: { question: string; answer: string }[];
   className?: string;
-} = {}) {
+}) {
   // The original opens the first row on load.
   const [open, setOpen] = useState<number | null>(0);
 

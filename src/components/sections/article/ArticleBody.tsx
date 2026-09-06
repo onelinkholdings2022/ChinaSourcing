@@ -11,18 +11,13 @@ import { cn } from "@/lib/utils";
  * The banner image, the sidebar (table of contents + share) and the article
  * itself.
  *
- * ## The body is gated
+ * ## The body is gated — only when the CMS says so
  *
- * `#post-content-container` is capped at `max-h-[600px] lg:max-h-[1000px]` with
- * `overflow-clip`, and a white gradient fades the cut-off edge under the line
- * "Please subscribe to see the detail". Handing over an email lifts the cap —
- * see `useSubscribed`.
- *
- * ## The banner is always the fallback
- *
- * Every article renders `resource-detail-fallback.png` here, never its own
- * featured image; the theme hard-codes it. The post's real image is used on the
- * listing cards instead. Checked across all 141 articles.
+ * `resource.gated` (Strapi) decides this per resource; blog posts are never
+ * gated (no such field on that content type). When gated, `#post-content-container`
+ * is capped at `max-h-[600px] lg:max-h-[1000px]` with `overflow-clip`, and a
+ * white gradient fades the cut-off edge under "Please subscribe to see the
+ * detail". Handing over an email lifts the cap — see `useSubscribed`.
  */
 export function ArticleBody({
   featuredImage,
@@ -31,6 +26,7 @@ export function ArticleBody({
   html,
   shareUrl,
   title,
+  gated,
 }: {
   featuredImage: string | null;
   featuredAlt: string;
@@ -38,8 +34,10 @@ export function ArticleBody({
   html: string;
   shareUrl: string;
   title: string;
+  gated: boolean;
 }) {
   const subscribed = useSubscribed();
+  const locked = gated && !subscribed;
 
   return (
     <>
@@ -67,7 +65,7 @@ export function ArticleBody({
         <div
           className={cn(
             "max-w-[800px] max-[1023px]:mx-auto overflow-clip relative",
-            !subscribed && "max-h-[600px] lg:max-h-[1000px]",
+            locked && "max-h-[600px] lg:max-h-[1000px]",
           )}
         >
           <div
@@ -77,7 +75,7 @@ export function ArticleBody({
             dangerouslySetInnerHTML={{ __html: html }}
           />
 
-          {!subscribed && (
+          {locked && (
             <span className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-white/0 to-white">
               <p className="text-center absolute left-0 right-0 bottom-0 font-medium text-dark-blue-900 text-2xl">
                 Please subscribe to see the detail

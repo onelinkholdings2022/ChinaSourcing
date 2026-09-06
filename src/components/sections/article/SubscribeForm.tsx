@@ -14,21 +14,25 @@ import { markSubscribed, useSubscribed } from "@/hooks/useSubscribed";
  * set the same flag, because otherwise the article below could never be read.
  *
  * The whole section disappears once subscribed, which is what the theme's own
- * script does (`#subscribe-form { display: none }`).
+ * script does (`#subscribe-form { display: none }`) — and it never appears at
+ * all when the article isn't gated (`resource.gated` off, or any blog post):
+ * there is nothing to unlock, so there is nothing to ask for an email for.
  */
 export function SubscribeForm({
   tag,
   heading,
   body,
+  gated,
 }: {
   tag: string;
   heading: string;
   body: string;
+  gated: boolean;
 }) {
   const subscribed = useSubscribed();
   const [email, setEmail] = useState("");
 
-  if (subscribed) return null;
+  if (!gated || subscribed) return null;
 
   return (
     <section className="resource-form mt-10">

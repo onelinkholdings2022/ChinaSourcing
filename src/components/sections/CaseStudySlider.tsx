@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { aboutCaseStudies } from "@/data/about";
 import { Button, Tag } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -45,21 +44,21 @@ export type CaseCard = {
  * `disabled:grayscale disabled:opacity-60` hangs off.
  */
 export function CaseStudySlider({
-  tag = aboutCaseStudies.tag,
-  headingLines = aboutCaseStudies.headingLines,
-  cards = aboutCaseStudies.cards,
+  tag,
+  headingLines,
+  cards,
   ctaLabel = "See All Case Studies",
   ctaHref = "/case-studies",
   variant = "light",
 }: {
-  tag?: string;
+  tag: string;
   /** Rendered `<br/>`-separated, which is how the theme breaks the light one. */
-  headingLines?: string[];
-  cards?: CaseCard[];
+  headingLines: string[];
+  cards: CaseCard[];
   ctaLabel?: string;
   ctaHref?: string;
   variant?: "light" | "dark";
-} = {}) {
+}) {
   const dark = variant === "dark";
   const viewportRef = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);

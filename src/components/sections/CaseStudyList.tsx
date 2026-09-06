@@ -5,7 +5,23 @@ import Image from "next/image";
 import { Button, Tag } from "@/components/ui/button";
 import { ChevronDownIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
-import type { CaseStudyCard, FilterOption } from "@/data/case-studies";
+
+/** One row of the `/case-studies` grid. */
+export type CaseStudyCard = {
+  id: number;
+  slug: string;
+  title: string;
+  /** The service the study is filed under — printed above the title. */
+  category: string;
+  industry: string;
+  region: string;
+  description: string;
+  image: string | null;
+  alt: string;
+};
+
+/** A `<select>` option pair, in the order the theme prints them. */
+export type FilterOption = { value: string; label: string };
 
 type Filters = { industry: string; region: string; service: string };
 

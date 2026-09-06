@@ -13,7 +13,9 @@ export function Hero({ hero }: { hero: HeroViewData }) {
   return (
     <section className="hero-block lg:mx-6 lg:mt-6">
       <div className="lg:rounded-3xl relative w-full lg:mb-6 min-h-screen py-40 lg:py-56 2xl:py-[280px] overflow-hidden text-white flex items-center justify-center">
-        {/* Background */}
+        {/* Background — poster stays mounted underneath so there is no flash
+            while the Vimeo iframe loads (and it is the whole background when
+            there is no video). */}
         <div className="absolute inset-0 lg:rounded-3xl overflow-hidden z-0">
           <Image
             src={hero.poster}
@@ -23,6 +25,17 @@ export function Hero({ hero }: { hero: HeroViewData }) {
             sizes="100vw"
             className="object-cover"
           />
+          {hero.videoUrl && (
+            <iframe
+              src={hero.videoUrl}
+              title=""
+              aria-hidden
+              allow="autoplay; fullscreen"
+              frameBorder={0}
+              className="absolute top-1/2 left-1/2 pointer-events-none -translate-x-1/2 -translate-y-1/2"
+              style={{ width: "177.78vh", height: "56.25vw", minWidth: "100%", minHeight: "100%" }}
+            />
+          )}
         </div>
         {/* Dark scrim — #1A1A1A at 65% */}
         <div className="absolute inset-0 bg-[#1A1A1AA6] z-10" />

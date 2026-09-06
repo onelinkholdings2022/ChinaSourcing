@@ -1,7 +1,14 @@
 import { Button, Tag } from "@/components/ui/button";
 import { Reveal } from "@/components/Reveal";
-import { TestimonialCard } from "@/components/sections/TestimonialCard";
-import type { ProductPage } from "@/data/products";
+import { TestimonialCard, type Testimonial } from "@/components/sections/TestimonialCard";
+
+export type TwoColumnTestimonialData = {
+  tag: string;
+  heading: string;
+  ctaLabel: string | null;
+  ctaHref: string | null;
+  items: Testimonial[];
+};
 
 /**
  * "Success Stories in ..." — two testimonial columns, centred.
@@ -17,7 +24,7 @@ import type { ProductPage } from "@/data/products";
 export function TwoColumnTestimonial({
   data,
 }: {
-  data: ProductPage["testimonial"];
+  data: TwoColumnTestimonialData;
 }) {
   return (
     <section className="two-column-testimonial spacing container">

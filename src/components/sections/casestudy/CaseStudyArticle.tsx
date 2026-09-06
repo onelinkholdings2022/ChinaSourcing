@@ -1,7 +1,9 @@
 import { Tag } from "@/components/ui/button";
 import { Reveal } from "@/components/Reveal";
 import { ShareRow } from "@/components/sections/casestudy/ShareRow";
-import type { CaseStudyBlock } from "@/data/case-studies";
+
+/** One tag + heading + rich-text block of the article body. */
+export type CaseStudyBlock = { tag: string; heading: string; html: string };
 
 /**
  * The article body of a case study: "The Challenge" and "The Solution", each a

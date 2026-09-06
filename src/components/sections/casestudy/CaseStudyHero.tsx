@@ -1,6 +1,14 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import type { CaseStudyFact } from "@/data/case-studies";
+
+/** A `Region` / `Industry` / `Service` column of the detail-page hero box. */
+export type CaseStudyFact = {
+  label: string;
+  value: string;
+  /** Only `Region` carries one. */
+  flag: string | null;
+  flagAlt: string | null;
+};
 
 /**
  * The opener of a `/case-study/<slug>` page — centred title and intro over a

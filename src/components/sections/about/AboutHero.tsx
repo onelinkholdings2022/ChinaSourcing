@@ -1,4 +1,3 @@
-import { aboutHero } from "@/data/about";
 import { SimpleHero } from "@/components/sections/SimpleHero";
 
 /**
@@ -6,16 +5,16 @@ import { SimpleHero } from "@/components/sections/SimpleHero";
  * `SimpleHero`; this only binds the copy.
  */
 export function AboutHero({
-  heading = aboutHero.heading,
-  intro = aboutHero.intro,
-  image = aboutHero.image,
-  imageAlt = aboutHero.imageAlt,
+  heading,
+  intro,
+  image,
+  imageAlt,
 }: {
-  heading?: string;
-  intro?: string;
-  image?: string;
-  imageAlt?: string;
-} = {}) {
+  heading: string;
+  intro: string;
+  image: string;
+  imageAlt: string;
+}) {
   return (
     <SimpleHero
       heading={heading}

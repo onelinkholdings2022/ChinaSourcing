@@ -1,7 +1,19 @@
 import Image from "next/image";
 import { Tag } from "@/components/ui/button";
 import { Reveal } from "@/components/Reveal";
-import type { ProductPage } from "@/data/products";
+
+export type ProductImageCard = {
+  image: string | null;
+  alt: string;
+  title: string;
+};
+
+export type ImageCardGridData = {
+  tag: string;
+  heading: string;
+  intro: string;
+  cards: ProductImageCard[];
+};
 
 /**
  * "What We Source in ..." — a grid of photo cards with a caption bar.
@@ -17,7 +29,7 @@ import type { ProductPage } from "@/data/products";
 export function ImageCardGrid({
   data,
 }: {
-  data: ProductPage["imageCard"];
+  data: ImageCardGridData;
 }) {
   return (
     <section className="image-card container spacing space-y-16">

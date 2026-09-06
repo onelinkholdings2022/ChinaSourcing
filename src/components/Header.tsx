@@ -4,13 +4,24 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { nav as staticNav, IMG } from "@/data/site";
 import { Button } from "@/components/ui/button";
 import { CloseIcon, MenuIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
 
+const IMG = "/images";
+
 /** The original's `scrollThreshold`. */
 const SCROLL_THRESHOLD = 100;
+
+/** Dùng khi Strapi (`global.navbar`) không truy cập được — không phải nav thật. */
+const FALLBACK_NAV = [
+  { label: "About Us", href: "/about-us" },
+  { label: "Products", href: "/products" },
+  { label: "Services", href: "/services" },
+  { label: "Process", href: "/process" },
+  { label: "Case Studies", href: "/case-studies" },
+  { label: "Resources", href: "/resources" },
+];
 
 /** The original marks the nav link whose path equals the current one. */
 function isActive(pathname: string, href: string) {
@@ -45,7 +56,7 @@ export function Header({
    * start in the solid treatment or the nav would be white-on-white.
    */
   solid = false,
-  nav = staticNav,
+  nav = FALLBACK_NAV,
 }: {
   solid?: boolean;
   nav?: { label: string; href: string }[];

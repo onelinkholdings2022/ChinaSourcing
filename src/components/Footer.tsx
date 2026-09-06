@@ -3,7 +3,6 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { footer as staticFooter, IMG } from "@/data/site";
 import type { FooterViewData } from "@/lib/views/globalView";
 import {
   ArrowRightIcon,
@@ -13,6 +12,82 @@ import {
   MapPinIcon,
 } from "@/components/icons";
 import { cn } from "@/lib/utils";
+
+const IMG = "/images";
+
+/** Dùng khi Strapi (`global.footer`) không truy cập được — không phải nội dung thật. */
+const FALLBACK_FOOTER: FooterViewData = {
+  newsletter: {
+    heading: "STAY AHEAD IN SOURCING",
+    subheading: "Actionable insights.",
+  },
+  columns: [
+    {
+      title: "EXPLORE US",
+      links: [
+        { label: "About Us", href: "/about-us" },
+        { label: "Case Studies", href: "/case-studies" },
+        { label: "Resources", href: "/resources" },
+        { label: "Contact Us", href: "/contact-us" },
+      ],
+    },
+    {
+      title: "OUR PRODUCTS",
+      links: [
+        { label: "Furniture", href: "/products/furniture" },
+        { label: "Bags & Cases", href: "/products/bags-cases" },
+        { label: "Building Materials", href: "/products/building-materials" },
+        { label: "Chemicals & Cleaning", href: "/products/chemicals-cleaning" },
+      ],
+      more: { label: "See more", href: "/products" },
+    },
+    {
+      title: "OUR SERVICES",
+      links: [
+        { label: "Product Sourcing", href: "/services/product-sourcing" },
+        { label: "Quality Control", href: "/services/quality-control" },
+        { label: "Freight & Logistics", href: "/services/freight-logistics" },
+        { label: "Warehousing & Fulfillment", href: "/services/warehousing-fulfillment" },
+      ],
+      more: { label: "See more", href: "/services" },
+    },
+  ],
+  locations: [
+    {
+      country: "China",
+      address:
+        "Jinbin Tengyuue Mansion, South Tower, No.49 Huaxia Road, Tianhe District, Guanzhou city, Guangdong Province, China",
+      email: "bheki@onelinkholdings.com",
+    },
+    {
+      country: "Hong Kong",
+      address: "Unit D, 16/F, One Capital Place, 18 Luard Road, Wan Chai - Hong Kong",
+      email: "tom@onelinkholdings.com",
+    },
+    {
+      country: "Viet Nam",
+      address: "771 Ngo Quyen Street, An Hai Bac Ward, Son Tra District, Da Nang city, Vietnam",
+      email: "kady@onelinkholdings.com",
+    },
+    {
+      country: "Brisbane, Australia",
+      address: "Stafford St, Brisbane 4169, QLD, Australia",
+      email: "sam@onelinkholdings.com",
+    },
+    {
+      country: "Sydney, Australia",
+      address: "Allenby Park Parade, Sydney, Allambie Heights, NSW, Australia - 2100",
+      email: "lee@onelinkholdings.com",
+    },
+  ],
+  social: [
+    { label: "Facebook", href: "https://www.facebook.com/chinasourcing.co" },
+    { label: "Linkedin", href: "https://www.linkedin.com/company/china-sourcing-co/" },
+    { label: "Instagram", href: "https://www.instagram.com/chinasourcing.co/" },
+  ],
+  copyright: "2026 © China Sourcing Co. All Rights Reserved",
+  marquee: "Interested in working together? Let’s discuss.",
+};
 
 /** Small square bullet used in front of every footer entry. */
 function Bullet() {
@@ -86,7 +161,7 @@ function LocationRow({
  * scrolling forever, with a "Say Hi!" button that appears on hover and tracks
  * the cursor across the band.
  */
-function MarqueeBand() {
+function MarqueeBand({ marquee }: { marquee: string }) {
   const bandRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLAnchorElement>(null);
 
@@ -122,7 +197,7 @@ function MarqueeBand() {
             aria-hidden={i === 1}
             className="md:text-[100px] text-7xl text-dark-blue-400 text-nowrap whitespace-nowrap"
           >
-            {staticFooter.marquee}
+            {marquee}
           </p>
         ))}
       </div>
@@ -130,7 +205,7 @@ function MarqueeBand() {
   );
 }
 
-export function Footer({ footer = staticFooter }: { footer?: FooterViewData } = {}) {
+export function Footer({ footer = FALLBACK_FOOTER }: { footer?: FooterViewData } = {}) {
   return (
     <footer>
       <div className="py-10 bg-grey-50 relative z-10">
@@ -265,7 +340,7 @@ export function Footer({ footer = staticFooter }: { footer?: FooterViewData } = 
         </div>
       </div>
 
-      <MarqueeBand />
+      <MarqueeBand marquee={footer.marquee} />
     </footer>
   );
 }

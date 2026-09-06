@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { coreValues } from "@/data/about";
 import { Tag } from "@/components/ui/button";
 import { Reveal } from "@/components/Reveal";
 
@@ -7,14 +6,14 @@ export type CoreValuesCard = { icon: string; title: string; body: string };
 
 /** "Mission, Vision & Values" — three icon-led cards on the dark band. */
 export function CoreValues({
-  tag = coreValues.tag,
-  heading = coreValues.heading,
-  cards = coreValues.cards,
+  tag,
+  heading,
+  cards,
 }: {
-  tag?: string;
-  heading?: string;
-  cards?: CoreValuesCard[];
-} = {}) {
+  tag: string;
+  heading: string;
+  cards: CoreValuesCard[];
+}) {
   return (
     <section className="simple-card spacing bg-dark-blue-950">
       <div className="container space-y-20">

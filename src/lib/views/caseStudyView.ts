@@ -1,12 +1,13 @@
 import { getMediaUrl } from "../api/media-url";
 import type { CaseStudiesPageData, CaseStudySettingData } from "../types/case-studies-page";
 import type { CaseStudy } from "../types/case-study";
-import type { CaseStudyCard, FilterOption } from "@/data/case-studies";
+import type { CaseStudyCard, FilterOption } from "@/components/sections/CaseStudyList";
 import type { UspListItem } from "@/components/sections/UspList";
 import type { QuoteTestimonial } from "@/components/sections/CarouselTestimonial";
 import type { CaseCard } from "@/components/sections/CaseStudySlider";
 import type { SimpleCard } from "@/components/sections/SimpleCardGrid";
-import type { CaseStudyFact, CaseStudyBlock } from "@/data/case-studies";
+import type { CaseStudyFact } from "@/components/sections/casestudy/CaseStudyHero";
+import type { CaseStudyBlock } from "@/components/sections/casestudy/CaseStudyArticle";
 
 const FALLBACK_IMAGE = "/images/blog-fallback.png";
 

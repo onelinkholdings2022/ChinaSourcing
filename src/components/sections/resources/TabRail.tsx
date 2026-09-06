@@ -2,7 +2,9 @@
 
 import { useRef, type PointerEvent } from "react";
 import { cn } from "@/lib/utils";
-import type { ListingTab } from "@/data/resources";
+
+/** A category pill on either listing rail. */
+export type ListingTab = { value: string; label: string };
 
 /**
  * The category rail above each listing.

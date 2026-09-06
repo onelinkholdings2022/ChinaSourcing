@@ -17,6 +17,8 @@ export interface HeroViewData {
   subheading: string;
   cta: { idle: string; hover: string };
   poster: string;
+  /** Vimeo embed (đã kèm sẵn `autoplay=1&muted=1&loop=1` từ CMS) — null thì chỉ hiện poster. */
+  videoUrl: string | null;
 }
 
 export interface ServiceCardViewData {
@@ -85,6 +87,7 @@ export function buildHeroView(data: HomepageData): HeroViewData {
       hover: hero.ctaButton?.hoverLabel ?? "",
     },
     poster: getMediaUrl(hero.posterImage) ?? FALLBACK_IMAGE,
+    videoUrl: hero.videoUrl || null,
   };
 }
 

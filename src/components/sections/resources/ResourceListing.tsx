@@ -4,9 +4,20 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Tag } from "@/components/ui/button";
-import { TabRail } from "@/components/sections/resources/TabRail";
+import { TabRail, type ListingTab } from "@/components/sections/resources/TabRail";
 import { ListingPager } from "@/components/sections/resources/ListingPager";
-import type { ListingTab, ResourceCard } from "@/data/resources";
+
+/** A download card in the dark `.resource-listing` band. */
+export type ResourceCard = {
+  /** `data-types` on the original, comma-separated; the rail filters on it. */
+  types: string[];
+  category: string | null;
+  title: string;
+  excerpt: string;
+  /** Already formatted `dd/mm/yyyy` by the theme. */
+  date: string;
+  href: string;
+};
 
 /**
  * `.resource-listing` — the indigo band of download cards.

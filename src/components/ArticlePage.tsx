@@ -41,12 +41,14 @@ export function ArticlePage({
             html={article.html}
             shareUrl={article.shareUrl}
             title={article.title}
+            gated={article.gated}
           />
 
           <SubscribeForm
             tag={article.subscribe.tag}
             heading={article.subscribe.heading}
             body={article.subscribe.body}
+            gated={article.gated}
           />
 
           <RelatedResources
