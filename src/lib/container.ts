@@ -19,6 +19,9 @@ import { ServicesPageRepository } from "./repositories/strapi/ServicesPageReposi
 import { ServiceRepository } from "./repositories/strapi/ServiceRepository";
 import { ServiceSettingRepository } from "./repositories/strapi/ServiceSettingRepository";
 import { TestimonialRepository } from "./repositories/strapi/TestimonialRepository";
+import { ProductsPageRepository } from "./repositories/strapi/ProductsPageRepository";
+import { ProductRepository } from "./repositories/strapi/ProductRepository";
+import { ProductSettingRepository } from "./repositories/strapi/ProductSettingRepository";
 
 import { GET_HOMEPAGE } from "./cqrs/queries/GetHomepageQuery";
 import { GET_GLOBAL } from "./cqrs/queries/GetGlobalQuery";
@@ -39,6 +42,10 @@ import { GET_ALL_SERVICES } from "./cqrs/queries/GetAllServicesQuery";
 import { GET_SERVICE_BY_SLUG } from "./cqrs/queries/GetServiceBySlugQuery";
 import { GET_SERVICE_SETTING } from "./cqrs/queries/GetServiceSettingQuery";
 import { GET_ALL_TESTIMONIALS } from "./cqrs/queries/GetAllTestimonialsQuery";
+import { GET_PRODUCTS_PAGE } from "./cqrs/queries/GetProductsPageQuery";
+import { GET_ALL_PRODUCTS } from "./cqrs/queries/GetAllProductsQuery";
+import { GET_PRODUCT_BY_SLUG } from "./cqrs/queries/GetProductBySlugQuery";
+import { GET_PRODUCT_SETTING } from "./cqrs/queries/GetProductSettingQuery";
 
 import { GetHomepageHandler } from "./cqrs/handlers/queries/GetHomepageHandler";
 import { GetGlobalHandler } from "./cqrs/handlers/queries/GetGlobalHandler";
@@ -59,6 +66,10 @@ import { GetAllServicesHandler } from "./cqrs/handlers/queries/GetAllServicesHan
 import { GetServiceBySlugHandler } from "./cqrs/handlers/queries/GetServiceBySlugHandler";
 import { GetServiceSettingHandler } from "./cqrs/handlers/queries/GetServiceSettingHandler";
 import { GetAllTestimonialsHandler } from "./cqrs/handlers/queries/GetAllTestimonialsHandler";
+import { GetProductsPageHandler } from "./cqrs/handlers/queries/GetProductsPageHandler";
+import { GetAllProductsHandler } from "./cqrs/handlers/queries/GetAllProductsHandler";
+import { GetProductBySlugHandler } from "./cqrs/handlers/queries/GetProductBySlugHandler";
+import { GetProductSettingHandler } from "./cqrs/handlers/queries/GetProductSettingHandler";
 
 import { HomepageService } from "./services/HomepageService";
 import { GlobalService } from "./services/GlobalService";
@@ -75,6 +86,9 @@ import { ServicesPageService } from "./services/ServicesPageService";
 import { ServiceService } from "./services/ServiceService";
 import { ServiceSettingService } from "./services/ServiceSettingService";
 import { TestimonialService } from "./services/TestimonialService";
+import { ProductsPageService } from "./services/ProductsPageService";
+import { ProductService } from "./services/ProductService";
+import { ProductSettingService } from "./services/ProductSettingService";
 
 import { HomepageController } from "./controllers/HomepageController";
 import { GlobalController } from "./controllers/GlobalController";
@@ -91,6 +105,9 @@ import { ServicesPageController } from "./controllers/ServicesPageController";
 import { ServiceController } from "./controllers/ServiceController";
 import { ServiceSettingController } from "./controllers/ServiceSettingController";
 import { TestimonialController } from "./controllers/TestimonialController";
+import { ProductsPageController } from "./controllers/ProductsPageController";
+import { ProductController } from "./controllers/ProductController";
+import { ProductSettingController } from "./controllers/ProductSettingController";
 
 interface Container {
   homepageController: HomepageController;
@@ -108,6 +125,9 @@ interface Container {
   serviceController: ServiceController;
   serviceSettingController: ServiceSettingController;
   testimonialController: TestimonialController;
+  productsPageController: ProductsPageController;
+  productController: ProductController;
+  productSettingController: ProductSettingController;
 }
 
 const CONTAINER_KEY = "__cnsContainer";
@@ -132,6 +152,9 @@ function build(): Container {
   const serviceRepo = new ServiceRepository();
   const serviceSettingRepo = new ServiceSettingRepository();
   const testimonialRepo = new TestimonialRepository();
+  const productsPageRepo = new ProductsPageRepository();
+  const productRepo = new ProductRepository();
+  const productSettingRepo = new ProductSettingRepository();
 
   queryBus.register(GET_HOMEPAGE, new GetHomepageHandler(homepageRepo));
   queryBus.register(GET_GLOBAL, new GetGlobalHandler(globalRepo));
@@ -152,6 +175,10 @@ function build(): Container {
   queryBus.register(GET_SERVICE_BY_SLUG, new GetServiceBySlugHandler(serviceRepo));
   queryBus.register(GET_SERVICE_SETTING, new GetServiceSettingHandler(serviceSettingRepo));
   queryBus.register(GET_ALL_TESTIMONIALS, new GetAllTestimonialsHandler(testimonialRepo));
+  queryBus.register(GET_PRODUCTS_PAGE, new GetProductsPageHandler(productsPageRepo));
+  queryBus.register(GET_ALL_PRODUCTS, new GetAllProductsHandler(productRepo));
+  queryBus.register(GET_PRODUCT_BY_SLUG, new GetProductBySlugHandler(productRepo));
+  queryBus.register(GET_PRODUCT_SETTING, new GetProductSettingHandler(productSettingRepo));
 
   return {
     homepageController: new HomepageController(new HomepageService(queryBus)),
@@ -169,6 +196,9 @@ function build(): Container {
     serviceController: new ServiceController(new ServiceService(queryBus)),
     serviceSettingController: new ServiceSettingController(new ServiceSettingService(queryBus)),
     testimonialController: new TestimonialController(new TestimonialService(queryBus)),
+    productsPageController: new ProductsPageController(new ProductsPageService(queryBus)),
+    productController: new ProductController(new ProductService(queryBus)),
+    productSettingController: new ProductSettingController(new ProductSettingService(queryBus)),
   };
 }
 
@@ -196,3 +226,6 @@ export const servicesPageController = container.servicesPageController;
 export const serviceController = container.serviceController;
 export const serviceSettingController = container.serviceSettingController;
 export const testimonialController = container.testimonialController;
+export const productsPageController = container.productsPageController;
+export const productController = container.productController;
+export const productSettingController = container.productSettingController;

@@ -8,7 +8,17 @@ import { Partners } from "@/components/sections/Partners";
 import { CaseStudySlider } from "@/components/sections/CaseStudySlider";
 import { ProductHero } from "@/components/sections/product/ProductHero";
 import { ProductListGrid } from "@/components/sections/product/ProductListGrid";
-import { productsIndex } from "@/data/products-index";
+import { productsPageController, productController, partnerController, globalController } from "@/lib";
+import {
+  buildProductsHeroView,
+  buildProductListView,
+  buildProductsCaseStudiesView,
+  buildCertificationsView,
+  buildProductsPartnersView,
+  buildProductsFaqView,
+  buildProductsCtaView,
+} from "@/lib/views/productView";
+import { buildNavView, buildFooterView } from "@/lib/views/globalView";
 
 export const metadata = landingMetadata("products");
 
@@ -20,37 +30,57 @@ export const metadata = landingMetadata("products");
  * partner tabs are the homepage's with a different tag and heading, so both are
  * reused rather than duplicated.
  */
-export default function Page() {
-  const { hero, list, faq, cta, logos } = productsIndex;
+export default async function Page() {
+  const [pageResult, productsResult, partnersResult, globalResult] = await Promise.all([
+    productsPageController.getPage(),
+    productController.getAll(),
+    partnerController.getAll(),
+    globalController.getGlobal(),
+  ]);
+
+  const page = pageResult.data;
+  const products = productsResult.data ?? [];
+  const partners = partnersResult.data ?? [];
+  const global = globalResult.data;
+
+  if (!page) {
+    return (
+      <>
+        <Header solid nav={global ? buildNavView(global) : undefined} />
+        <main>
+          <p className="container py-40 text-center">
+            Không tải được nội dung trang Products. Vui lòng thử lại sau.
+          </p>
+        </main>
+        <Footer footer={global ? buildFooterView(global) : undefined} />
+      </>
+    );
+  }
+
+  const hero = buildProductsHeroView(page);
+  const list = buildProductListView(page, products);
+  const caseStudies = buildProductsCaseStudiesView(page);
+  const logos = buildCertificationsView(page);
+  const partnersView = buildProductsPartnersView(page, partners);
+  const faq = buildProductsFaqView(page);
+  const cta = buildProductsCtaView(page);
 
   return (
     <>
-      <Header solid />
+      <Header solid nav={global ? buildNavView(global) : undefined} />
       <main className="pt-28 lg:pt-32">
         <ProductHero hero={hero} />
-        <ProductListGrid
-          tag={list.tag}
-          heading={list.heading}
-          intro={list.intro}
-          cards={list.cards}
+        <ProductListGrid tag={list.tag} heading={list.heading} intro={list.intro} cards={list.cards} />
+        <CaseStudySlider
+          tag={caseStudies.tag}
+          headingLines={caseStudies.headingLines}
+          cards={caseStudies.cards}
+          ctaLabel={caseStudies.ctaLabel}
+          ctaHref={caseStudies.ctaHref}
         />
-        <CaseStudySlider />
-        <LogoStrip
-          logos={logos.items}
-          tag={logos.tag}
-          heading={logos.heading}
-          intro={logos.intro}
-        />
-        <Partners
-          tag="Our Partners"
-          headingLines={["Certified Supply Chains", "You Can Trust"]}
-        />
-        <Faq
-          tag={faq.tag}
-          headingLines={faq.headingLines}
-          email={faq.email}
-          items={faq.items}
-        />
+        <LogoStrip logos={logos.items} tag={logos.tag} heading={logos.heading} intro={logos.intro} />
+        <Partners tag={partnersView.tag} headingLines={partnersView.headingLines} tabs={partnersView.tabs} />
+        <Faq tag={faq.tag} headingLines={faq.headingLines} email={faq.email} items={faq.items} />
         <DarkCta
           tag={cta.tag}
           heading={cta.heading}
@@ -59,7 +89,7 @@ export default function Page() {
           ctaHref={cta.ctaHref}
         />
       </main>
-      <Footer />
+      <Footer footer={global ? buildFooterView(global) : undefined} />
     </>
   );
 }

@@ -18,6 +18,9 @@ export {
   serviceController,
   serviceSettingController,
   testimonialController,
+  productsPageController,
+  productController,
+  productSettingController,
 } from "./container";
 
 export { getMediaUrl, mediaWidth, mediaHeight, mediaAlt } from "./api/media-url";
@@ -36,3 +39,4 @@ export type { ServicesPageData, ServiceData, ServiceSettingData } from "./types/
 export type { Testimonial } from "./types/testimonial";
 export type { Resource } from "./types/resource";
 export type { Category } from "./types/category";
+export type { ProductsPageData, ProductData, ProductSettingData } from "./types/products-page";
