@@ -16,7 +16,11 @@ function slidesPerView(width: number) {
 }
 
 const SPACE_BETWEEN = 30;
-const AUTOPLAY_MS = 3000;
+const AUTOPLAY_MS = 1500;
+/* Sau một cú bấm/kéo tay thì chờ lâu hơn một nhịp autoplay rồi mới chạy tiếp:
+   ở nhịp ngắn thế này, dùng thẳng AUTOPLAY_MS nghĩa là vừa buông tay ra track
+   đã tự nhảy tiếp. */
+const RESUME_MS = 3000;
 /** Fraction of a slide's width a drag must clear before it counts as a swipe. */
 const DRAG_THRESHOLD_RATIO = 0.15;
 
@@ -90,7 +94,7 @@ export function UspSlider({ usps }: { usps: UspViewData[] }) {
     setActive(next);
     setPaused(true);
     window.clearTimeout(resumeTimer.current);
-    resumeTimer.current = window.setTimeout(() => setPaused(false), AUTOPLAY_MS);
+    resumeTimer.current = window.setTimeout(() => setPaused(false), RESUME_MS);
   };
 
   // Pointer drag — unifies mouse and touch. The track follows the pointer
@@ -120,10 +124,12 @@ export function UspSlider({ usps }: { usps: UspViewData[] }) {
 
   return (
     <section
-      /* `lg:min-h-screen` là của theme: từ 1024px trở lên khối này luôn chiếm
-         trọn một màn hình, kể cả khi bản gốc CHƯA ghim (bản gốc ghim từ
-         ~1280px). Bỏ nó đi thì ở đúng 1024px section thấp hơn bản gốc 180px. */
-      className="usp-slider relative overflow-hidden bg-dark-blue-950 lg:min-h-screen"
+      /* Theme gốc có `lg:min-h-screen` ở đây (từ 1024px khối này luôn chiếm
+         trọn một màn hình). Đã bỏ theo yêu cầu: nền tối làm lộ rõ phần bị kéo
+         giãn, khoảng trắng dưới card luôn dày hơn khoảng trên tag đúng bằng
+         phần dư của màn hình. Không có nó, section cao đúng bằng nội dung nên
+         padding trên/dưới của `.container` cân nhau. */
+      className="usp-slider relative overflow-hidden bg-dark-blue-950"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >

@@ -1,5 +1,6 @@
 import { getMediaUrl } from "../api/media-url";
 import { stripHtml, estimateReadTime, formatDate, extractToc } from "./textUtils";
+import { summarizeArticle } from "./articleSummary";
 import type { Resource } from "../types/resource";
 import type { BlogPost } from "../types/blog-post";
 import type { ResourceSettingData } from "../types/resources-page";
@@ -20,6 +21,11 @@ export interface ArticleViewData {
   facts: ArticleFact[];
   featuredImage: string | null;
   featuredAlt: string;
+  /**
+   * Tóm tắt cho ô Summary đầu bài, trích từ CHÍNH THÂN BÀI. Chuỗi rỗng khi thân
+   * bài chưa có đoạn văn nào đáng kể — lúc đó `ArticleHero` không dựng ô.
+   */
+  summary: string;
   toc: { href: string; label: string }[];
   html: string;
   shareUrl: string;
@@ -77,6 +83,7 @@ export function buildResourceArticleView(
     ],
     featuredImage: getMediaUrl(resource.featureImage) ?? FALLBACK_IMAGE,
     featuredAlt: resource.featureImage?.alternativeText || resource.title,
+    summary: summarizeArticle(resource.content),
     toc: extractToc(resource.content),
     html: resource.content ?? "",
     shareUrl: `${SITE}/resources/${resource.slug}/`,
@@ -117,6 +124,7 @@ export function buildBlogPostArticleView(
     ],
     featuredImage: getMediaUrl(post.featureImage) ?? FALLBACK_IMAGE,
     featuredAlt: post.featureImage?.alternativeText || post.title,
+    summary: summarizeArticle(post.content),
     toc: extractToc(post.content),
     html: post.content ?? "",
     shareUrl: `${SITE}/${post.slug}/`,

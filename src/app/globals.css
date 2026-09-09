@@ -175,6 +175,29 @@
 }
 
 /* ------------------------------------------------------------
+   Trang bài viết (`/<slug>` của blog + resource) — cỡ title
+
+   CHỈ title đổi; thang chữ thân bài (`.rich-text`) giữ NGUYÊN như cũ theo yêu
+   cầu. Bản gốc cho title 56px ở 1280 và 64px ở 1536, trong khi `<h2>` thân bài
+   chỉ 40px — chênh 1.4-1.6 lần, đọc ra như một cái biển hiệu. Giờ title bám sát
+   trên h2 đúng ~1.2 lần ở mọi bề rộng:
+
+     bề rộng      h2 thân bài    title
+     < 768         24            30
+     768-1279      30            40
+     1280-1919     40            48   (cũ: 56 / 64)
+     >= 1920       48            56   (cũ: 72)
+
+   Dưới 1280px giữ y như bản gốc — chỗ oversize chỉ ở desktop.
+   ------------------------------------------------------------ */
+@layer components {
+  .article-title { font-size: 30px; line-height: 34px; }
+  @media (min-width: 768px)  { .article-title { font-size: 40px; line-height: 50px; } }
+  @media (min-width: 1280px) { .article-title { font-size: 48px; line-height: 62px; } }
+  @media (min-width: 1920px) { .article-title { font-size: 56px; line-height: 72px; } }
+}
+
+/* ------------------------------------------------------------
    Resource / blog listings — the category rail and the pager
 
    Both listings use the same shapes with inverted palettes: the blog rail sits
@@ -407,9 +430,18 @@
   #ez-toc-sticky-container a:hover { text-decoration: underline; }
 }
 
-/* Vertical rhythm between sections */
-.spacing { padding-block: 40px; }
-@media screen and (min-width: 1028px) { .spacing { padding-block: 120px; } }
+/* Vertical rhythm between sections.
+
+   Trong `@layer components` vì cùng lý do với `.heading-*` và `.container`
+   (deviation 13 và 17): để nguyên ở tầng ngoài thì nó thắng MỌI utility, nên
+   `pb-0` viết cạnh `spacing` trên cùng một phần tử sẽ không có tác dụng gì —
+   im lặng, không báo lỗi. Trang chủ cần đúng chỗ đó (deviation 59). Hôm nay
+   không phần tử `.spacing` nào khác kèm lớp padding, nên chuyển tầng không
+   đổi bố cục trang nào. */
+@layer components {
+  .spacing { padding-block: 40px; }
+  @media screen and (min-width: 1028px) { .spacing { padding-block: 120px; } }
+}
 
 /* ------------------------------------------------------------
    Gradients
@@ -783,3 +815,178 @@ body {
 /* Hide scrollbars on the horizontally scrollable tab rails */
 .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* ─── Ô "Summary" đầu bài viết ─────────────────────────────────────────────
+ * Port từ OlcoMain (`ArticleSummary`), giữ nguyên nhịp và hình học; chỉ đổi
+ * bảng màu sang bảng của ô Tag/Date/Reading Time ngay trên nó — mọi nét sáng
+ * là `cyan-400`, riêng đầu vệt dùng `dark-blue-950` cho nổi trên nền `cyan-50`.
+ *
+ * Một màn dàn cảnh chạy ĐÚNG MỘT LẦN khi ô lọt khung nhìn:
+ *
+ * 1. VIỀN SÁNG chạy một vòng quanh hộp rồi để lại vành mờ.
+ * 2. CHỮ GÕ RA TỪNG KÝ TỰ sau một con trỏ đặc. Chữ được MOUNT dần chứ không
+ *    hiện dần bằng opacity, nên con trỏ tự nằm ngay sau ký tự vừa gõ mà không
+ *    phải đo toạ độ; phần đó do TS chạy, CSS chỉ lo con trỏ.
+ * 3. ICON SPARKLE xoay hai vòng rồi đứng hẳn — đếm vòng hữu hạn, không loop
+ *    vô hạn theo timer.
+ * 4. HỘP LỚN DẦN theo nội dung (`.sum-reveal`): mở đầu chỉ có nhãn, hàng chữ mở
+ *    cao ra đúng lúc chữ xuất hiện, không dựng sẵn khung rỗng chờ chữ.
+ *
+ * Nhịp giữa các lớp phụ thuộc SỐ KÝ TỰ đo được nên do TS quyết, truyền xuống
+ * qua --sum-reveal-delay / --sum-cta-delay / --sum-sweep-*; giá trị trong CSS
+ * chỉ là dự phòng.
+ *
+ * Mọi rule trạng thái nằm trong `prefers-reduced-motion: no-preference`. Ngoài
+ * đó không có rule nào chạm vào phần tử: chữ, nút và vành mờ đứng sẵn ở trạng
+ * thái cuối. */
+@keyframes sum-fade-in {
+  from { opacity: 0; }
+}
+
+@keyframes sum-sparkle-turn {
+  0%   { transform: rotate(0deg)   scale(1); }
+  50%  { transform: rotate(180deg) scale(0.72); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+/*
+ * Vệt sáng chạy quanh viền — vẽ bằng SVG stroke-dashoffset, KHÔNG phải
+ * conic-gradient xoay. Lý do là HÌNH HỌC chứ không phải hiệu năng:
+ * conic-gradient toả từ tâm, mà hộp này bẹt — trên cạnh dài, một độ góc chỉ đi
+ * được vài pixel, còn gần bốn góc thì quét cả trăm, nên vệt bò ở giữa cạnh rồi
+ * vụt qua góc. stroke-dashoffset đi dọc CHU VI nên tốc độ đều tuyệt đối ở mọi
+ * tỉ lệ hộp; TS chỉ phải đo đúng một số là chu vi (--sum-lap), độ dài từng lớp
+ * vệt là calc từ nó.
+ */
+@keyframes sum-ring-fade {
+  0%   { opacity: 0; }
+  12%  { opacity: 1; }
+  75%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Một keyframe dùng chung cho mọi lớp của vệt. Mỗi lớp tự khai --sum-seg (độ
+   dài) và --sum-seg-lead (chạy trước bao xa) nên tất cả cùng khép đúng một vòng
+   và mép DẪN của chúng luôn trùng nhau. */
+@keyframes sum-ring-run {
+  from { stroke-dashoffset: calc(-1 * var(--sum-seg-lead, 0px)); }
+  to   { stroke-dashoffset: calc(-1 * (var(--sum-lap, 1500px) + var(--sum-seg-lead, 0px))); }
+}
+
+/* Hộp lớn dần theo nội dung: grid 0fr → 1fr, cách duy nhất animate tới chiều
+   cao "auto" bằng CSS thuần. */
+@keyframes sum-reveal-open {
+  from { grid-template-rows: 0fr; }
+}
+
+@layer components {
+  .sum-box {
+    --sum-accent: var(--color-cyan-400);
+    --sum-head: var(--color-dark-blue-950);
+  }
+
+  /* Con trỏ gõ chữ — nét đặc, KHÔNG nháy: ô này đã hết animation lặp vô hạn. */
+  .sum-caret {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    /* Nhích xuống cho khớp đường chân chữ Poppins thay vì đứng giữa line-box. */
+    translate: 0 2px;
+    background: var(--sum-accent);
+    opacity: 0;
+  }
+
+  /* `.sum-caret-done` cố tình KHÔNG có rule nào: nó chỉ tồn tại để phá vế
+     `:not()` của rule sáng bên dưới, cho opacity rơi về 0 và transition lo
+     phần tan đi. */
+
+  .sum-reveal { display: grid; grid-template-rows: 1fr; }
+  /* Inner phải min-height:0 + overflow hidden thì nội dung mới bị cắt gọn
+     trong lúc hàng đang mở. */
+  .sum-reveal-inner { min-height: 0; overflow: hidden; }
+
+  /* Lớp viền: một <svg> phủ khít hộp, `overflow: visible` để nửa ngoài của nét
+     1px không bị chính svg xén. */
+  .sum-ring-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .sum-ring-svg rect { fill: none; stroke-width: 1; }
+
+  /* Vành mờ ở lại sau màn chạy viền — trạng thái cuối, ai cũng thấy. */
+  .sum-ring-rest { stroke: var(--sum-accent); opacity: 0.3; }
+
+  /* Vệt sáng = ba nét chồng nhau, cùng mép dẫn, ngắn dần và đậm dần → đuôi tan
+     chứ không phải một khúc bị cắt cụt. */
+  .sum-ring-run { opacity: 0; }
+  .sum-ring-seg {
+    stroke-linecap: round;
+    /* Khoảng hở dài bằng cả vòng ⇒ chỉ một dash duy nhất chạy, không lặp. */
+    stroke-dasharray: var(--sum-seg, 270px) var(--sum-lap, 1500px);
+  }
+  .sum-ring-glow {
+    stroke: var(--sum-accent);
+    opacity: 0.15;
+    --sum-seg: calc(var(--sum-lap, 1500px) * 0.3);
+    --sum-seg-lead: 0px;
+  }
+  .sum-ring-mid {
+    stroke: var(--sum-accent);
+    opacity: 0.45;
+    --sum-seg: calc(var(--sum-lap, 1500px) * 0.16);
+    --sum-seg-lead: calc(var(--sum-lap, 1500px) * 0.14);
+  }
+  .sum-ring-head {
+    stroke: var(--sum-head);
+    --sum-seg: calc(var(--sum-lap, 1500px) * 0.05);
+    --sum-seg-lead: calc(var(--sum-lap, 1500px) * 0.25);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* `.sum-type-body` ở idle đang chứa cả đoạn văn dựng tạm để ĐO xem bao nhiêu
+     từ lọt 2 dòng — phải giấu, không thì thấy nguyên đoạn nhấp một cái. */
+  [data-summary-state="idle"] .sum-ring-rest,
+  [data-summary-state="idle"] .sum-type-body,
+  [data-summary-state="idle"] .sum-cta { opacity: 0; }
+  [data-summary-state="idle"] .sum-reveal { grid-template-rows: 0fr; }
+
+  [data-summary-state="play"] .sum-ring-rest { animation: sum-fade-in 0.6s ease-out both; }
+
+  /* Linear vì vệt phải trôi ĐỀU quanh viền — mọi easing đều đọc ra tăng giảm
+     ga. Ba animation phải cùng duration/delay thì đầu, đuôi và nhịp tan mới
+     khớp. */
+  [data-summary-state="play"] .sum-ring-run {
+    animation: sum-ring-fade var(--sum-sweep-ms, 2.4s) linear var(--sum-sweep-delay, 180ms) both;
+  }
+  [data-summary-state="play"] .sum-ring-seg {
+    animation: sum-ring-run var(--sum-sweep-ms, 2.4s) linear var(--sum-sweep-delay, 180ms) both;
+  }
+
+  [data-summary-state="play"] .sum-reveal {
+    animation: sum-reveal-open 0.5s cubic-bezier(0.33, 0, 0.2, 1) both;
+    animation-delay: var(--sum-reveal-delay, 0ms);
+  }
+
+  .sum-caret { transition: opacity 0.27s ease-out; }
+  /* Con trỏ chỉ sáng trong pha gõ; gõ xong, class -done phá `:not()` nên
+     opacity rơi về 0 và transition ở trên làm nó tan dần. */
+  [data-summary-state="play"] .sum-caret:not(.sum-caret-done) { opacity: 1; }
+
+  /* Fade ngắn, đủ để nút đáp xuống ngay sau ký tự cuối mà không giật. */
+  [data-summary-state="play"] .sum-cta {
+    animation: sum-fade-in 0.32s ease-out both;
+    animation-delay: var(--sum-cta-delay, 2100ms);
+  }
+
+  [data-summary-state="play"] .sum-sparkle {
+    /* Glyph sparkle vẽ lệch trong hộp 24 (tâm hình ở x=9 ≈ 37.5% bề ngang) —
+       xoay quanh tâm hộp thì icon đảo quỹ đạo. */
+    transform-origin: 37.5% 50%;
+    animation: sum-sparkle-turn 1s ease-in-out 0.13s 2 both;
+  }
+}

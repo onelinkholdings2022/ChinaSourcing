@@ -31,9 +31,19 @@ export function ArticlePage({
     <>
       <Header solid nav={nav} />
       <main>
-        <ArticleHero title={article.title} subtitle={article.subtitle} facts={article.facts} />
+        <ArticleHero
+          title={article.title}
+          subtitle={article.subtitle}
+          facts={article.facts}
+          summary={article.summary}
+        />
 
-        <div className="container mx-auto spacing flex flex-col">
+        {/* `min-[1028px]:pt-20`: hạ đệm TRÊN của khối thân bài từ 120px xuống
+            80px theo yêu cầu — ô Summary đứng ngay trên nó nên 120px đọc ra như
+            một quãng đứt. Dùng đúng mốc 1028px của `.spacing` chứ không phải
+            `lg:` (1024px), không thì ở dải 1024-1027 utility này lại ĐỘI đệm
+            40px của `.spacing` lên 80. Đệm DƯỚI giữ nguyên 120px. */}
+        <div className="container mx-auto spacing min-[1028px]:pt-20 flex flex-col">
           <ArticleBody
             featuredImage={article.featuredImage}
             featuredAlt={article.featuredAlt}

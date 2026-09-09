@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { ArticleSummary } from "@/components/sections/article/ArticleSummary";
 
 /** One row of the hero's pale blue fact box. */
 export type ArticleFact = { label: string; icon: string | null; value: string };
@@ -16,10 +17,13 @@ export function ArticleHero({
   title,
   subtitle,
   facts,
+  summary,
 }: {
   title: string;
   subtitle: string;
   facts: ArticleFact[];
+  /** Rỗng thì không dựng ô Summary — xem `ArticleViewData.summary`. */
+  summary: string;
 }) {
   return (
     <div className="relative pt-24 lg:pt-[120px] overflow-hidden">
@@ -42,7 +46,7 @@ export function ArticleHero({
 
       <div className="container z-10">
         <div className="md:w-11/12 md:mx-auto max-w-[800px]">
-          <h1 className="heading-1 font-medium text-center mb-4">{title}</h1>
+          <h1 className="article-title font-medium text-center mb-4">{title}</h1>
           {/* The theme prints this paragraph even when empty — posts have no
               subtitle, only the resource downloads do. */}
           <p className="text-center body-1 text-grey-600">{subtitle}</p>
@@ -75,6 +79,10 @@ export function ArticleHero({
             ))}
           </div>
         </div>
+
+        {/* Ô Summary nằm ngay dưới ô Tag/Date/Reading Time và mượn đúng
+            bảng màu của nó. */}
+        {summary && <ArticleSummary text={summary} />}
       </div>
     </div>
   );

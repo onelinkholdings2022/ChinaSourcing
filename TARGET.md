@@ -717,8 +717,8 @@ theme's icon SVGs (redrawn as React components in `src/components/icons.tsx`).
     • **Trang chủ, `.usp-slider` (-2.4k đến -2.6k px ở ≥1280).** Bản gốc ghim
       section bằng GSAP và sinh `pin-spacer` cao 3370-3535px; bản clone đã bỏ
       ghim theo yêu cầu của chủ site (xem deviation 1), nên tài liệu ngắn đúng
-      chừng ấy. Đã thêm lại `lg:min-h-screen` mà theme khai trên section này —
-      thiếu nó thì ngay ở 1024px (nơi bản gốc CHƯA ghim) section vẫn hụt 180px.
+      chừng ấy. `lg:min-h-screen` từng được thêm lại cho khớp mốc 1024px, nay
+      đã bỏ hẳn — xem deviation 58.
 
     • **Timeline `/process` (-160px) và `/about` (-120px) dưới 1024px.** Markup
       Twig của theme để LẠC một dấu xuống dòng ngay đầu mỗi `<div
@@ -742,6 +742,96 @@ theme's icon SVGs (redrawn as React components in `src/components/icons.tsx`).
     Đo bằng script Puppeteer so bản gốc với bản clone theo từng section ở
     320/360/390/414/768/1024/1280/1512. **Không trang nào tràn ngang ở bất kỳ
     bề rộng nào** (`scrollWidth === clientWidth` từ 320px trở lên).
+
+58. **`.usp-slider` bỏ `lg:min-h-screen`, autoplay còn 1 giây.** Theo yêu cầu.
+    `min-h-screen` kéo section cao bằng đúng một màn hình trong khi nội dung
+    chỉ ~757px, và vì `.container` là con block thường nên toàn bộ phần dư rơi
+    xuống DƯỚI: khoảng trắng từ đáy card tới đáy section = 96px padding + phần
+    dư (105px ở màn 862px), còn khoảng từ đỉnh section tới tag chỉ 96px. Nền
+    tối làm chỗ lệch đó lộ rõ, và nó còn đổi theo chiều cao cửa sổ. Bỏ
+    `min-h-screen` thì section cao đúng bằng nội dung, trên/dưới cân nhau
+    96/96 (120/120 từ 1536px). Đánh đổi: ở đúng 1024px section thấp hơn bản
+    gốc 180px — chấp nhận, vì đằng nào bỏ ghim đã lệch 2.4k px (deviation 57).
+
+    `AUTOPLAY_MS` 3000 → 1000. Kèm theo phải tách `RESUME_MS = 3000`: chỗ tạm
+    dừng sau khi khách bấm nút/kéo tay vốn dùng chung hằng số với autoplay, để
+    1000 thì vừa buông tay track đã tự nhảy tiếp.
+
+    Section `.casestudy-slider` ("Real Outcomes") KHÔNG đổi: đo ra 120px trên
+    tag và 120px từ đáy hàng mũi tên xuống đáy section — vốn đã cân, chỉ là
+    hàng mũi tên (40px + 48px) nằm giữa đáy card và đáy section.
+
+59. **Trang chủ: `.casestudy` bỏ đệm dưới, và `.spacing` chuyển vào
+    `@layer components`.** Theo yêu cầu. Hai section trắng liền nhau ai cũng có
+    120px đệm của `.spacing`, nên từ hàng mũi tên "Real Outcomes" xuống tag
+    "Manufacturing Network" là **240px** — gấp đôi khoảng 120px phía trên tag
+    "Real Outcomes" (khoảng đó chỉ có 120 vì section ngay trên là `.usp-slider`
+    nền tối, ranh giới nằm ngay ở mép nền). Đặt `pb-0` cho `.casestudy` trên
+    trang chủ: đệm 120px của `.partners` gánh trọn khoảng cách, ra đúng
+    **120px = 120px**. Ở dưới 1028px thì là 40/40, vẫn cân.
+
+    Sửa ở `CaseStudies` (chỉ trang chủ dùng), KHÔNG sửa `Partners` — component
+    đó còn chạy ở `/products` và các trang partner-category.
+
+    **`pb-0` một mình không đủ.** `.spacing` khai ở tầng ngoài mọi `@layer`, mà
+    CSS không tầng thắng mọi utility có tầng, nên `padding-block: 120px` nuốt
+    luôn `pb-0` — im lặng, không lỗi. Đã chuyển `.spacing` vào
+    `@layer components`, cùng cách đã xử lý `.heading-*` (deviation 13) và
+    `.container` (deviation 17). Đã soát: hiện KHÔNG phần tử `.spacing` nào
+    khác kèm lớp `pt-*`/`pb-*`/`py-*`, và đo lại trang chủ + `/about-us` thì
+    mọi `.spacing` vẫn đúng 120/120 như trước — chuyển tầng không đổi trang nào.
+
+60. **Trang bài viết: bỏ mục lục, thêm ô "Summary", hạ cỡ title.** Theo yêu cầu,
+    và chỉ ở trang bài viết (`/<slug>` của 12 resource + 129 blog post).
+
+    **Bỏ ngăn kéo "Index", GIỮ hộp mục lục.** Thứ được gỡ là `StickyIndex` —
+    ngăn kéo ghim ở mép trái màn hình mà deviation 20 dựng thêm. Hộp
+    `TableOfContents` ở cột trái vẫn còn nguyên, đủ 28 mục có đánh số trên bài
+    dài nhất. Component `StickyIndex` vẫn nằm trong `sections/article/`, bật
+    lại là một dòng.
+
+    **Ô "Summary".** Port từ OlcoMain (`insights/article/ArticleSummary`): viền
+    sáng chạy một vòng → chữ gõ ra từng ký tự sau con trỏ → nút Show More/Less
+    mọc ra khi tóm tắt tràn quá 2 dòng. Ba file `ArticleSummary.tsx`,
+    `useSummaryPlay.ts`, `summaryTiming.ts` cộng khối CSS `sum-*` ở cuối
+    `globals.css`. Khác bản OlcoMain đúng ba chỗ: bảng màu đổi sang bảng của ô
+    Tag/Date/Reading Time ngay trên nó (nền `cyan-50`, nhãn `cyan-900`, thân chữ
+    `grey-600`, nét sáng `cyan-400`, đầu vệt `dark-blue-950`), bo góc
+    `rounded-lg` nên `RING_RADIUS` là 8 chứ không phải 12, và cỡ chữ dùng
+    `.body-3` (14/24) — trùng đúng `LINE_HEIGHT` mà phép đo 2 dòng cần.
+
+    Vị trí: ngay DƯỚI ô Tag/Date/Reading Time, cùng bề rộng 772px, trong
+    `ArticleHero`.
+
+    **Chữ tóm tắt trích từ THÂN BÀI**, không lấy `metaDescription` bên SEO —
+    `summarizeArticle` trong `src/lib/views/articleSummary.ts`, thuật toán trích
+    câu thuần TS chạy lúc render server, không có model nào chạy sau lưng. Ở dự
+    án này việc không đụng tới SEO là bắt buộc chứ không phải sở thích: 108/180
+    mô tả là placeholder mặc định của Rank Math (deviation 43), lấy ra thì ô
+    Summary in đúng chữ "This is the meta descrtiption for the Products". Thân
+    bài chưa có đoạn văn nào đáng kể thì hàm trả chuỗi rỗng và ô không được dựng.
+
+    **Cỡ title.** Bản gốc để title 56px (1280) / 64px (1536) / 72px (1920) trong
+    khi `<h2>` thân bài chỉ 40px — chênh 1.4-1.6 lần. Giờ title bám trên h2 đúng
+    ~1.2 lần: 48px từ 1280, 56px từ 1920. Dưới 1280px giữ y bản gốc (30/40).
+    Class `.article-title` thay cho `.heading-1` ở `ArticleHero`.
+
+    **Thang chữ THÂN BÀI không đổi.** `.rich-text` giữ nguyên h2 40 / h3 28 /
+    p 16 như bản gốc — đã thử hạ theo tỷ lệ rồi revert theo yêu cầu.
+
+    **Khoảng cách từ ô Summary xuống ảnh đầu bài: 240px -> 80px.** Ảnh banner
+    mang `mt-10 lg:mt-[120px]` của theme, CỘNG với 120px đệm trên của khối bọc
+    (`container mx-auto spacing`) — hai nguồn chồng nhau đúng như chỗ
+    `.casestudy` + `.partners` ở deviation 59. Bỏ margin trên ảnh, rồi hạ tiếp
+    đệm trên của khối bọc còn `min-[1028px]:pt-20` (80px). Đệm DƯỚI giữ 120px,
+    và dưới 1028px vẫn là 40px của `.spacing`.
+
+    Mốc phải viết là `min-[1028px]` chứ không phải `lg:` — `.spacing` đổi ở
+    1028px còn `lg:` là 1024px, nên ở dải 1024-1027 một utility `lg:pt-20` sẽ
+    ĐỘI đệm 40px lên 80 thay vì hạ 120 xuống 80.
+
+    Nhịp cuối của hero: title -> ô Tag 40px, ô Tag -> Summary 40px
+    (`mt-6 lg:mt-10`, cùng nhịp ô Tag dùng để cách title), Summary -> ảnh 80px.
 
 ## Customization Plans
 None yet — pure emulation. Content lives in `src/data/site.ts`, so copy changes are one-file edits.

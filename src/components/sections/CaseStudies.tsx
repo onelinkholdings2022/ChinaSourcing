@@ -14,7 +14,11 @@ export function CaseStudies({ caseStudies }: { caseStudies: CaseStudyCardViewDat
   const maxStart = Math.max(0, caseStudies.length - PER_VIEW_DESKTOP);
 
   return (
-    <section className="spacing">
+    /* `pb-0`: khối kế tiếp trên trang chủ là `.partners` (`container spacing`),
+       tự nó đã có 120px đệm trên. Giữ cả hai thì từ hàng mũi tên xuống tag
+       "Manufacturing Network" là 240px, gấp đôi khoảng 120px phía trên tag
+       "Real Outcomes" — xem deviation 59. */
+    <section className="spacing pb-0">
       <div className="container">
         <Tag className="mx-auto lg:ml-0">Real Outcomes</Tag>
 

@@ -3,13 +3,17 @@
 import Image from "next/image";
 import { ShareRow } from "@/components/sections/casestudy/ShareRow";
 import { TableOfContents } from "@/components/sections/article/TableOfContents";
-import { StickyIndex } from "@/components/sections/article/StickyIndex";
 import { useSubscribed } from "@/hooks/useSubscribed";
 import { cn } from "@/lib/utils";
 
 /**
- * The banner image, the sidebar (table of contents + share) and the article
- * itself.
+ * The banner image, the share column and the article itself.
+ *
+ * ## Mục lục: còn hộp, bỏ ngăn kéo
+ *
+ * Hộp `TableOfContents` ở cột trái GIỮ NGUYÊN. Thứ đã gỡ theo yêu cầu chỉ là
+ * ngăn kéo `StickyIndex` ghim ở mép trái màn hình (deviation 20 dựng nó) —
+ * component vẫn còn trong `sections/article/`, bật lại là một dòng.
  *
  * ## The body is gated — only when the CMS says so
  *
@@ -41,9 +45,6 @@ export function ArticleBody({
 
   return (
     <>
-      {/* Pinned to the viewport, so it lives outside the column flow. */}
-      <StickyIndex items={toc} />
-
       {featuredImage && (
         <Image
           src={featuredImage}
@@ -51,7 +52,11 @@ export function ArticleBody({
           width={1448}
           height={579}
           priority
-          className="w-full object-cover mt-10 lg:mt-[120px] aspect-[4/3] md:aspect-[5/2] rounded-3xl"
+          /* Không có margin trên: khoảng cách tới ô Summary phía trên đã do
+             `spacing` (120px, 40px dưới 1028px) của khối bọc trong `ArticlePage`
+             lo trọn. Theme gốc cộng thêm `mt-10 lg:mt-[120px]` ở đây, thành 240px
+             ở desktop — gấp đôi nhịp section của cả site. */
+          className="w-full object-cover aspect-[4/3] md:aspect-[5/2] rounded-3xl"
         />
       )}
 
