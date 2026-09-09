@@ -28,18 +28,46 @@ import {
   buildMissionVideoView,
   buildClientLogosView,
 } from "@/lib/views/homeView";
-import { buildNavView, buildFooterView } from "@/lib/views/globalView";
+import { buildNavView, buildFooterView, buildPageMetadata } from "@/lib/views/globalView";
+import { getMediaUrl } from "@/lib/api/media-url";
+import type { Metadata } from "next";
+import { JsonLd } from "@/components/JsonLd";
+import { getRouteSlugs } from "@/lib/routing/routeSlugs";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { data: page } = await homepageController.getPage();
+  const hero = page?.hero;
+  return buildPageMetadata(page?.seo, {
+    // Hero là dòng chữ chạy (`rotatingWords`), nên `title` một mình chưa thành
+    // câu. Ghép `title` + `subtitle` cho ra đúng thứ trang thật đang nói.
+    title: [hero?.title, hero?.subtitle].filter(Boolean).join(" ") || "China Sourcing Co",
+    description: hero?.subtitle,
+    image: getMediaUrl(hero?.posterImage),
+    path: "/",
+  });
+}
 
 export default async function Home() {
-  const [homeResult, globalResult, caseStudiesResult, postsResult, partnersResult, logosResult] =
-    await Promise.all([
-      homepageController.getPage(),
-      globalController.getGlobal(),
-      caseStudyController.getFeatured(),
-      blogPostController.getLatest(3),
-      partnerController.getAll(),
-      aboutPageController.getClientLogos(),
-    ]);
+  const [
+    homeResult,
+    globalResult,
+    caseStudiesResult,
+    postsResult,
+    partnersResult,
+    logosResult,
+    slugTable,
+  ] = await Promise.all([
+    homepageController.getPage(),
+    globalController.getGlobal(),
+    caseStudyController.getFeatured(),
+    blogPostController.getLatest(3),
+    partnerController.getAll(),
+    aboutPageController.getClientLogos(),
+    // Dải logo nhà máy ở đây là ĐÚNG khối trên `/products`, tab cũng là link
+    // tới `/<partner-category-slug>` — nên trang chủ cũng cần bảng slug để
+    // dựng href.
+    getRouteSlugs(),
+  ]);
 
   const home = homeResult.data;
   const global = globalResult.data;
@@ -65,13 +93,14 @@ export default async function Home() {
 
   return (
     <>
+      <JsonLd seo={home?.seo} siteSeo={global?.defaultSeo} />
       <Header nav={global ? buildNavView(global) : undefined} />
       <main>
         <Hero hero={buildHeroView(home)} />
         <Services serviceTabs={buildServiceTabsView(home)} />
         <UspSlider usps={buildUspsView(home)} />
         <CaseStudies caseStudies={buildCaseStudiesView(caseStudies)} />
-        <Partners tabs={buildPartnerTabsView(partners)} />
+        <Partners tabs={buildPartnerTabsView(partners, slugTable)} />
         <Insights insights={buildInsightsView(posts)} />
         <ClosingCta missionVideo={buildMissionVideoView(home)} />
         <LogoMarquee clientLogos={buildClientLogosView(logosResult.data)} />

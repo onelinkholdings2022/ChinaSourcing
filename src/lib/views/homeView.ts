@@ -4,7 +4,9 @@ import type { CaseStudy } from "../types/case-study";
 import type { BlogPost } from "../types/blog-post";
 import type { Partner } from "../types/partner";
 import type { AboutPageData } from "../types/about-page";
-import { stripHtml, estimateReadTime, formatDate } from "./textUtils";
+import { filterTabHref, type RouteSlugTable } from "../routing/routeSlugs";
+import { stripHtml, estimateReadTime, formatDate, stripHtmlKeepBreaks, trimExcerpt } from "./textUtils";
+import { SOURCING_GUIDE_HREF, SOURCING_GUIDE_URL, isSourcingGuideHref } from "../sourcingGuide";
 
 // ─── View model cho trang chủ ────────────────────────────────────────────────
 // Map raw Strapi -> đúng hình dữ liệu mà các component section đang đọc (trước
@@ -46,7 +48,11 @@ export interface CaseStudyCardViewData {
 }
 
 export interface PartnerTabViewData {
+  /** Slug category — thứ đi vào URL và thứ `Partners` so để biết tab nào đang mở. */
+  value: string;
   label: string;
+  /** URL phẳng `/<slug>`; `undefined` nếu slug chưa phân giải được. */
+  href?: string;
   logos: string[];
 }
 
@@ -71,10 +77,27 @@ export interface MissionVideoViewData {
   headingAfter: string;
   subtitle: string;
   primaryButton: { label: string; href: string };
-  secondaryButton: { label: string; href: string };
+  /** `fileUrl` khác `null` nghĩa là nút TẢI FILE, không phải link — xem dưới. */
+  secondaryButton: { label: string; href: string; fileUrl: string | null };
 }
 
 const FALLBACK_IMAGE = "/images/blog-fallback.png";
+
+/**
+ * Vimeo hiện thanh control (play/pause, volume, cài đặt...) theo mặc định —
+ * với video nền chỉ để trang trí thì phải ép `background=1&controls=0` (Vimeo
+ * background-mode) mới ẩn hẳn thanh đó, dù CMS đã tự set autoplay/muted/loop.
+ */
+function toBackgroundVimeoUrl(url: string): string {
+  try {
+    const u = new URL(url);
+    u.searchParams.set("background", "1");
+    u.searchParams.set("controls", "0");
+    return u.toString();
+  } catch {
+    return url;
+  }
+}
 
 export function buildHeroView(data: HomepageData): HeroViewData {
   const { hero } = data;
@@ -87,7 +110,7 @@ export function buildHeroView(data: HomepageData): HeroViewData {
       hover: hero.ctaButton?.hoverLabel ?? "",
     },
     poster: getMediaUrl(hero.posterImage) ?? FALLBACK_IMAGE,
-    videoUrl: hero.videoUrl || null,
+    videoUrl: hero.videoUrl ? toBackgroundVimeoUrl(hero.videoUrl) : null,
   };
 }
 
@@ -126,45 +149,68 @@ export function buildCaseStudiesView(caseStudies: CaseStudy[]): CaseStudyCardVie
     title: c.title,
     description: c.description ?? "",
     image: getMediaUrl(c.featureImage) ?? FALLBACK_IMAGE,
-    href: `/case-studies/${c.slug}`,
+    href: `/${c.slug}`,
   }));
 }
 
-const PARTNER_CATEGORY_ORDER = [
-  "Furniture & Interior",
-  "Promotional Products",
-  "Gym & Fitness",
-  "Point of Sale",
-  "Machinery",
-  "Hospitality Items",
-  "Household Appliances",
-];
-
-export function buildPartnerTabsView(partners: Partner[]): PartnerTabViewData[] {
-  const byCategory = new Map<string, Partner[]>();
+/**
+ * Tab của dải logo nhà máy, nhóm theo `partner.category`.
+ *
+ * Thứ tự lấy từ field `order` bên CMS chứ không phải một mảng tên ghi cứng
+ * trong code: bảy category đều có `order` 1–7, và thêm/đổi tên một category
+ * bên CMS mà code không biết thì tab đó biến mất khỏi trang — đúng cái bẫy của
+ * bản cũ. Partner không gán category rơi vào nhóm "Other", xếp cuối.
+ *
+ * `slugTable` để dựng href. Mỗi tab trỏ tới `/<category-slug>`; xem
+ * `filterTabHref` và chú thích `SLUG_KINDS` cho chuyện 4 slug dùng chung với
+ * trang product.
+ */
+export function buildPartnerTabsView(
+  partners: Partner[],
+  slugTable: RouteSlugTable,
+): PartnerTabViewData[] {
+  const groups = new Map<string, { label: string; order: number; logos: Partner[] }>();
   for (const p of partners) {
-    const name = p.category?.name ?? "Other";
-    if (!byCategory.has(name)) byCategory.set(name, []);
-    byCategory.get(name)!.push(p);
+    const slug = p.category?.slug ?? "other";
+    let group = groups.get(slug);
+    if (!group) {
+      group = {
+        label: p.category?.name ?? "Other",
+        // Không có `order` thì xếp cuối, chứ không phải đầu (0).
+        order: p.category?.order ?? Number.MAX_SAFE_INTEGER,
+        logos: [],
+      };
+      groups.set(slug, group);
+    }
+    group.logos.push(p);
   }
-  return PARTNER_CATEGORY_ORDER.filter((name) => byCategory.has(name)).map((name) => ({
-    label: name,
-    logos: byCategory
-      .get(name)!
-      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-      .map((p) => getMediaUrl(p.logo) ?? FALLBACK_IMAGE),
-  }));
+
+  return [...groups.entries()]
+    .sort((a, b) => a[1].order - b[1].order)
+    .map(([slug, group]) => ({
+      value: slug,
+      label: group.label,
+      href: filterTabHref(slugTable, slug),
+      logos: group.logos
+        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+        .map((p) => getMediaUrl(p.logo) ?? FALLBACK_IMAGE),
+    }));
 }
 
 export function buildInsightsView(posts: BlogPost[]): InsightViewData[] {
   return posts.map((post) => ({
     category: "Blog",
     title: post.title,
-    excerpt: stripHtml(post.excerpt),
+    // Theme cắt mọi excerpt thẻ bài về 150 ký tự (`wp_html_excerpt`) — xem
+    // deviation 27. Thẻ này không có `line-clamp` nào, nên bỏ cắt là thẻ cao
+    // dư: ở 390px cả khối "Latest Sourcing Insights" phình thêm ~500px.
+    excerpt: trimExcerpt(stripHtml(post.excerpt)),
     date: formatDate(post.publishedDate),
-    readTime: estimateReadTime(post.content),
+    readTime: post.readingTime ?? estimateReadTime(post.content),
     image: getMediaUrl(post.featureImage) ?? FALLBACK_IMAGE,
-    href: `/resources/${post.slug}`,
+    // Blog post nằm ở gốc site (`/<slug>`, route `app/[slug]`), không phải
+    // dưới `/resources` — chỗ đó chỉ dành cho collection `resource`.
+    href: `/${post.slug}`,
   }));
 }
 
@@ -177,8 +223,18 @@ export function buildMissionVideoView(data: HomepageData): MissionVideoViewData 
     headingAfter: seg2?.text ?? "",
     subtitle: data.missionVideo.subtitle ?? "",
     primaryButton: { label: btn1?.label ?? "", href: btn1?.url ?? "/contact-us" },
-    // Strapi chưa gắn URL cho nút này (guide file trống) — giữ href tĩnh gốc.
-    secondaryButton: { label: btn2?.label ?? "", href: btn2?.url ?? "/sourcing-guide" },
+    // "Download A Sourcing Guide" — bên site gốc là `<button id="downloadBtn">`
+    // tải thẳng PDF, không phải link. CMS không có field file nên nó lưu href
+    // giữ chỗ `/sourcing-guide`; gặp href đó thì trả file thật, và trang render
+    // nút tải xuống thay vì `<a>` (địa chỉ kia không có trang, proxy sẽ đá về
+    // trang chủ).
+    secondaryButton: {
+      label: btn2?.label ?? "",
+      href: btn2?.url ?? SOURCING_GUIDE_HREF,
+      fileUrl: isSourcingGuideHref(btn2?.url ?? SOURCING_GUIDE_HREF)
+        ? SOURCING_GUIDE_URL
+        : null,
+    },
   };
 }
 
@@ -190,6 +246,6 @@ export function buildClientLogosView(about: AboutPageData | null): string[] {
 export function buildFaqsView(data: HomepageData): FaqViewData[] {
   return data.faq.items.map((item) => ({
     question: item.question,
-    answer: stripHtml(item.answer),
+    answer: stripHtmlKeepBreaks(item.answer),
   }));
 }

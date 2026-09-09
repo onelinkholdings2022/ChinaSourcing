@@ -1,6 +1,7 @@
 import { getMediaUrl } from "../api/media-url";
-import { stripHtml } from "./textUtils";
-import { buildPartnerTabsView } from "./homeView";
+import { stripHtmlKeepBreaks } from "./textUtils";
+import { buildPartnerTabsView, type PartnerTabViewData } from "./homeView";
+import type { RouteSlugTable } from "../routing/routeSlugs";
 import type { ProductsPageData, ProductData, ProductSettingData } from "../types/products-page";
 import type { Partner } from "../types/partner";
 import type { Testimonial as TestimonialModel } from "../types/testimonial";
@@ -66,7 +67,7 @@ export function buildProductListView(page: ProductsPageData, products: ProductDa
       alt: p.title,
       title: p.title,
       body: p.cardDescription ?? "",
-      href: `/products/${p.slug}`,
+      href: `/${p.slug}`,
       ctaLabel: page.productList.cardButtonLabel ?? "See Product Detail",
     })),
   };
@@ -76,7 +77,7 @@ function buildCaseCards(list: import("../types/case-study").CaseStudy[]): CaseCa
   return list.map((c) => ({
     title: c.title,
     body: c.description ?? "",
-    href: `/case-studies/${c.slug}`,
+    href: `/${c.slug}`,
     image: getMediaUrl(c.featureImage) ?? FALLBACK_IMAGE,
     alt: `${c.title} case study`,
   }));
@@ -121,15 +122,19 @@ export function buildCertificationsView(page: ProductsPageData): LogoStripViewDa
 export interface PartnersSectionViewData {
   tag: string;
   headingLines: string[];
-  tabs: { label: string; logos: string[] }[];
+  tabs: PartnerTabViewData[];
 }
 
-export function buildProductsPartnersView(page: ProductsPageData, partners: Partner[]): PartnersSectionViewData {
+export function buildProductsPartnersView(
+  page: ProductsPageData,
+  partners: Partner[],
+  slugTable: RouteSlugTable,
+): PartnersSectionViewData {
   const { partners: section } = page;
   return {
     tag: section.tag?.label ?? "",
     headingLines: [section.title, section.titleHighlight].filter((s): s is string => Boolean(s)),
-    tabs: buildPartnerTabsView(partners),
+    tabs: buildPartnerTabsView(partners, slugTable),
   };
 }
 
@@ -146,7 +151,7 @@ export function buildProductsFaqView(page: ProductsPageData): FaqViewData {
     tag: faq.tag?.label ?? "",
     headingLines: [faq.title, faq.titleHighlight].filter((s): s is string => Boolean(s)),
     email: faq.contactEmail,
-    items: faq.items.map((item) => ({ question: item.question ?? "", answer: stripHtml(item.answer) })),
+    items: faq.items.map((item) => ({ question: item.question ?? "", answer: stripHtmlKeepBreaks(item.answer) })),
   };
 }
 
@@ -162,7 +167,7 @@ export interface DarkCtaViewData {
 export function buildProductsCtaView(page: ProductsPageData): DarkCtaViewData {
   const { ctaBanner } = page;
   return {
-    sectionClass: "dark-cta px-5",
+    sectionClass: "dark-cta px-5 pb-[120px]",
     tag: ctaBanner.tag?.label ?? "",
     heading: ctaBanner.heading ?? "",
     body: ctaBanner.subheading ?? "",
@@ -213,7 +218,7 @@ export function buildProductTestimonialView(
     ctaLabel: settings?.testimonialsButton?.label ?? null,
     ctaHref: settings?.testimonialsButton?.url ?? "/case-studies",
     items: items.map((t) => ({
-      image: null,
+      image: getMediaUrl(t.image),
       alt: t.authorName,
       quote: t.quote ?? "",
       avatar: getMediaUrl(t.authorAvatar ?? t.image),
@@ -254,14 +259,24 @@ export function buildProductFaqView(product: ProductData, settings: ProductSetti
     tag: settings?.faqTag?.label ?? "",
     headingLines: [settings?.faqHeading, settings?.faqHeadingHighlight].filter((s): s is string => Boolean(s)),
     email: settings?.faqContactEmail ?? null,
-    items: product.faqItems.map((item) => ({ question: item.question ?? "", answer: stripHtml(item.answer) })),
+    items: product.faqItems.map((item) => ({ question: item.question ?? "", answer: stripHtmlKeepBreaks(item.answer) })),
   };
 }
+
+/**
+ * Đệm dưới của `.dark-cta` là giá trị ACF của TỪNG trang product, không phải
+ * hằng số: 14/15 trang có `pb-[120px]`, riêng `point-of-sale` không có. Strapi
+ * chưa mô hình hoá field đó, nên giữ danh sách ngoại lệ ở đây — hardcode
+ * `pb-[120px]` cho mọi trang khiến `point-of-sale` cao dư đúng 120px.
+ */
+const PRODUCTS_WITHOUT_CTA_PADDING = new Set(["point-of-sale"]);
 
 export function buildProductCtaView(product: ProductData): DarkCtaViewData {
   const cta = product.ctaBanner;
   return {
-    sectionClass: "dark-cta px-5 pb-[120px]",
+    sectionClass: PRODUCTS_WITHOUT_CTA_PADDING.has(product.slug)
+      ? "dark-cta px-5"
+      : "dark-cta px-5 pb-[120px]",
     tag: cta?.tag?.label ?? "Contact Us Today",
     heading: cta?.heading ?? "Ready to work with a sourcing team that delivers real-world results?",
     body: cta?.subheading ?? "From first quote to final delivery, China Sourcing Co helps you simplify sourcing, reduce risks, and scale with confidence.",

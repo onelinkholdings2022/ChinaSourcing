@@ -1,6 +1,6 @@
+import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { landingMetadata } from "@/components/LandingPage";
 import { DarkCta } from "@/components/sections/DarkCta";
 import { UspList } from "@/components/sections/UspList";
 import { FlowTrackTabs } from "@/components/sections/FlowTrackTabs";
@@ -25,9 +25,19 @@ import {
   buildServicesResourcesView,
   buildServicesCtaView,
 } from "@/lib/views/serviceView";
-import { buildNavView, buildFooterView } from "@/lib/views/globalView";
+import { buildNavView, buildFooterView, buildPageMetadata } from "@/lib/views/globalView";
+import { getMediaUrl } from "@/lib/api/media-url";
+import { JsonLd } from "@/components/JsonLd";
 
-export const metadata = landingMetadata("services");
+export async function generateMetadata(): Promise<Metadata> {
+  const { data: page } = await servicesPageController.getPage();
+  return buildPageMetadata(page?.seo, {
+    title: page?.hero.title ?? "Services",
+    description: page?.hero.description,
+    image: getMediaUrl(page?.hero.image),
+    path: "/services",
+  });
+}
 
 /**
  * `/services` — eight sections. Only `service-list` is unique to this page;
@@ -71,8 +81,9 @@ export default async function Page() {
 
   return (
     <>
+      <JsonLd seo={page?.seo} siteSeo={global?.defaultSeo} />
       <Header solid nav={global ? buildNavView(global) : undefined} />
-      <main className="pt-28 lg:pt-32">
+      <main>
         <ProductHero hero={hero} />
         <FlowTrackTabs tag={flowTrack.tag} heading={flowTrack.heading} slides={flowTrack.slides} />
         <ServiceList cards={serviceList} />

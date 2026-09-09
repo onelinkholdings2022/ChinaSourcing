@@ -6,9 +6,13 @@ export class ResourceRepository extends StrapiBaseRepository<Resource> {
     return "/api/resources";
   }
 
-  /** 12 download hiện có — trong ngưỡng 100/trang của Strapi, không cần phân trang. */
+  /**
+   * 12 download hiện có — trong ngưỡng 100/trang của Strapi, không cần phân trang.
+   * Sắp xếp theo `publishedDate` giảm dần, đúng thứ tự listing của site gốc
+   * (mặc định của Strapi là theo id nên bài mới nhất không nằm đầu).
+   */
   getAll(): Promise<Resource[]> {
-    return this.fetchList<Resource>("/resources?pagination[pageSize]=100", {
+    return this.fetchList<Resource>("/resources?sort=publishedDate:desc&pagination[pageSize]=100", {
       revalidate: 3600,
       tags: ["strapi", "resource"],
     });

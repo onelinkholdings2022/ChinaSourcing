@@ -1,27 +1,61 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { Button, Tag } from "@/components/ui/button";
 import { ChevronRightIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
+import type { PartnerTabViewData } from "@/lib/views/homeView";
+import { useUrlFilter } from "@/hooks/useUrlFilter";
 
 /**
  * Industry tabs over a grid of factory logos. The tab rail scrolls
  * horizontally when it overflows, with arrow buttons that fade out at
  * either end.
+ *
+ * ## Tab đổi URL nhưng KHÔNG rời trang
+ *
+ * Giống hệt rail category của `.blog-listing` (xem `BlogListing`): mỗi category
+ * có URL riêng `/<slug>`, gõ thẳng vào thanh địa chỉ thì server render đúng
+ * category đó, nhưng BẤM một tab thì chỉ đổi lưới logo tại chỗ và thay URL
+ * bằng `history.pushState`. Không fetch lại, không rèm chuyển trang.
+ *
+ * Bốn trong bảy slug (`point-of-sale`, `gym-fitness`, `hospitality-items`,
+ * `household-appliances`) trùng với một trang product, và trang product nhận —
+ * nên F5 ở một trong bốn URL đó ra trang sản phẩm cùng ngành chứ không phải
+ * dải logo. Đó là chủ ý: hai thứ nói về cùng một ngành. Ba slug còn lại render
+ * lại thân `/products` với đúng tab này mở sẵn.
  */
 export function Partners({
   tag = "Manufacturing Network",
   headingLines = ["Our Trusted", "Manufacturing Partners"],
   tabs,
+  activeCategory,
 }: {
   tag?: string;
   headingLines?: string[];
-  tabs: { label: string; logos: string[] }[];
+  tabs: PartnerTabViewData[];
+  /** Slug category server render — chỉ là giá trị khởi tạo, xem chú thích trên. */
+  activeCategory?: string;
 }) {
   const partnerTabs = tabs;
-  const [active, setActive] = useState(0);
+
+  // Rail ngành nhà máy: mỗi ngành có URL riêng `/<slug>`, bấm thì đổi lưới
+  // logo tại chỗ và URL đổi theo — cùng hợp đồng với rail category blog, xem
+  // `useUrlFilter`.
+  //
+  // Rail này KHÔNG có mục "All": theme luôn mở sẵn một ngành, nên `resetValue`
+  // là ngành đầu tiên. Nhờ vậy `/products` và trang chủ (không có slug ngành
+  // trên URL) vẫn mở tab đầu như trước.
+  const values = useMemo(() => partnerTabs.map((t) => t.value), [partnerTabs]);
+  const first = partnerTabs[0]?.value ?? "";
+  const [activeValue, select] = useUrlFilter({
+    initial: activeCategory && values.includes(activeCategory) ? activeCategory : first,
+    values,
+    resetValue: first,
+  });
+  const active = Math.max(0, partnerTabs.findIndex((t) => t.value === activeValue));
+
   const railRef = useRef<HTMLDivElement>(null);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false);
@@ -76,21 +110,40 @@ export function Partners({
             className="overflow-x-auto no-scrollbar border-b border-grey-200"
           >
             <div className="flex w-max mx-auto">
-              {partnerTabs.map((tab, i) => (
-                <button
-                  key={tab.label}
-                  type="button"
-                  onClick={() => setActive(i)}
-                  className={cn(
-                    "flex-shrink-0 text-base leading-7 px-6 py-4 transition-colors duration-300 whitespace-nowrap cursor-pointer",
-                    active === i
-                      ? "bg-dark-blue-900 text-white"
-                      : "text-grey-400 hover:text-dark-blue-900",
-                  )}
-                >
-                  {tab.label}
-                </button>
-              ))}
+              {partnerTabs.map((tab, i) => {
+                const className = cn(
+                  "flex-shrink-0 text-base leading-7 px-6 py-4 transition-colors duration-300 whitespace-nowrap cursor-pointer",
+                  active === i
+                    ? "bg-dark-blue-900 text-white"
+                    : "text-grey-400 hover:text-dark-blue-900",
+                );
+                // `<a>` thường, KHÔNG phải `next/link`: Link prefetch cả trang
+                // đích rồi router.push khi bấm, mà ở đây không có lượt điều
+                // hướng nào để đẩy. `data-no-transition` bảo `PageTransition`
+                // đừng kéo rèm (nó nghe ở pha capture nên phần tử không tự rút
+                // lui được).
+                return tab.href ? (
+                  <a
+                    key={tab.value}
+                    href={tab.href}
+                    data-no-transition
+                    className={className}
+                    onClick={(e) => {
+                      // Cmd/Ctrl/Shift-click hoặc chuột giữa: để trình duyệt mở
+                      // tab mới bằng đúng `href` — lý do pill vẫn là thẻ <a>.
+                      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+                      e.preventDefault();
+                      select(tab.value, tab.href);
+                    }}
+                  >
+                    {tab.label}
+                  </a>
+                ) : (
+                  <button key={tab.value} type="button" onClick={() => select(tab.value)} className={className}>
+                    {tab.label}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -111,7 +164,7 @@ export function Partners({
         <div className="relative py-10 lg:py-[90px]">
           {partnerTabs.map((tab, i) => (
             <div
-              key={tab.label}
+              key={tab.value}
               hidden={active !== i}
               className={cn(
                 "overflow-hidden",

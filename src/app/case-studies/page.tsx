@@ -1,6 +1,6 @@
+import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { landingMetadata } from "@/components/LandingPage";
 import { SimpleHero } from "@/components/sections/SimpleHero";
 import { CaseStudyList } from "@/components/sections/CaseStudyList";
 import { UspList } from "@/components/sections/UspList";
@@ -15,9 +15,19 @@ import {
   buildCaseStudiesTestimonialsView,
   buildCaseStudiesCtaView,
 } from "@/lib/views/caseStudyView";
-import { buildNavView, buildFooterView } from "@/lib/views/globalView";
+import { buildNavView, buildFooterView, buildPageMetadata } from "@/lib/views/globalView";
+import { getMediaUrl } from "@/lib/api/media-url";
+import { JsonLd } from "@/components/JsonLd";
 
-export const metadata = landingMetadata("case-studies");
+export async function generateMetadata(): Promise<Metadata> {
+  const { data: page } = await caseStudiesPageController.getPage();
+  return buildPageMetadata(page?.seo, {
+    title: page?.hero.heading ?? "Case Studies",
+    description: page?.hero.description,
+    image: getMediaUrl(page?.hero.image),
+    path: "/case-studies",
+  });
+}
 
 /**
  * `/case-studies`, rebuilt as components.
@@ -62,8 +72,9 @@ export default async function Page() {
 
   return (
     <>
+      <JsonLd seo={page?.seo} siteSeo={global?.defaultSeo} />
       <Header solid nav={global ? buildNavView(global) : undefined} />
-      <main className="pt-28 lg:pt-32">
+      <main>
         <SimpleHero
           heading={hero.heading}
           intro={hero.intro}

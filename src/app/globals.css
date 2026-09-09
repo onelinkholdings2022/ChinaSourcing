@@ -442,9 +442,11 @@
 }
 
 /*
- * No `scroll-behavior: smooth` here. The original does not set it either, and
- * GSAP ScrollTrigger's pinned sections (see UspSlider) stutter and get stuck
- * when the browser is animating the scroll position underneath them.
+ * No `scroll-behavior: smooth` here — it only intercepts programmatic jumps
+ * (scrollIntoView, `#anchor` links), not ordinary wheel/trackpad scrolling,
+ * so it can't do what "smooth scroll" actually means for this request. That
+ * is `<SmoothScroll>` (`src/components/SmoothScroll.tsx`, Lenis on GSAP's
+ * ticker) — a requested customization, not in the original. See TARGET.md.
  */
 html {
   -webkit-text-size-adjust: 100%;
@@ -610,6 +612,56 @@ body {
 .flow-track-tab-label.active .tab-btn { color: #040c19; }
 .flow-track-tab-label .flow-tract-tab-dot { background-color: #e5e5e5; }
 .flow-track-tab-label.active .flow-tract-tab-dot { background-color: #040c19; }
+
+/* Flow-track slides — the staggered entrance the theme runs on whichever tab is
+   showing. This is the "running text" of the section and it was missing here
+   entirely: the clone swapped slides with the 300ms horizontal transform and
+   nothing else, so the copy simply arrived, already in place.
+   The original keys it off Swiper's own `.swiper-slide-active`; the clone has
+   no Swiper (deviation 4), so `.flow-track-slide.is-active` stands in and the
+   declarations below are otherwise a straight copy of the theme stylesheet —
+   `transition: 0.35s <delay>` is the shorthand, i.e. `all 0.35s ease <delay>`.
+      subheading  .25s
+      heading     .35s
+      image       .35s
+      paragraphs  .45s
+      "next" link .50s
+   The transition runs in both directions, which is the theme's behaviour too:
+   the outgoing slide's copy fades back out on the same delays while the track
+   is still moving. */
+.flow-track-slide .subheading,
+.flow-track-slide .tab-heading,
+.flow-track-slide .tab-context,
+.flow-track-slide .content-right,
+.flow-track-slide .flow-track-next-tab-btn {
+  transform: translate(8px);
+  opacity: 0;
+  transition: 0.35s;
+}
+.flow-track-slide .subheading { transition-delay: 0.25s; }
+.flow-track-slide .tab-heading { transition-delay: 0.35s; }
+.flow-track-slide .content-right { transition-delay: 0.35s; }
+.flow-track-slide .tab-context { transition-delay: 0.45s; }
+.flow-track-slide .flow-track-next-tab-btn { transition-delay: 0.5s; }
+
+.flow-track-slide.is-active .subheading,
+.flow-track-slide.is-active .tab-heading,
+.flow-track-slide.is-active .tab-context,
+.flow-track-slide.is-active .content-right,
+.flow-track-slide.is-active .flow-track-next-tab-btn {
+  transform: translate(0);
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flow-track-slide .subheading,
+  .flow-track-slide .tab-heading,
+  .flow-track-slide .tab-context,
+  .flow-track-slide .content-right,
+  .flow-track-slide .flow-track-next-tab-btn {
+    transition: none;
+  }
+}
 
 /* About page partner strip.
    Splide's AutoScroll runs at `speed: 0.5` — half a pixel per animation frame,

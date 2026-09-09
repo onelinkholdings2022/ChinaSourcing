@@ -28,8 +28,9 @@ export function TestimonialCard({ item }: { item: Testimonial }) {
         <Image
           src={item.image}
           alt={item.alt}
-          width={300}
-          height={204}
+          width={684}
+          height={464}
+          sizes="(max-width: 768px) 100vw, 448px"
           className="object-cover w-full h-auto aspect-[5/4] grayscale transition-all duration-300 rounded-lg"
         />
       )}

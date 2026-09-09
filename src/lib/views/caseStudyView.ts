@@ -1,4 +1,5 @@
 import { getMediaUrl } from "../api/media-url";
+import { resolveContentMedia } from "./textUtils";
 import type { CaseStudiesPageData, CaseStudySettingData } from "../types/case-studies-page";
 import type { CaseStudy } from "../types/case-study";
 import type { CaseStudyCard, FilterOption } from "@/components/sections/CaseStudyList";
@@ -138,7 +139,7 @@ export interface DarkCtaViewData {
 export function buildCaseStudiesCtaView(page: CaseStudiesPageData): DarkCtaViewData {
   const { ctaBanner } = page;
   return {
-    sectionClass: "dark-cta px-5",
+    sectionClass: "dark-cta px-5 pb-[120px]",
     tag: ctaBanner.tag?.label ?? "",
     heading: ctaBanner.heading ?? "",
     body: ctaBanner.subheading ?? "",
@@ -189,8 +190,16 @@ export function buildCaseStudySimpleView(cs: CaseStudy): CaseStudySimpleViewData
 
 export function buildCaseStudyBlocksView(cs: CaseStudy): CaseStudyBlock[] {
   return [
-    { tag: cs.challengeTag?.label ?? "", heading: "The Challenge", html: cs.challengeContent ?? "" },
-    { tag: cs.solutionTag?.label ?? "", heading: "The Solution", html: cs.solutionContent ?? "" },
+    {
+      tag: cs.challengeTag?.label ?? "",
+      heading: "The Challenge",
+      html: resolveContentMedia(cs.challengeContent),
+    },
+    {
+      tag: cs.solutionTag?.label ?? "",
+      heading: "The Solution",
+      html: resolveContentMedia(cs.solutionContent),
+    },
   ];
 }
 
@@ -219,7 +228,7 @@ export function buildCaseStudyRelatedView(
     cards: others.map((c) => ({
       title: c.title,
       body: c.description ?? "",
-      href: `/case-studies/${c.slug}`,
+      href: `/${c.slug}`,
       image: getMediaUrl(c.featureImage) ?? FALLBACK_IMAGE,
       alt: `${c.title} case study`,
     })),

@@ -51,9 +51,18 @@ export interface FooterNewsletter {
   buttonLabel: string | null;
 }
 
+/** `contact.hubspot-form` — cùng component với form "Get In Touch". */
+export interface HubspotFormData {
+  portalId: string | null;
+  formId: string | null;
+  region: string | null;
+}
+
 export interface FooterData {
   logo: StrapiMedia | null;
   newsletter: FooterNewsletter | null;
+  /** Form đăng ký nhận tin thật (`footer.newsletterForm` bên Strapi). */
+  newsletterForm: HubspotFormData | null;
   linkColumns: FooterColumn[];
   locations: FooterLocation[];
   socialMedia: SocialLink[];

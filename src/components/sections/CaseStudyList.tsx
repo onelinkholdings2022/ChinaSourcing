@@ -1,10 +1,16 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 import Image from "next/image";
 import { Button, Tag } from "@/components/ui/button";
 import { ChevronDownIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
+import {
+  useListingStore,
+  useListingPage,
+  useCaseStudyDraft,
+  useCaseStudyApplied,
+} from "@/lib/stores/listingStore";
 
 /** One row of the `/case-studies` grid. */
 export type CaseStudyCard = {
@@ -23,9 +29,8 @@ export type CaseStudyCard = {
 /** A `<select>` option pair, in the order the theme prints them. */
 export type FilterOption = { value: string; label: string };
 
-type Filters = { industry: string; region: string; service: string };
-
-const EMPTY: Filters = { industry: "", region: "", service: "" };
+/** Khoá của listing này trong `useListingStore` — trang chỉ có một lưới. */
+const LISTING_ID = "case-studies";
 
 /**
  * `.casestudy-list` — the filter row, the card grid and the pager.
@@ -70,9 +75,17 @@ export function CaseStudyList({
   // `draft` is what the selects hold; `applied` is what the grid is filtered
   // by. The original only reads the selects when Search is pressed, so
   // changing a select must not move the grid.
-  const [draft, setDraft] = useState<Filters>(EMPTY);
-  const [applied, setApplied] = useState<Filters>(EMPTY);
-  const [page, setPage] = useState(1);
+  //
+  // Cả hai (và số trang) sống trong `useListingStore` chứ không phải `useState`:
+  // lọc xong, mở một case study rồi bấm Back thì lưới phải còn nguyên bộ lọc —
+  // với `useState` thì component dựng lại và bộ lọc mất sạch.
+  const draft = useCaseStudyDraft(LISTING_ID);
+  const applied = useCaseStudyApplied(LISTING_ID);
+  const page = useListingPage(LISTING_ID);
+  const setDraft = useListingStore((s) => s.setDraft);
+  const applyDraft = useListingStore((s) => s.applyDraft);
+  const resetFilters = useListingStore((s) => s.resetFilters);
+  const setPage = useListingStore((s) => s.setPage);
   const filterRowRef = useRef<HTMLDivElement>(null);
 
   const matches = useMemo(() => {
@@ -98,15 +111,12 @@ export function CaseStudyList({
     filterRowRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
 
   const search = () => {
-    setApplied(draft);
-    setPage(1);
+    applyDraft(LISTING_ID);
     scrollToFilters();
   };
 
   const reset = () => {
-    setDraft(EMPTY);
-    setApplied(EMPTY);
-    setPage(1);
+    resetFilters(LISTING_ID);
     scrollToFilters();
   };
 
@@ -132,21 +142,21 @@ export function CaseStudyList({
               label="Industry"
               options={options.industry}
               value={draft.industry}
-              onChange={(industry) => setDraft((d) => ({ ...d, industry }))}
+              onChange={(industry) => setDraft(LISTING_ID, { ...draft, industry })}
             />
             <Select
               id="region-filter"
               label="Region"
               options={options.region}
               value={draft.region}
-              onChange={(region) => setDraft((d) => ({ ...d, region }))}
+              onChange={(region) => setDraft(LISTING_ID, { ...draft, region })}
             />
             <Select
               id="service-filter"
               label="Service"
               options={options.service}
               value={draft.service}
-              onChange={(service) => setDraft((d) => ({ ...d, service }))}
+              onChange={(service) => setDraft(LISTING_ID, { ...draft, service })}
             />
           </div>
 
@@ -191,7 +201,7 @@ export function CaseStudyList({
                 type="button"
                 onClick={() => {
                   if (n === current) return;
-                  setPage(n);
+                  setPage(LISTING_ID, n);
                   scrollToFilters();
                 }}
                 className={cn(
@@ -275,7 +285,7 @@ function Card({ card }: { card: CaseStudyCard }) {
           </p>
         </div>
         <Button
-          href={`/case-study/${card.slug}`}
+          href={`/${card.slug}`}
           variant="white"
           withArrow
           className="w-fit"

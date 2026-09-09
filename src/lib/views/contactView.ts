@@ -75,13 +75,18 @@ export function buildContactFlowTrackView(data: ContactPageData): ContactFlowTra
     tag: whatHappensNext.tag?.label ?? "",
     heading: whatHappensNext.heading ?? "",
     slides: whatHappensNext.steps.map((step, i) => ({
-      label: step.label ?? "",
-      subheading: "",
+      // CMS field names are misleading: `label` holds the eyebrow phrase
+      // ("We start with", "And Then"...) and `title` holds the step's actual
+      // name ("Notification", "Contact"...) — the tab bar and the "next"
+      // link both show the step name, not the eyebrow. Verified against the
+      // live site's rendered DOM and its Strapi data.
+      label: step.title ?? "",
+      subheading: step.label ?? "",
       title: step.title ?? "",
       paragraphs: (step.description ?? "").split(/\n{2,}/).filter(Boolean),
       image: getMediaUrl(step.image) ?? FALLBACK_IMAGE,
-      alt: step.label ?? "",
-      nextLabel: whatHappensNext.steps[i + 1]?.label ?? undefined,
+      alt: step.title ?? "",
+      nextLabel: whatHappensNext.steps[i + 1]?.title ?? undefined,
     })),
   };
 }

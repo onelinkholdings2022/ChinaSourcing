@@ -5,10 +5,21 @@ import Link from "next/link";
 import type { HeroViewData } from "@/lib/views/homeView";
 import { ArrowRightIcon } from "@/components/icons";
 import { useTypewriter, HOME_TYPING } from "@/hooks/useTypewriter";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 export function Hero({ hero }: { hero: HeroViewData }) {
   // speed 30 / pause 2000 / pause 1000, straight from the theme's TypeIt call.
   const typed = useTypewriter(hero.words, HOME_TYPING);
+
+  // Video nền chỉ dựng từ `lg` trở lên. Dưới mốc đó trình duyệt di động chặn
+  // autoplay, Vimeo lùi về giao diện player đầy đủ — nút play to đùng và THANH
+  // ĐIỀU KHIỂN/CÀI ĐẶT nằm chình ình dưới đáy hero — mà `background=1&controls=0`
+  // không cứu được, vì tham số đó chỉ có tác dụng khi video thật sự tự chạy.
+  // Poster là đúng khung hình đầu của video nên hero trông không khác gì.
+  //
+  // Phải KHÔNG DỰNG chứ không phải `hidden lg:block`: iframe bị ẩn vẫn tải,
+  // vẫn phát, và trên 4G thì đó là vài MB không ai xem.
+  const showVideo = useMediaQuery("(min-width: 1024px)");
 
   return (
     <section className="hero-block lg:mx-6 lg:mt-6">
@@ -25,7 +36,7 @@ export function Hero({ hero }: { hero: HeroViewData }) {
             sizes="100vw"
             className="object-cover"
           />
-          {hero.videoUrl && (
+          {hero.videoUrl && showVideo && (
             <iframe
               src={hero.videoUrl}
               title=""

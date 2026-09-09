@@ -6,7 +6,7 @@ import { CalendarIcon, ClockIcon } from "@/components/icons";
 
 export function Insights({ insights }: { insights: InsightViewData[] }) {
   return (
-    <section className="py-24 lg:pt-20 lg:pb-[120px] bg-grey-50">
+    <section className="resource-card py-24 lg:pt-20 lg:pb-[120px] bg-grey-50">
       <div className="container">
         <Tag className="mx-auto">Insight &amp; Guides</Tag>
 
@@ -34,7 +34,7 @@ export function Insights({ insights }: { insights: InsightViewData[] }) {
                 <div className="body-3 text-dark-blue-400 font-medium px-6 pt-6 font-lora">
                   {post.category}
                 </div>
-                <h3 className="body-1 mt-2 mb-4 font-medium px-6">
+                <h3 className="body-1 mt-2 mb-4 font-medium px-6 grow">
                   {post.title}
                 </h3>
                 <p className="body-3 font-medium text-dark-blue-400 px-6 grow">

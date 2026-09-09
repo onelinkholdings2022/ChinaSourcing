@@ -1,6 +1,7 @@
 import type { StrapiButton, StrapiMedia, StrapiSeo, StrapiTag } from "./strapi";
 import type { CaseStudy } from "./case-study";
 import type { Resource } from "./resource";
+import type { BlogPost } from "./blog-post";
 
 export interface ServicesPageHero {
   title: string | null;
@@ -75,6 +76,12 @@ export interface FeaturedResourcesSection {
   tag: StrapiTag | null;
   viewAllButton: StrapiButton | null;
   featuredResources: Resource[];
+  /**
+   * Khối `.resource-card` của site gốc trộn cả 2 loại bài trong cùng một hàng
+   * ba thẻ: `resource` (bản tải về) và blog post ở gốc site. `/services` chỉ
+   * dùng blog post, trang service detail dùng 2 resource + 1 blog post.
+   */
+  featuredBlogPosts: BlogPost[];
 }
 
 export interface CtaBanner {

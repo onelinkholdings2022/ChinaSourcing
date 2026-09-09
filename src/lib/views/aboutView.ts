@@ -187,7 +187,7 @@ export function buildAboutCaseStudiesView(
     cards: [...ordered, ...rest].map((c) => ({
       title: c.title,
       body: c.description ?? "",
-      href: `/case-studies/${c.slug}`,
+      href: `/${c.slug}`,
       image: getMediaUrl(c.featureImage) ?? FALLBACK_IMAGE,
       alt: `${c.title} case study`,
     })),

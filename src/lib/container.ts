@@ -12,6 +12,7 @@ import { PartnerRepository } from "./repositories/strapi/PartnerRepository";
 import { AboutPageRepository } from "./repositories/strapi/AboutPageRepository";
 import { TeamMemberRepository } from "./repositories/strapi/TeamMemberRepository";
 import { ProcessPageRepository } from "./repositories/strapi/ProcessPageRepository";
+import { PrivacyPolicyPageRepository } from "./repositories/strapi/PrivacyPolicyPageRepository";
 import { ContactPageRepository } from "./repositories/strapi/ContactPageRepository";
 import { CaseStudiesPageRepository } from "./repositories/strapi/CaseStudiesPageRepository";
 import { CaseStudySettingRepository } from "./repositories/strapi/CaseStudySettingRepository";
@@ -26,6 +27,7 @@ import { ResourcesPageRepository } from "./repositories/strapi/ResourcesPageRepo
 import { ResourceRepository } from "./repositories/strapi/ResourceRepository";
 import { ResourceSettingRepository } from "./repositories/strapi/ResourceSettingRepository";
 import { CategoryRepository } from "./repositories/strapi/CategoryRepository";
+import { ResourceTypeRepository } from "./repositories/strapi/ResourceTypeRepository";
 
 import { GET_HOMEPAGE } from "./cqrs/queries/GetHomepageQuery";
 import { GET_GLOBAL } from "./cqrs/queries/GetGlobalQuery";
@@ -38,6 +40,7 @@ import { GET_CLIENT_LOGOS } from "./cqrs/queries/GetClientLogosQuery";
 import { GET_ABOUT_PAGE } from "./cqrs/queries/GetAboutPageQuery";
 import { GET_FEATURED_TEAM_MEMBERS } from "./cqrs/queries/GetFeaturedTeamMembersQuery";
 import { GET_PROCESS_PAGE } from "./cqrs/queries/GetProcessPageQuery";
+import { GET_PRIVACY_POLICY_PAGE } from "./cqrs/queries/GetPrivacyPolicyPageQuery";
 import { GET_CONTACT_PAGE } from "./cqrs/queries/GetContactPageQuery";
 import { GET_CASE_STUDIES_PAGE } from "./cqrs/queries/GetCaseStudiesPageQuery";
 import { GET_CASE_STUDY_SETTING } from "./cqrs/queries/GetCaseStudySettingQuery";
@@ -57,6 +60,7 @@ import { GET_RESOURCE_SETTING } from "./cqrs/queries/GetResourceSettingQuery";
 import { GET_ALL_RESOURCES } from "./cqrs/queries/GetAllResourcesQuery";
 import { GET_RESOURCE_BY_SLUG } from "./cqrs/queries/GetResourceBySlugQuery";
 import { GET_ALL_CATEGORIES } from "./cqrs/queries/GetAllCategoriesQuery";
+import { GET_ALL_RESOURCE_TYPES } from "./cqrs/queries/GetAllResourceTypesQuery";
 
 import { GetHomepageHandler } from "./cqrs/handlers/queries/GetHomepageHandler";
 import { GetGlobalHandler } from "./cqrs/handlers/queries/GetGlobalHandler";
@@ -69,6 +73,7 @@ import { GetClientLogosHandler } from "./cqrs/handlers/queries/GetClientLogosHan
 import { GetAboutPageHandler } from "./cqrs/handlers/queries/GetAboutPageHandler";
 import { GetFeaturedTeamMembersHandler } from "./cqrs/handlers/queries/GetFeaturedTeamMembersHandler";
 import { GetProcessPageHandler } from "./cqrs/handlers/queries/GetProcessPageHandler";
+import { GetPrivacyPolicyPageHandler } from "./cqrs/handlers/queries/GetPrivacyPolicyPageHandler";
 import { GetContactPageHandler } from "./cqrs/handlers/queries/GetContactPageHandler";
 import { GetCaseStudiesPageHandler } from "./cqrs/handlers/queries/GetCaseStudiesPageHandler";
 import { GetCaseStudySettingHandler } from "./cqrs/handlers/queries/GetCaseStudySettingHandler";
@@ -88,6 +93,7 @@ import { GetResourceSettingHandler } from "./cqrs/handlers/queries/GetResourceSe
 import { GetAllResourcesHandler } from "./cqrs/handlers/queries/GetAllResourcesHandler";
 import { GetResourceBySlugHandler } from "./cqrs/handlers/queries/GetResourceBySlugHandler";
 import { GetAllCategoriesHandler } from "./cqrs/handlers/queries/GetAllCategoriesHandler";
+import { GetAllResourceTypesHandler } from "./cqrs/handlers/queries/GetAllResourceTypesHandler";
 
 import { HomepageService } from "./services/HomepageService";
 import { GlobalService } from "./services/GlobalService";
@@ -97,6 +103,7 @@ import { PartnerService } from "./services/PartnerService";
 import { AboutPageService } from "./services/AboutPageService";
 import { TeamMemberService } from "./services/TeamMemberService";
 import { ProcessPageService } from "./services/ProcessPageService";
+import { PrivacyPolicyPageService } from "./services/PrivacyPolicyPageService";
 import { ContactPageService } from "./services/ContactPageService";
 import { CaseStudiesPageService } from "./services/CaseStudiesPageService";
 import { CaseStudySettingService } from "./services/CaseStudySettingService";
@@ -111,6 +118,7 @@ import { ResourcesPageService } from "./services/ResourcesPageService";
 import { ResourceSettingService } from "./services/ResourceSettingService";
 import { ResourceService } from "./services/ResourceService";
 import { CategoryService } from "./services/CategoryService";
+import { ResourceTypeService } from "./services/ResourceTypeService";
 
 import { HomepageController } from "./controllers/HomepageController";
 import { GlobalController } from "./controllers/GlobalController";
@@ -120,6 +128,7 @@ import { PartnerController } from "./controllers/PartnerController";
 import { AboutPageController } from "./controllers/AboutPageController";
 import { TeamMemberController } from "./controllers/TeamMemberController";
 import { ProcessPageController } from "./controllers/ProcessPageController";
+import { PrivacyPolicyPageController } from "./controllers/PrivacyPolicyPageController";
 import { ContactPageController } from "./controllers/ContactPageController";
 import { CaseStudiesPageController } from "./controllers/CaseStudiesPageController";
 import { CaseStudySettingController } from "./controllers/CaseStudySettingController";
@@ -134,6 +143,7 @@ import { ResourcesPageController } from "./controllers/ResourcesPageController";
 import { ResourceSettingController } from "./controllers/ResourceSettingController";
 import { ResourceController } from "./controllers/ResourceController";
 import { CategoryController } from "./controllers/CategoryController";
+import { ResourceTypeController } from "./controllers/ResourceTypeController";
 
 interface Container {
   homepageController: HomepageController;
@@ -144,6 +154,7 @@ interface Container {
   aboutPageController: AboutPageController;
   teamMemberController: TeamMemberController;
   processPageController: ProcessPageController;
+  privacyPolicyPageController: PrivacyPolicyPageController;
   contactPageController: ContactPageController;
   caseStudiesPageController: CaseStudiesPageController;
   caseStudySettingController: CaseStudySettingController;
@@ -158,6 +169,7 @@ interface Container {
   resourceSettingController: ResourceSettingController;
   resourceController: ResourceController;
   categoryController: CategoryController;
+  resourceTypeController: ResourceTypeController;
 }
 
 const CONTAINER_KEY = "__cnsContainer";
@@ -175,6 +187,7 @@ function build(): Container {
   const aboutPageRepo = new AboutPageRepository();
   const teamMemberRepo = new TeamMemberRepository();
   const processPageRepo = new ProcessPageRepository();
+  const privacyPolicyPageRepo = new PrivacyPolicyPageRepository();
   const contactPageRepo = new ContactPageRepository();
   const caseStudiesPageRepo = new CaseStudiesPageRepository();
   const caseStudySettingRepo = new CaseStudySettingRepository();
@@ -189,6 +202,7 @@ function build(): Container {
   const resourceSettingRepo = new ResourceSettingRepository();
   const resourceRepo = new ResourceRepository();
   const categoryRepo = new CategoryRepository();
+  const resourceTypeRepo = new ResourceTypeRepository();
 
   queryBus.register(GET_HOMEPAGE, new GetHomepageHandler(homepageRepo));
   queryBus.register(GET_GLOBAL, new GetGlobalHandler(globalRepo));
@@ -201,6 +215,7 @@ function build(): Container {
   queryBus.register(GET_ABOUT_PAGE, new GetAboutPageHandler(aboutPageRepo));
   queryBus.register(GET_FEATURED_TEAM_MEMBERS, new GetFeaturedTeamMembersHandler(teamMemberRepo));
   queryBus.register(GET_PROCESS_PAGE, new GetProcessPageHandler(processPageRepo));
+  queryBus.register(GET_PRIVACY_POLICY_PAGE, new GetPrivacyPolicyPageHandler(privacyPolicyPageRepo));
   queryBus.register(GET_CONTACT_PAGE, new GetContactPageHandler(contactPageRepo));
   queryBus.register(GET_CASE_STUDIES_PAGE, new GetCaseStudiesPageHandler(caseStudiesPageRepo));
   queryBus.register(GET_CASE_STUDY_SETTING, new GetCaseStudySettingHandler(caseStudySettingRepo));
@@ -220,6 +235,7 @@ function build(): Container {
   queryBus.register(GET_ALL_RESOURCES, new GetAllResourcesHandler(resourceRepo));
   queryBus.register(GET_RESOURCE_BY_SLUG, new GetResourceBySlugHandler(resourceRepo));
   queryBus.register(GET_ALL_CATEGORIES, new GetAllCategoriesHandler(categoryRepo));
+  queryBus.register(GET_ALL_RESOURCE_TYPES, new GetAllResourceTypesHandler(resourceTypeRepo));
 
   return {
     homepageController: new HomepageController(new HomepageService(queryBus)),
@@ -230,6 +246,7 @@ function build(): Container {
     aboutPageController: new AboutPageController(new AboutPageService(queryBus)),
     teamMemberController: new TeamMemberController(new TeamMemberService(queryBus)),
     processPageController: new ProcessPageController(new ProcessPageService(queryBus)),
+    privacyPolicyPageController: new PrivacyPolicyPageController(new PrivacyPolicyPageService(queryBus)),
     contactPageController: new ContactPageController(new ContactPageService(queryBus)),
     caseStudiesPageController: new CaseStudiesPageController(new CaseStudiesPageService(queryBus)),
     caseStudySettingController: new CaseStudySettingController(new CaseStudySettingService(queryBus)),
@@ -244,6 +261,7 @@ function build(): Container {
     resourceSettingController: new ResourceSettingController(new ResourceSettingService(queryBus)),
     resourceController: new ResourceController(new ResourceService(queryBus)),
     categoryController: new CategoryController(new CategoryService(queryBus)),
+    resourceTypeController: new ResourceTypeController(new ResourceTypeService(queryBus)),
   };
 }
 
@@ -264,6 +282,7 @@ export const partnerController = container.partnerController;
 export const aboutPageController = container.aboutPageController;
 export const teamMemberController = container.teamMemberController;
 export const processPageController = container.processPageController;
+export const privacyPolicyPageController = container.privacyPolicyPageController;
 export const contactPageController = container.contactPageController;
 export const caseStudiesPageController = container.caseStudiesPageController;
 export const caseStudySettingController = container.caseStudySettingController;
@@ -278,3 +297,4 @@ export const resourcesPageController = container.resourcesPageController;
 export const resourceSettingController = container.resourceSettingController;
 export const resourceController = container.resourceController;
 export const categoryController = container.categoryController;
+export const resourceTypeController = container.resourceTypeController;

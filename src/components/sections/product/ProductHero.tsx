@@ -79,17 +79,26 @@ export function ProductHero({
 
       <div className="container flex py-10 lg:flex-row flex-col justify-between lg:items-center gap-[60px]">
         <div className="flex-1">
-          {words.length > 0 && (
-            <div className="heading-1 font-medium text-dark-blue-950 text-balance xl:min-h-20 lg:min-h-16 min-h-12">
-              {hero.typedPrefix}{" "}
-              <span className="text-cyan-400 font-lora">{typed}</span>
-              {/* TypeIt draws its own caret; this is the same 1s blink. */}
-              <span className="animate-caret ml-0.5 inline-block w-[3px] h-[0.8em] align-middle bg-cyan-400" />
-            </div>
-          )}
-          <h1 className="heading-1 font-medium text-dark-blue-950">
-            {hero.heading}
-          </h1>
+          {/* Dòng TypeIt và tiêu đề tĩnh nằm CHUNG một khối, và khối chứa dòng
+              TypeIt là `display: contents` — đúng như theme viết. Chi tiết đó
+              không phải trang trí: `contents` làm mọi thuộc tính hộp trên chính
+              nó vô hiệu, nên bộ `min-h-12 lg:min-h-16 xl:min-h-20` mà theme đặt
+              ở đây KHÔNG có tác dụng gì bên site gốc. Trước đây bản clone đặt
+              chúng lên một hộp thật: dòng chữ cao 48px thay vì 35px và hero dài
+              hơn bản gốc 13px ở mọi bề rộng dưới `lg`. */}
+          <div>
+            {words.length > 0 && (
+              <div className="relative text-dark-blue-950 text-balance xl:min-h-20 lg:min-h-16 min-h-12 contents heading-1 font-medium">
+                {hero.typedPrefix}{" "}
+                <span className="text-cyan-400 font-lora">{typed}</span>
+                {/* TypeIt draws its own caret; this is the same 1s blink. */}
+                <span className="animate-caret ml-0.5 inline-block w-[3px] h-[0.8em] align-middle bg-cyan-400" />
+              </div>
+            )}
+            <h1 className="heading-1 font-medium text-dark-blue-950">
+              {hero.heading}
+            </h1>
+          </div>
           <p className="body-1 mt-4 text-grey-600 font-medium">{hero.intro}</p>
           {hero.ctaLabel && hero.ctaHref && (
             <Button

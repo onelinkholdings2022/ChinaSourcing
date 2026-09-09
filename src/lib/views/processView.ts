@@ -1,5 +1,5 @@
 import { getMediaUrl } from "../api/media-url";
-import { stripHtml } from "./textUtils";
+import { stripHtmlKeepBreaks } from "./textUtils";
 import type { ProcessPageData } from "../types/process-page";
 import type { Milestone } from "@/components/sections/JourneyTimeline";
 import type { UspListItem } from "@/components/sections/UspList";
@@ -44,7 +44,7 @@ export function buildProcessTimelineView(data: ProcessPageData): ProcessTimeline
     tag: timeline.tag?.label ?? "",
     heading: timeline.heading ?? "",
     intro: timeline.description ?? "",
-    ship: null,
+    ship: getMediaUrl(timeline.shipImage),
     milestones: timeline.steps.map((step) => ({
       rail: step.title ?? "",
       step: step.label ?? "",
@@ -88,7 +88,7 @@ export function buildProcessFaqView(data: ProcessPageData): ProcessFaqViewData {
     tag: faq.tag?.label ?? "",
     headingLines: [faq.title, faq.titleHighlight].filter((s): s is string => Boolean(s)),
     email: faq.contactEmail,
-    items: faq.items.map((item) => ({ question: item.question ?? "", answer: stripHtml(item.answer) })),
+    items: faq.items.map((item) => ({ question: item.question ?? "", answer: stripHtmlKeepBreaks(item.answer) })),
   };
 }
 

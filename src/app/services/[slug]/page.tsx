@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { permanentRedirect } from "next/navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Faq } from "@/components/sections/Faq";
@@ -30,7 +30,9 @@ import {
   buildOtherServicesView,
   buildServiceSettingCtaView,
 } from "@/lib/views/serviceView";
-import { buildNavView, buildFooterView } from "@/lib/views/globalView";
+import { buildNavView, buildFooterView, buildPageMetadata } from "@/lib/views/globalView";
+import { getMediaUrl } from "@/lib/api/media-url";
+import { JsonLd } from "@/components/JsonLd";
 
 export async function generateStaticParams() {
   const result = await serviceController.getAll();
@@ -43,12 +45,13 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const result = await serviceController.getBySlug(slug);
-  const service = result.data;
-  return {
-    title: service ? `${service.title} | China Sourcing Co` : "China Sourcing Co",
-    description: service?.cardDescription || undefined,
-  };
+  const { data: service } = await serviceController.getBySlug(slug);
+  return buildPageMetadata(service?.seo, {
+    title: service?.heroHeading ?? service?.title ?? "China Sourcing Co",
+    description: service?.heroDescription ?? service?.cardDescription,
+    image: getMediaUrl(service?.heroImage ?? service?.cardImage),
+    path: `/${slug}`,
+  });
 }
 
 /**
@@ -71,7 +74,11 @@ export default async function ServicePage({
   ]);
 
   const service = serviceResult.data;
-  if (!service) notFound();
+  // 404 của site này là "về trang chủ", không phải một trang lỗi — xem
+  // `src/proxy.ts`. Proxy chỉ rewrite vào đây khi slug CÓ trong bảng phân
+  // giải, nên nhánh này chỉ chạy khi bảng vừa cũ đi (bản ghi vừa bị bỏ
+  // publish) hoặc khi ai đó gõ thẳng đường dẫn nội bộ.
+  if (!service) permanentRedirect("/");
 
   const allServices = allResult.data ?? [];
   const settings = settingsResult.data;
@@ -91,8 +98,9 @@ export default async function ServicePage({
 
   return (
     <>
+      <JsonLd seo={service?.seo} siteSeo={global?.defaultSeo} />
       <Header solid nav={global ? buildNavView(global) : undefined} />
-      <main className="pt-28 lg:pt-32">
+      <main>
         <ProductHero hero={hero} />
         <SimpleCardGrid
           tag={simpleCard.tag}

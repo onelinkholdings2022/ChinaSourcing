@@ -1,6 +1,6 @@
+import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { landingMetadata } from "@/components/LandingPage";
 import { AboutHero } from "@/components/sections/about/AboutHero";
 import { JourneyTimeline } from "@/components/sections/JourneyTimeline";
 import { FounderQuote } from "@/components/sections/about/FounderQuote";
@@ -24,9 +24,19 @@ import {
   buildBrandCultureView,
   buildCtaBannerView,
 } from "@/lib/views/aboutView";
-import { buildNavView, buildFooterView } from "@/lib/views/globalView";
+import { buildNavView, buildFooterView, buildPageMetadata } from "@/lib/views/globalView";
+import { getMediaUrl } from "@/lib/api/media-url";
+import { JsonLd } from "@/components/JsonLd";
 
-export const metadata = landingMetadata("about-us");
+export async function generateMetadata(): Promise<Metadata> {
+  const { data: page } = await aboutPageController.getPage();
+  return buildPageMetadata(page?.seo, {
+    title: page?.hero.heading ?? "About Us",
+    description: page?.hero.description,
+    image: getMediaUrl(page?.hero.image),
+    path: "/about-us",
+  });
+}
 
 /**
  * `/about-us`, rebuilt as components.
@@ -70,8 +80,9 @@ export default async function Page() {
 
   return (
     <>
+      <JsonLd seo={page?.seo} siteSeo={global?.defaultSeo} />
       <Header solid nav={global ? buildNavView(global) : undefined} />
-      <main className="pt-28 lg:pt-32">
+      <main>
         <AboutHero {...buildAboutHeroView(page)} />
         <JourneyTimeline
           tag={journey.tag}

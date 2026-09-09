@@ -4,9 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { Tag } from "@/components/ui/button";
+import { Reveal } from "@/components/Reveal";
 import { cn } from "@/lib/utils";
 
 const SPEED = 300;
+/** `spaceBetween` của Swiper trong theme — khoảng cách giữa hai slide, px. */
+const SPACE_BETWEEN = 30;
 
 /**
  * "The Why Behind Us" — a three-tab slider.
@@ -29,6 +32,26 @@ const SPEED = 300;
  * with `gsap.to(bar, { scrollLeft, duration: 0.5, ease: "power2.out" })`.
  * That is kept as GSAP rather than `scrollIntoView` because the easing is
  * visible and `scrollIntoView({ behavior: "smooth" })` uses the UA's curve.
+ *
+ * ## The missing entrance reveal
+ *
+ * The tag, heading and the tab bar each carry their own `data-aos="fade-up"`
+ * on the live DOM (delays 0 / 100 / 150ms) — they rise into place once when
+ * the section first scrolls into view, same as everywhere else on the site.
+ * That was dropped entirely here (everything just rendered statically), which
+ * is what made this section read as "not animated like the original" even
+ * though the tab-click transition itself was already correct.
+ *
+ * ## The staggered copy, which was also missing
+ *
+ * Sliding the track is only half of what the original does on a tab change.
+ * The theme also stages the active slide's contents: eyebrow, heading, image,
+ * paragraphs and the "next" link each start 8px to the right and transparent
+ * and walk in on their own delay (.25 / .35 / .35 / .45 / .5s, 0.35s each).
+ * Swiper drives it purely in CSS off `.swiper-slide-active`; the equivalent
+ * here is `.flow-track-slide.is-active`, and the rules live beside the tab-label
+ * colours in `globals.css`. Without them the copy just appeared, which is the
+ * difference you see against the live site.
  */
 export type FlowTrackSlide = {
   label: string;
@@ -80,14 +103,18 @@ export function FlowTrackTabs({
   return (
     <section className="flow-track relative spacing overflow-x-clip">
       <div className="flex flex-col container lg:mb-11 mb-6">
-        <Tag className="mx-auto lg:ml-0">{tag}</Tag>
-        <h2 className="heading-2 font-semibold mt-3 text-cyan-400 text-center lg:text-left">
-          {heading}
-        </h2>
+        <Reveal>
+          <Tag className="mx-auto lg:ml-0">{tag}</Tag>
+        </Reveal>
+        <Reveal delay={100}>
+          <h2 className="heading-2 font-semibold mt-3 text-cyan-400 text-center lg:text-left">
+            {heading}
+          </h2>
+        </Reveal>
       </div>
 
       <div className="flow-track-section">
-        <div className="relative">
+        <Reveal delay={150} className="relative">
           <div
             ref={barRef}
             className="bar-labels relative container overflow-x-auto no-scrollbar flex justify-start lg:gap-[204px] gap-2"
@@ -117,41 +144,53 @@ export function FlowTrackTabs({
             ))}
           </div>
           <div className="absolute bottom-[4px] left-0 w-full bg-stone-200 h-[1px]" />
-        </div>
+        </Reveal>
 
         <div className="container lg:mt-10 mt-4">
           <div className="overflow-hidden">
             <div
               className="flex"
               style={{
-                transform: `translate3d(-${index * 100}%, 0, 0)`,
+                // Khoảng cách giữa hai slide là MARGIN, không phải padding —
+                // xem chú thích ở `.flow-track-slide`. Nên mỗi nấc phải trượt
+                // thêm đúng 30px đó, không chỉ 100%.
+                transform: `translate3d(calc(${-index * 100}% - ${index * SPACE_BETWEEN}px), 0, 0)`,
                 transition: `transform ${SPEED}ms ease`,
               }}
             >
-              {slides.map((slide) => (
-                <div key={slide.label} className="w-full shrink-0 pr-[30px]">
+              {slides.map((slide, i) => (
+                <div
+                  key={slide.label}
+                  className={cn(
+                    // `mr-[30px]` chứ KHÔNG phải `pr-[30px]`: Swiper cài
+                    // `spaceBetween: 30` bằng margin-right, bề rộng slide vẫn
+                    // đúng bằng bề rộng khung. Dùng padding thì phần nội dung
+                    // hụt 30px, và cột ảnh `aspect-[540/420]` co từ 540 xuống
+                    // 530 — cả section thấp đi 8px ở mọi trang có `.flow-track`.
+                    "flow-track-slide w-full shrink-0 mr-[30px]",
+                    i === index && "is-active",
+                  )}
+                >
                   <div className="flex flex-col h-full">
                     <div className="flex md:flex-row flex-col items-center justify-between gap-10 w-full h-full">
                       <div className="content-left flex-1 h-full max-w-[500px]">
-                        <div className="text-dark-blue-700 body-3 font-semibold mb-3">
+                        <div className="subheading tab-subheading text-dark-blue-700 body-3 font-semibold mb-3">
                           {slide.subheading}
                         </div>
-                        <h3 className="heading-2 font-semibold mb-4 text-cyan-950 font-lora">
+                        <h3 className="tab-heading heading-2 font-semibold mb-4 text-cyan-950 font-lora">
                           {slide.title}
                         </h3>
-                        <div className="text-grey-600 body-2 font-medium mb-6 space-y-4">
+                        <div className="tab-context text-grey-600 body-2 font-medium mb-6 space-y-4">
                           {slide.paragraphs.map((p, k) => (
                             <p key={k}>{p}</p>
                           ))}
                         </div>
                         {/* Last slide has no "next" link on the original */}
-                        {slide.nextLabel && slides[slides.indexOf(slide) + 1] && (
+                        {slide.nextLabel && slides[i + 1] && (
                           <button
                             type="button"
-                            onClick={() =>
-                              setIndex(slides.indexOf(slide) + 1)
-                            }
-                            className="group inline-flex items-center gap-2 text-dark-blue-900 hover:text-dark-blue-700 font-semibold cursor-pointer"
+                            onClick={() => setIndex(i + 1)}
+                            className="flow-track-next-tab-btn group inline-flex items-center gap-2 text-dark-blue-900 hover:text-dark-blue-700 font-semibold cursor-pointer"
                           >
                             {slide.nextLabel}
                             <svg

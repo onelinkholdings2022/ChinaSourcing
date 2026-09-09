@@ -1,6 +1,6 @@
+import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { landingMetadata } from "@/components/LandingPage";
 import { SimpleHero } from "@/components/sections/SimpleHero";
 import { ContactInfo } from "@/components/sections/contact/ContactInfo";
 import { FlowTrackTabs } from "@/components/sections/FlowTrackTabs";
@@ -10,9 +10,19 @@ import {
   buildContactInfoView,
   buildContactFlowTrackView,
 } from "@/lib/views/contactView";
-import { buildNavView, buildFooterView } from "@/lib/views/globalView";
+import { buildNavView, buildFooterView, buildPageMetadata } from "@/lib/views/globalView";
+import { getMediaUrl } from "@/lib/api/media-url";
+import { JsonLd } from "@/components/JsonLd";
 
-export const metadata = landingMetadata("contact-us");
+export async function generateMetadata(): Promise<Metadata> {
+  const { data: page } = await contactPageController.getPage();
+  return buildPageMetadata(page?.seo, {
+    title: page?.hero.heading ?? "Contact Us",
+    description: page?.hero.description,
+    image: getMediaUrl(page?.hero.image),
+    path: "/contact-us",
+  });
+}
 
 /**
  * `/contact-us`, rebuilt as components.
@@ -54,8 +64,9 @@ export default async function Page() {
 
   return (
     <>
+      <JsonLd seo={page?.seo} siteSeo={global?.defaultSeo} />
       <Header solid nav={global ? buildNavView(global) : undefined} />
-      <main className="pt-28 lg:pt-32">
+      <main>
         <SimpleHero
           heading={hero.heading}
           intro={hero.intro}

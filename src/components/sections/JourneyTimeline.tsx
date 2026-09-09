@@ -220,9 +220,14 @@ export function JourneyTimeline({
                     <Image
                       src={ship}
                       alt="Ship"
-                      width={300}
-                      height={300}
-                      className="lg:w-[300px] w-[85px] block mx-auto object-contain"
+                      // Ship.png là ảnh dọc 611x1800 (chồng container). Khai
+                      // đúng tỉ lệ gốc + `h-auto`: để 300x300 thì next/image ghi
+                      // height="300" và ảnh bị cắt thành hình vuông, trong khi
+                      // bản gốc cao 884px ở `lg:w-[300px]`.
+                      width={611}
+                      height={1800}
+                      sizes="(max-width: 1024px) 85px, 300px"
+                      className="lg:w-[300px] w-[85px] h-auto block mx-auto object-contain"
                     />
                   )}
                 </div>
@@ -263,11 +268,15 @@ export function JourneyTimeline({
                       key={m.rail}
                       className="gap-3 flex flex-col timeline-modify-height h-auto lg:mb-0 mb-8 justify-center panel lg:pl-0 pl-20"
                     >
-                      {m.step && (
-                        <span className="body-3 font-semibold text-dark-blue-50">
-                          {m.step}
-                        </span>
-                      )}
+                      {/* Luôn dựng `<span>` kể cả khi không có nhãn bước —
+                          theme cũng vậy (About để trống, và span rỗng cao 0).
+                          Bỏ hẳn nó đi thì panel mất một nấc `gap-3`: dưới
+                          1024px, nơi panel co theo nội dung, About thấp đi
+                          12px mỗi panel. Từ `lg` trở lên panel bị ép về
+                          `panelH` nên không ai thấy khác biệt. */}
+                      <span className="body-3 font-semibold text-dark-blue-50">
+                        {m.step}
+                      </span>
                       <h3 className="heading-3 font-semibold text-white">
                         {m.title}
                       </h3>

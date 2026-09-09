@@ -5,9 +5,19 @@
 
 export const STRAPI_URL = (process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337").replace(/\/$/, "");
 
-const IS_DEV = process.env.NODE_ENV !== "production";
 const DEFAULT_REVALIDATE = 3600;
 const HARD_TIMEOUT_MS = 15000;
+
+// Cache theo TAG ở MỌI môi trường, không chỉ production.
+//
+// Trước đây dev luôn `no-store`, nghĩa là mỗi lần F5 nạp lại toàn bộ nội dung
+// site từ Strapi — đúng thứ cần tránh. Với tag cache, một request chỉ đi tới
+// Strapi khi tag của nó bị thổi (webhook `/api/revalidate`) hoặc khi
+// `revalidate` hết hạn; sửa 1 case study chỉ dựng lại đúng trang đó.
+//
+// `STRAPI_CACHE_DISABLED=1` là cửa thoát khi đang soạn nội dung và muốn thấy
+// ngay từng thay đổi mà không cần webhook.
+const CACHE_DISABLED = process.env.STRAPI_CACHE_DISABLED === "1";
 
 export interface FetchOptions {
   revalidate?: number;
@@ -15,7 +25,7 @@ export interface FetchOptions {
 }
 
 function cacheInit(opts: FetchOptions): RequestInit {
-  if (IS_DEV) return { cache: "no-store" };
+  if (CACHE_DISABLED) return { cache: "no-store" };
   return {
     next: {
       revalidate: opts.revalidate ?? DEFAULT_REVALIDATE,

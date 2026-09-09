@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { FooterViewData } from "@/lib/views/globalView";
+import { HubspotForm } from "@/components/sections/contact/HubspotForm";
 import {
   ArrowRightIcon,
   ArrowUpRightIcon,
@@ -20,6 +21,9 @@ const FALLBACK_FOOTER: FooterViewData = {
   newsletter: {
     heading: "STAY AHEAD IN SOURCING",
     subheading: "Actionable insights.",
+    placeholder: "Email*",
+    buttonLabel: "Submit",
+    form: null,
   },
   columns: [
     {
@@ -34,20 +38,20 @@ const FALLBACK_FOOTER: FooterViewData = {
     {
       title: "OUR PRODUCTS",
       links: [
-        { label: "Furniture", href: "/products/furniture" },
-        { label: "Bags & Cases", href: "/products/bags-cases" },
-        { label: "Building Materials", href: "/products/building-materials" },
-        { label: "Chemicals & Cleaning", href: "/products/chemicals-cleaning" },
+        { label: "Furniture", href: "/furniture" },
+        { label: "Bags & Cases", href: "/bags-cases" },
+        { label: "Building Materials", href: "/building-materials" },
+        { label: "Chemicals & Cleaning", href: "/chemicals-cleaning" },
       ],
       more: { label: "See more", href: "/products" },
     },
     {
       title: "OUR SERVICES",
       links: [
-        { label: "Product Sourcing", href: "/services/product-sourcing" },
-        { label: "Quality Control", href: "/services/quality-control" },
-        { label: "Freight & Logistics", href: "/services/freight-logistics" },
-        { label: "Warehousing & Fulfillment", href: "/services/warehousing-fulfillment" },
+        { label: "Product Sourcing", href: "/sourcing-service" },
+        { label: "Quality Control", href: "/quality-control" },
+        { label: "Freight & Logistics", href: "/freight-logistics" },
+        { label: "Warehousing & Fulfillment", href: "/custom-manufacturing" },
       ],
       more: { label: "See more", href: "/services" },
     },
@@ -231,27 +235,41 @@ export function Footer({ footer = FALLBACK_FOOTER }: { footer?: FooterViewData }
               <p className="mt-2 text-lg text-[#0A0A0A] font-normal">
                 {footer.newsletter.subheading}
               </p>
-              <form
-                className="mt-6"
-                onSubmit={(e) => e.preventDefault()}
-                aria-label="Newsletter signup"
-              >
-                <input
-                  type="email"
-                  required
-                  placeholder="Email*"
-                  aria-label="Email"
-                  className="w-full bg-transparent border-b border-grey-400 pb-2 text-grey-600 placeholder:text-grey-400 outline-none focus:border-dark-blue-950 duration-300"
+              {footer.newsletter.form ? (
+                /* Bản gốc render đúng embed này trong `<div id="newsletter-form">`,
+                   không có class nào — mọi thứ nhìn thấy là CSS của HubSpot.
+                   `unlocksContent` giữ lại `onFormSubmitted` của theme: đăng ký
+                   nhận tin MỚI là chỗ dỡ paywall bài viết (deviation 21/45). */
+                <HubspotForm
+                  portalId={footer.newsletter.form.portalId}
+                  formId={footer.newsletter.form.formId}
+                  region={footer.newsletter.form.region}
+                  unlocksContent
                 />
-                <div className="flex justify-center mt-6">
-                  <button
-                    type="submit"
-                    className="bg-dark-blue-950 text-white text-sm font-semibold rounded px-6 py-2.5 duration-300 hover:bg-dark-blue-900 cursor-pointer"
-                  >
-                    Submit
-                  </button>
-                </div>
-              </form>
+              ) : (
+                /* Lưới đỡ khi CMS lẫn env đều chưa có form id — không post đi đâu. */
+                <form
+                  className="mt-6"
+                  onSubmit={(e) => e.preventDefault()}
+                  aria-label="Newsletter signup"
+                >
+                  <input
+                    type="email"
+                    required
+                    placeholder={footer.newsletter.placeholder}
+                    aria-label="Email"
+                    className="w-full bg-transparent border-b border-grey-400 pb-2 text-grey-600 placeholder:text-grey-400 outline-none focus:border-dark-blue-950 duration-300"
+                  />
+                  <div className="flex justify-center mt-6">
+                    <button
+                      type="submit"
+                      className="bg-dark-blue-950 text-white text-sm font-semibold rounded px-6 py-2.5 duration-300 hover:bg-dark-blue-900 cursor-pointer"
+                    >
+                      {footer.newsletter.buttonLabel}
+                    </button>
+                  </div>
+                </form>
+              )}
             </div>
           </div>
 

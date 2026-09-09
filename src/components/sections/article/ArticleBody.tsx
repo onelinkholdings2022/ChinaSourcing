@@ -13,8 +13,8 @@ import { cn } from "@/lib/utils";
  *
  * ## The body is gated — only when the CMS says so
  *
- * `resource.gated` (Strapi) decides this per resource; blog posts are never
- * gated (no such field on that content type). When gated, `#post-content-container`
+ * `gated` (Strapi's `resource.gated` / `blog-post.gated`) decides this per
+ * article. When gated, `#post-content-container`
  * is capped at `max-h-[600px] lg:max-h-[1000px]` with `overflow-clip`, and a
  * white gradient fades the cut-off edge under "Please subscribe to see the
  * detail". Handing over an email lifts the cap — see `useSubscribed`.

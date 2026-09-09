@@ -1,16 +1,12 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { UspViewData } from "@/lib/views/homeView";
 import { Button, Tag } from "@/components/ui/button";
 import { Reveal } from "@/components/Reveal";
 import { CircleArrowIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
-
-gsap.registerPlugin(ScrollTrigger);
 
 /** Swiper `slidesPerView` breakpoints from the original theme bundle. */
 function slidesPerView(width: number) {
@@ -20,23 +16,32 @@ function slidesPerView(width: number) {
 }
 
 const SPACE_BETWEEN = 30;
+const AUTOPLAY_MS = 3000;
+/** Fraction of a slide's width a drag must clear before it counts as a swipe. */
+const DRAG_THRESHOLD_RATIO = 0.15;
 
 /**
  * "We Simplify Sourcing".
  *
- * Reproduces the original's behaviour: above 1024px the section pins and the
- * card track advances one card per scroll step, driven by a scrubbed
- * ScrollTrigger. The active card scales 0.85 -> 1, its text goes grey -> white,
- * the gradient layer fades .25 -> 1 and the photo slides in from +20px.
- * Below 1024px there is no pin — it is a plain swipeable carousel.
+ * Customization (see TARGET.md): the original pins this section with a
+ * scrubbed GSAP ScrollTrigger and steps the active card off scroll position.
+ * At the owner's request the pin is gone — the track now auto-advances on a
+ * timer at every breakpoint, using the same 300ms CSS transform transition
+ * it always had. The active card still scales 0.85 -> 1, its text still goes
+ * grey -> white, the gradient layer still fades .25 -> 1 and the photo still
+ * slides in from +20px; only what drives `active` changed. Also added: the
+ * track is now pointer-draggable (mouse and touch) at every breakpoint, not
+ * just the mobile prev/next buttons.
  */
 export function UspSlider({ usps }: { usps: UspViewData[] }) {
-  const sectionRef = useRef<HTMLElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
   const [perView, setPerView] = useState(1);
   const [viewportWidth, setViewportWidth] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragDelta, setDragDelta] = useState(0);
+  const dragStartX = useRef(0);
 
   useEffect(() => {
     const update = () => {
@@ -48,56 +53,15 @@ export function UspSlider({ usps }: { usps: UspViewData[] }) {
     return () => window.removeEventListener("resize", update);
   }, []);
 
-  useLayoutEffect(() => {
-    if (typeof window === "undefined") return;
-    // Desktop only — the original guards this with `window.innerWidth > 1024`
-    if (window.innerWidth <= 1024) return;
-
-    const track = trackRef.current;
-    const section = sectionRef.current;
-    if (!track || !section) return;
-
-    const n = usps.length;
-
-    // Everything is created inside the context so `ctx.revert()` unwinds the
-    // pin spacer too. Killing the trigger by hand instead leaves the spacer in
-    // the DOM, and React's double-mount in dev then measures inside the stale
-    // one — the section stops pinning altogether.
-    const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: section,
-        start: "top top",
-        // end: +=(n-1) * (trackHeight + 100), straight from the theme bundle
-        end: () => `+=${(n - 1) * (track.offsetHeight + 100)}`,
-        pin: true,
-        // `body` is a scroll container here (it carries overflow-x: hidden), so
-        // ScrollTrigger would otherwise pin by translating the section, which
-        // reads as the section scrolling away instead of holding still.
-        pinType: "fixed",
-        scrub: true,
-        invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          setActive(Math.round(self.progress * (n - 1)));
-        },
-      });
-    }, sectionRef);
-
-    // `end` is derived from the card height, which is wrong until the card
-    // photography has laid out. Re-measure once the images are in — the
-    // original defers its whole init by 200ms for the same reason.
-    const refresh = () => ScrollTrigger.refresh();
-    const timer = window.setTimeout(refresh, 200);
-    const images = Array.from(track.querySelectorAll("img"));
-    images.forEach((img) => img.addEventListener("load", refresh));
-    window.addEventListener("load", refresh);
-
-    return () => {
-      window.clearTimeout(timer);
-      window.removeEventListener("load", refresh);
-      images.forEach((img) => img.removeEventListener("load", refresh));
-      ctx.revert();
-    };
-  }, []);
+  // Autoplay — loops on its own; hovering (desktop) or touching (mobile
+  // drag/buttons) pauses it rather than fighting the visitor's input.
+  useEffect(() => {
+    if (usps.length <= 1 || paused) return;
+    const id = window.setInterval(() => {
+      setActive((i) => (i + 1) % usps.length);
+    }, AUTOPLAY_MS);
+    return () => window.clearInterval(id);
+  }, [usps.length, paused]);
 
   // Slide width as a percentage of the viewport track, mirroring Swiper's maths
   const slideBasis = `calc(${100 / perView}% - ${
@@ -118,10 +82,50 @@ export function UspSlider({ usps }: { usps: UspViewData[] }) {
   const maxOffset = Math.max(0, virtualWidth - viewportWidth);
   const offset = Math.min(active * (slideWidth + SPACE_BETWEEN), maxOffset);
 
+  // A manual prev/next tap pauses autoplay briefly rather than fighting it —
+  // otherwise the timer could step the track again a moment after the click.
+  const resumeTimer = useRef<number | undefined>(undefined);
+  useEffect(() => () => window.clearTimeout(resumeTimer.current), []);
+  const goTo = (next: number) => {
+    setActive(next);
+    setPaused(true);
+    window.clearTimeout(resumeTimer.current);
+    resumeTimer.current = window.setTimeout(() => setPaused(false), AUTOPLAY_MS);
+  };
+
+  // Pointer drag — unifies mouse and touch. The track follows the pointer
+  // 1:1 while held (transition switched off below), then snaps to whichever
+  // neighbour the drag cleared the threshold for, or back to the current
+  // card if it didn't.
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    dragStartX.current = e.clientX;
+    setIsDragging(true);
+    setPaused(true);
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDragging) return;
+    setDragDelta(e.clientX - dragStartX.current);
+  };
+  const endDrag = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    const threshold = Math.max(24, slideWidth * DRAG_THRESHOLD_RATIO);
+    let next = active;
+    if (dragDelta > threshold) next = active - 1;
+    else if (dragDelta < -threshold) next = active + 1;
+    setDragDelta(0);
+    goTo(((next % usps.length) + usps.length) % usps.length);
+  };
+
   return (
     <section
-      ref={sectionRef}
-      className="relative overflow-hidden bg-dark-blue-950 lg:min-h-screen"
+      /* `lg:min-h-screen` là của theme: từ 1024px trở lên khối này luôn chiếm
+         trọn một màn hình, kể cả khi bản gốc CHƯA ghim (bản gốc ghim từ
+         ~1280px). Bỏ nó đi thì ở đúng 1024px section thấp hơn bản gốc 180px. */
+      className="usp-slider relative overflow-hidden bg-dark-blue-950 lg:min-h-screen"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
     >
       <div className="container py-24 2xl:py-[120px]">
         <div className="flex flex-col w-full gap-3 lg:gap-20 lg:flex-row lg:justify-between lg:items-center mb-8">
@@ -146,14 +150,25 @@ export function UspSlider({ usps }: { usps: UspViewData[] }) {
         </div>
 
         {/* Card track */}
-        <div ref={viewportRef} className="overflow-hidden">
+        <div
+          ref={viewportRef}
+          className={cn("overflow-hidden", isDragging ? "cursor-grabbing" : "cursor-grab")}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={endDrag}
+          onPointerCancel={endDrag}
+          onPointerLeave={endDrag}
+          style={{ touchAction: "pan-y" }}
+        >
           <div
-            ref={trackRef}
             /* Swiper's default slide speed is 300ms with the `ease` curve */
-            className="flex transition-transform duration-300 ease-[ease]"
+            className={cn(
+              "flex select-none",
+              !isDragging && "transition-transform duration-300 ease-[ease]",
+            )}
             style={{
               gap: `${SPACE_BETWEEN}px`,
-              transform: `translateX(-${offset}px)`,
+              transform: `translateX(-${offset - dragDelta}px)`,
             }}
           >
             {usps.map((usp, i) => {
@@ -190,6 +205,7 @@ export function UspSlider({ usps }: { usps: UspViewData[] }) {
                         alt=""
                         width={40}
                         height={40}
+                        draggable={false}
                         className={cn(
                           "w-10 h-10 object-contain transition-[filter] duration-300",
                           isActive ? "filter-none" : "grayscale brightness-90",
@@ -217,6 +233,7 @@ export function UspSlider({ usps }: { usps: UspViewData[] }) {
                           alt={usp.title}
                           width={300}
                           height={300}
+                          draggable={false}
                           className="rounded-lg object-cover w-full h-auto aspect-square"
                         />
                       </div>
@@ -233,7 +250,7 @@ export function UspSlider({ usps }: { usps: UspViewData[] }) {
           <button
             type="button"
             aria-label="Previous"
-            onClick={() => setActive((i) => (i - 1 + usps.length) % usps.length)}
+            onClick={() => goTo((active - 1 + usps.length) % usps.length)}
             className="w-12 h-12 cursor-pointer hover:opacity-70 duration-300"
           >
             <CircleArrowIcon className="w-full h-full rotate-180" />
@@ -241,7 +258,7 @@ export function UspSlider({ usps }: { usps: UspViewData[] }) {
           <button
             type="button"
             aria-label="Next"
-            onClick={() => setActive((i) => (i + 1) % usps.length)}
+            onClick={() => goTo((active + 1) % usps.length)}
             className="w-12 h-12 cursor-pointer hover:opacity-70 duration-300"
           >
             <CircleArrowIcon className="w-full h-full" />

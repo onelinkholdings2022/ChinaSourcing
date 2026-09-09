@@ -1,11 +1,21 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Tag } from "@/components/ui/button";
 import { TabRail, type ListingTab } from "@/components/sections/resources/TabRail";
 import { ListingPager } from "@/components/sections/resources/ListingPager";
+import { useListingStore, useListingPage } from "@/lib/stores/listingStore";
+import { useUrlFilter } from "@/hooks/useUrlFilter";
+
+// Số trang sống trong `useListingStore`, không phải `useState`: mở một bài rồi
+// bấm Back thì trang đang xem phải còn nguyên — với state cục bộ thì component
+// dựng lại và nó về 1.
+//
+// Mỗi loại một khoá riêng, như `.blog-listing`: trang 2 của "Templates" không
+// có nghĩa gì ở "Checklists".
+const listingId = (type: string) => `resources-free:${type}`;
 
 /** A download card in the dark `.resource-listing` band. */
 export type ResourceCard = {
@@ -29,6 +39,14 @@ export type ResourceCard = {
  *
  * Changing tab resets to page 1 (`selectType` sets `paged = 1`), and — unlike
  * the case-study filter — nothing scrolls.
+ *
+ * ## Tab đổi URL nhưng KHÔNG rời trang
+ *
+ * Bốn loại download là bản ghi `resource-type` thật, mỗi loại một URL
+ * `/<slug>` — `/checklists`, `/ebook`, `/others`, `/templates`. Hành vi y hệt
+ * rail category của `.blog-listing`: gõ thẳng URL thì server render đúng loại
+ * đó, còn bấm một tab thì lọc tại chỗ và thay URL bằng `history.pushState`.
+ * Xem chú thích dài trong `BlogListing`.
  */
 export function ResourceListing({
   tag,
@@ -36,15 +54,23 @@ export function ResourceListing({
   tabs,
   cards,
   perPage,
+  activeType = "all",
 }: {
   tag: string;
   heading: string;
   tabs: ListingTab[];
   cards: ResourceCard[];
   perPage: number;
+  /** Slug loại server render — chỉ là giá trị khởi tạo. */
+  activeType?: string;
 }) {
-  const [type, setType] = useState("all");
-  const [page, setPage] = useState(1);
+  // Rail loại download: mỗi loại có URL riêng `/<slug>`, bấm thì lọc tại chỗ
+  // và URL đổi theo — cùng hợp đồng với rail category, xem `useUrlFilter`.
+  const values = useMemo(() => tabs.map((t) => t.value), [tabs]);
+  const [type, select] = useUrlFilter({ initial: activeType, values });
+  const id = listingId(type);
+  const page = useListingPage(id);
+  const setPage = useListingStore((s) => s.setPage);
 
   const matches = useMemo(
     () => (type === "all" ? cards : cards.filter((c) => c.types.includes(type))),
@@ -65,15 +91,7 @@ export function ResourceListing({
           </h2>
         </div>
 
-        <TabRail
-          tabs={tabs}
-          active={type}
-          buttonClass="resource-tab-btn"
-          onSelect={(value) => {
-            setType(value);
-            setPage(1);
-          }}
-        />
+        <TabRail tabs={tabs} active={type} buttonClass="resource-tab-btn" onSelect={select} />
 
         <div className="mt-16 flex md:flex-row flex-col flex-wrap w-full justify-center gap-10">
           {visible.map((card) => (
@@ -117,7 +135,7 @@ export function ResourceListing({
         <ListingPager
           page={current}
           totalPages={totalPages}
-          onChange={setPage}
+          onChange={(n) => setPage(id, n)}
           variant="resource"
         />
       </div>

@@ -12,9 +12,9 @@ export type SimpleCard = {
 /**
  * The `.simple-card` band — icon / title / body cards on the dark indigo block.
  *
- * About centres its header ("Mission, Vision & Values"); the service pages
- * left-align theirs and add an intro paragraph. Same markup otherwise, so the
- * alignment is a prop rather than a second component.
+ * About and the case study pages centre their header; the service pages
+ * left-align theirs. Same markup otherwise, so the alignment is a prop rather
+ * than a second component.
  */
 export function SimpleCardGrid({
   tag,
@@ -29,7 +29,7 @@ export function SimpleCardGrid({
   intro?: string | null;
   cards: SimpleCard[];
   align?: "center" | "left";
-  /** `xl:grid-cols-*` — 3 on About and the service pages, 4 on a case study. */
+  /** Số cột từ `xl` trở lên. Theme khai theo từng khối, không theo số thẻ. */
   columns?: 3 | 4;
 }) {
   const centred = align === "center";
@@ -60,6 +60,13 @@ export function SimpleCardGrid({
           )}
         </div>
 
+        {/* Số cột ở `xl` là của TỪNG KHỐI, không suy ra từ số thẻ: About có 3
+            thẻ và trang service có 5, cả hai đều `xl:grid-cols-3`; trang case
+            study có 4 thẻ và dùng `xl:grid-cols-4` (đã đọc lại từ markup của
+            tag-apparel, prestige-residential và muscle-mat). Dưới `xl` thì mọi
+            trang giống nhau: `lg:grid-cols-3 md:grid-cols-2`, một cột ở mobile.
+            Cả hai chuỗi lớp phải viết ĐỦ chữ — Tailwind quét tĩnh, ghép
+            `xl:grid-cols-${columns}` là không sinh ra lớp nào. */}
         <div
           className={cn(
             "grid gap-6 gap-y-10 lg:gap-10 lg:gap-y-16 lg:grid-cols-3 md:grid-cols-2",

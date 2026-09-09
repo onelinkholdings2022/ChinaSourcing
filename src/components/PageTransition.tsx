@@ -3,6 +3,21 @@
 import { useCallback, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import gsap from "gsap";
+import { getLenis } from "./lenisRef";
+
+/**
+ * Forces both the native scroll position and Lenis's own internal one back to
+ * the top. A plain `window.scrollTo(0, 0)` alone isn't enough once
+ * `<SmoothScroll>` is mounted: Lenis tracks scroll itself and doesn't notice
+ * an external jump, so a frame later it animates back to wherever it last
+ * thought the page was — the new page visibly scrolls back up mid-reveal.
+ * Called only while the curtain is fully covering the viewport, so the reset
+ * itself is never seen.
+ */
+function resetScroll() {
+  window.scrollTo(0, 0);
+  getLenis()?.scrollTo(0, { immediate: true, force: true });
+}
 
 /**
  * The site-wide curtain: six indigo columns that cover the viewport, plus a
@@ -192,7 +207,24 @@ export function PageTransition() {
       firstPath.current = false;
       return;
     }
+    // Chỉ vén rèm khi CHÍNH khối này vừa kéo rèm xuống. `leaving` được bật ở
+    // handler click bên dưới và chỉ ở đó.
+    //
+    // Cần chốt này vì `usePathname()` đổi giá trị với MỌI thứ chạm vào history,
+    // kể cả `history.pushState` — mà rail category trên `/resources` dùng đúng
+    // cách đó để đổi thanh địa chỉ tại chỗ (xem `BlogListing`). Không chốt thì
+    // một cú bấm lọc sẽ chạy `resetScroll()` + `reveal()`: trang nhảy vọt về
+    // đầu và rèm quét qua, tức trông y hệt vừa tải lại trang — đúng thứ khối đó
+    // được viết ra để tránh. Nút Back/Forward của trình duyệt cũng vào nhánh
+    // này, và ở đó trình duyệt tự khôi phục vị trí cuộn nên `resetScroll()`
+    // cũng sai.
+    if (!leaving.current) return;
     leaving.current = false;
+    // Belt and braces alongside the reset in `onClick` below: Next's own
+    // scroll handling for the new route can land after that one fires, so
+    // reset again here too, still hidden — the curtain is still fully solid
+    // and `reveal()` has not started sliding it away yet.
+    resetScroll();
     // Fade the logo rather than snapping it: the curtain is still solid for the
     // first moments of the reveal, so a short cross-fade lets the logo actually
     // register instead of blinking out the instant the route changes.
@@ -224,6 +256,16 @@ export function PageTransition() {
       )
         return;
 
+      // Link tự lo phần điều hướng của nó — không phải một lượt chuyển trang.
+      //
+      // Cần một cờ tường minh vì handler này chạy ở pha CAPTURE trên document:
+      // nó luôn chạy TRƯỚC handler của chính phần tử, nên phần tử không có cách
+      // nào tự rút lui. Rail category trên `/resources` dùng cờ này: pill là
+      // `<a href="/canton-fair">` để bot thu thập được và mở tab mới được,
+      // nhưng cú bấm thường chỉ đổi bộ lọc + `history.pushState`, không rời
+      // trang — nên rèm chuyển trang mà chạy ở đây là sai hẳn.
+      if (anchor.hasAttribute("data-no-transition")) return;
+
       const url = new URL(anchor.href);
       if (url.pathname === window.location.pathname) return;
 
@@ -249,14 +291,24 @@ export function PageTransition() {
       // Nothing to animate (no columns rendered yet) — just go, rather than
       // swallowing the click and stranding the user on the current page.
       if (!cols.length || !layer1 || !logo) {
+        resetScroll();
         router.push(href);
         return;
       }
 
       // One timeline so the navigation fires exactly once, from `onComplete`.
       // Chaining per-column callbacks instead makes the push depend on which
-      // tween happens to finish last.
-      const tl = gsap.timeline({ onComplete: () => router.push(href) });
+      // tween happens to finish last. The curtain is fully covering by then,
+      // so resetting scroll here — rather than waiting for the reveal effect —
+      // is what actually hides the jump: `router.push` starts rendering the
+      // new route immediately, and it should already be scrolled to top by
+      // the time any of that becomes visible.
+      const tl = gsap.timeline({
+        onComplete: () => {
+          resetScroll();
+          router.push(href);
+        },
+      });
 
       cols.forEach((col, i) => {
         tl.fromTo(

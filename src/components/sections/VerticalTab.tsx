@@ -91,7 +91,15 @@ export function VerticalTab({
           </div>
         </div>
 
-        <div className="relative will-change-transform">
+        {/* `lg:w-full lg:max-w-[800px]` là phần BÙ cho `next/image`, không có
+            trong theme. Site gốc dùng `<img>` thường: bề rộng NỘI TẠI của ảnh
+            đẩy cột này ra tới trần `max-w-[800px]` của khối bên trong. Ở đây
+            ảnh là `fill` (position: absolute) nên không đóng góp gì vào
+            max-content, cột co lại theo dòng chữ dài nhất — 684px thay vì 800
+            ở 1512px, ảnh tỉ lệ 800/376 thấp theo, cả section hụt 55px.
+            Chỉ đặt từ `lg`: dưới mốc đó hàng xếp dọc và cột vốn đã rộng hết
+            phần còn lại, giống hệt bản gốc. */}
+        <div className="relative will-change-transform lg:w-full lg:max-w-[800px]">
           {panel && (
             <div
               key={panel.label}

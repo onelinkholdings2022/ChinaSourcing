@@ -23,7 +23,7 @@ export interface ArticleViewData {
   toc: { href: string; label: string }[];
   html: string;
   shareUrl: string;
-  /** Chỉ resource mới có công tắc này (`resource.gated`) — blog post luôn đọc full, không gate. */
+  /** Công tắc điền form mới đọc được — cả `resource.gated` lẫn `blog-post.gated`. */
   gated: boolean;
   subscribe: { tag: string; heading: string; body: string };
   related: { tag: string; heading: string; cards: BlogCardData[]; ctaLabel: string; ctaHref: string };
@@ -72,7 +72,7 @@ export function buildResourceArticleView(
     facts: [
       { label: "Tag", icon: TAG_ICON, value: resource.categories[0]?.name ?? resource.resourceType },
       // resource không có field ngày đăng riêng — dùng thời điểm publish trên CMS.
-      { label: "Date", icon: CALENDAR_ICON, value: formatDate(resource.publishedAt) },
+      { label: "Date", icon: CALENDAR_ICON, value: formatDate(resource.publishedDate ?? resource.publishedAt) },
       { label: "Reading Time", icon: CLOCK_ICON, value: resource.readingTime ?? estimateReadTime(resource.content) },
     ],
     featuredImage: getMediaUrl(resource.featureImage) ?? FALLBACK_IMAGE,
@@ -91,11 +91,11 @@ export function buildResourceArticleView(
           category: r.categories[0]?.name ?? null,
           title: r.title,
           excerpt: stripHtml(r.content),
-          date: formatDate(r.publishedAt),
+          date: formatDate(r.publishedDate ?? r.publishedAt),
           readingTime: r.readingTime ?? estimateReadTime(r.content),
           image: getMediaUrl(r.featureImage) ?? FALLBACK_IMAGE,
           alt: r.title,
-          href: `/resources/${r.slug}`,
+          href: `/${r.slug}`,
         })),
     },
     cta: buildCta(settings),
@@ -113,15 +113,14 @@ export function buildBlogPostArticleView(
     facts: [
       { label: "Tag", icon: TAG_ICON, value: "Blog" },
       { label: "Date", icon: CALENDAR_ICON, value: formatDate(post.publishedDate) },
-      { label: "Reading Time", icon: CLOCK_ICON, value: estimateReadTime(post.content) },
+      { label: "Reading Time", icon: CLOCK_ICON, value: post.readingTime ?? estimateReadTime(post.content) },
     ],
     featuredImage: getMediaUrl(post.featureImage) ?? FALLBACK_IMAGE,
     featuredAlt: post.featureImage?.alternativeText || post.title,
     toc: extractToc(post.content),
     html: post.content ?? "",
     shareUrl: `${SITE}/${post.slug}/`,
-    // blog-post không có field `gated` trong Strapi — bài blog luôn đọc full.
-    gated: false,
+    gated: post.gated,
     subscribe: buildSubscribe(settings),
     related: {
       ...buildRelatedMeta(settings),
@@ -133,7 +132,7 @@ export function buildBlogPostArticleView(
           title: p.title,
           excerpt: stripHtml(p.excerpt ?? p.content),
           date: formatDate(p.publishedDate),
-          readingTime: estimateReadTime(p.content),
+          readingTime: p.readingTime ?? estimateReadTime(p.content),
           image: getMediaUrl(p.featureImage) ?? FALLBACK_IMAGE,
           alt: p.title,
           href: `/${p.slug}`,

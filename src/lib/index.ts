@@ -11,6 +11,7 @@ export {
   aboutPageController,
   teamMemberController,
   processPageController,
+  privacyPolicyPageController,
   contactPageController,
   caseStudiesPageController,
   caseStudySettingController,
@@ -25,6 +26,7 @@ export {
   resourceSettingController,
   resourceController,
   categoryController,
+  resourceTypeController,
 } from "./container";
 
 export { getMediaUrl, mediaWidth, mediaHeight, mediaAlt } from "./api/media-url";
@@ -43,5 +45,7 @@ export type { ServicesPageData, ServiceData, ServiceSettingData } from "./types/
 export type { Testimonial } from "./types/testimonial";
 export type { Resource } from "./types/resource";
 export type { Category } from "./types/category";
+export type { ResourceType } from "./types/resource-type";
 export type { ProductsPageData, ProductData, ProductSettingData } from "./types/products-page";
 export type { ResourcesPageData, ResourceSettingData } from "./types/resources-page";
+export type { PrivacyPolicyPageData, LegalTextSection } from "./types/privacy-policy-page";

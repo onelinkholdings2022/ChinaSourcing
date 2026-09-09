@@ -18,7 +18,7 @@ export function Faq({
   headingLines = ["Frequently Asked", "Questions"],
   email = "info@chinasourcing.co",
   items,
-  className = "py-10 lg:pt-20 lg:pb-[120px]",
+  className = "faq py-10 lg:pt-20 lg:pb-[120px]",
 }: {
   tag?: string;
   headingLines?: string[];
@@ -32,7 +32,15 @@ export function Faq({
   return (
     <section className={className}>
       <div className="container flex flex-col lg:flex-row gap-10 2xl:gap-[120px]">
-        <div className="w-full lg:w-5/12 2xl:w-1/3 lg:min-w-5/12 2xl:min-w-1/3">
+        {/* Theme viết `lg:min-w-5/12 2xl:min-w-1/3` ở đây, nhưng trong
+            Tailwind v3 thang `min-width` KHÔNG có phân số — hai lớp đó không
+            sinh ra CSS nào bên site gốc. v4 thì có, nên chép nguyên văn là đổi
+            hẳn bố cục: hai cột `w-5/12` + `w-7/12` cộng thêm `gap-10` rộng hơn
+            hàng 39px, bình thường chúng co lại theo tỉ lệ (377 / 527 ở 1024px);
+            có min-width thì cột trái không co được nữa và thành 393 / 511 —
+            cột FAQ hẹp đi 16px, đủ để một câu trả lời xuống thêm dòng và cả
+            section cao dư 28-56px. Bỏ hẳn, đúng như bản gốc phân giải ra. */}
+        <div className="w-full lg:w-5/12 2xl:w-1/3">
           <Tag className="mx-auto lg:ml-0">{tag}</Tag>
 
           <h2 className="heading-2 font-medium mb-3 lg:mb-8 mt-3 flex flex-wrap gap-x-1 justify-center lg:justify-start">
@@ -55,13 +63,13 @@ export function Faq({
           )}
         </div>
 
-        <div className="w-full lg:w-7/12 2xl:w-2/3">
+        <div className="faq-wrapper w-full lg:w-7/12 2xl:w-2/3">
           {items.map((faq, i) => {
             const isOpen = open === i;
             return (
               <div
                 key={faq.question}
-                className="border-b border-grey-200 overflow-hidden"
+                className="faq-item border-b border-grey-200 overflow-hidden"
               >
                 <button
                   type="button"

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { permanentRedirect } from "next/navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CaseStudyHero } from "@/components/sections/casestudy/CaseStudyHero";
@@ -15,7 +15,9 @@ import {
   buildCaseStudyRelatedView,
   buildCaseStudyCtaView,
 } from "@/lib/views/caseStudyView";
-import { buildNavView, buildFooterView } from "@/lib/views/globalView";
+import { buildNavView, buildFooterView, buildPageMetadata } from "@/lib/views/globalView";
+import { getMediaUrl } from "@/lib/api/media-url";
+import { JsonLd } from "@/components/JsonLd";
 
 const SITE = "https://chinasourcing.co";
 
@@ -30,12 +32,14 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const result = await caseStudyController.getBySlug(slug);
-  const page = result.data;
-  return {
-    title: page ? `${page.title} | China Sourcing Co` : "China Sourcing Co",
-    description: page?.description || undefined,
-  };
+  const { data: study } = await caseStudyController.getBySlug(slug);
+  return buildPageMetadata(study?.seo, {
+    title: study?.title ?? "China Sourcing Co",
+    description: study?.description,
+    image: getMediaUrl(study?.featureImage),
+    path: `/${slug}`,
+    type: "article",
+  });
 }
 
 /**
@@ -65,7 +69,11 @@ export default async function CaseStudyPage({
   ]);
 
   const cs = caseStudyResult.data;
-  if (!cs) notFound();
+  // 404 của site này là "về trang chủ", không phải một trang lỗi — xem
+  // `src/proxy.ts`. Proxy chỉ rewrite vào đây khi slug CÓ trong bảng phân
+  // giải, nên nhánh này chỉ chạy khi bảng vừa cũ đi (bản ghi vừa bị bỏ
+  // publish) hoặc khi ai đó gõ thẳng đường dẫn nội bộ.
+  if (!cs) permanentRedirect("/");
 
   const all = allResult.data ?? [];
   const settings = settingsResult.data;
@@ -79,8 +87,9 @@ export default async function CaseStudyPage({
 
   return (
     <>
+      <JsonLd seo={cs?.seo} siteSeo={global?.defaultSeo} />
       <Header solid nav={global ? buildNavView(global) : undefined} />
-      <main className="pt-28 lg:pt-32">
+      <main>
         <div className="flex flex-col pb-[120px]">
           <CaseStudyHero heading={hero.heading} intro={hero.intro} facts={hero.facts} />
           <SimpleCardGrid
@@ -88,7 +97,8 @@ export default async function CaseStudyPage({
             heading={simple.heading}
             intro={simple.intro}
             cards={simple.cards}
-            align="left"
+            /* Khối này của trang case study là 4 cột ở `xl` — xem
+               SimpleCardGrid. About và trang service giữ mặc định 3. */
             columns={4}
           />
           <CaseStudyArticle blocks={blocks} title={cs.title} shareUrl={`${SITE}/case-study/${cs.slug}/`} />

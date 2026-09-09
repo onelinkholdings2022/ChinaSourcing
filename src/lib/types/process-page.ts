@@ -17,6 +17,8 @@ export interface ProcessPageTimeline {
   tag: StrapiTag | null;
   heading: string | null;
   description: string | null;
+  /** Con tàu trôi giữa hai cột khi section được ghim — About cũng có field này. */
+  shipImage: StrapiMedia | null;
   steps: ProcessPageTimelineStep[];
 }
 

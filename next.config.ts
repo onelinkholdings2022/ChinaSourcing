@@ -1,39 +1,25 @@
 import type { NextConfig } from "next";
 
 /**
- * The original's detail URLs are singular (`/case-study/<slug>`) while its
- * listing URLs are plural (`/case-studies`). Keeping both as route folders
- * meant two directories per content type for what is one section of the site,
- * so each detail route now lives inside its listing folder
- * (`app/case-studies/[slug]`) and these rewrites map the original URL onto it.
+ * Định tuyến nằm ở `src/proxy.ts`, không ở đây.
  *
- * Rewrites, not redirects: the address bar keeps showing the URL the original
- * publishes, so inbound links, the sitemap and anything already indexed all
- * still resolve to exactly the same address.
+ * Trước đây file này rewrite `/case-study/:slug` → `/case-studies/:slug` để giữ
+ * nguyên URL số ít mà site gốc phát hành. Giờ mọi trang chi tiết đều ở URL
+ * PHẲNG `/<slug>`, nên các dạng có tiền tố — cả số ít lẫn số nhiều — đều 301 về
+ * đó. Việc ấy cần biết slug thuộc loại nào, tức cần đọc CMS, mà `rewrites()`
+ * chạy lúc build và chỉ so khớp mẫu tĩnh — nên nó phải là proxy.
  */
-const SECTIONS = [
-  ["case-study", "case-studies"],
-  ["product", "products"],
-  ["service", "services"],
-  ["resource", "resources"],
-] as const;
-
 const nextConfig: NextConfig = {
-  async rewrites() {
-    return SECTIONS.map(([singular, plural]) => ({
-      source: `/${singular}/:slug`,
-      destination: `/${plural}/:slug`,
-    }));
-  },
   images: {
-    // Ảnh động đến từ strapi-cns (Media Library, local upload provider).
+    // Ảnh động đến từ Strapi Media Library. `cms.chinasourcing.co` là nguồn
+    // thật; `localhost:1337` giữ lại để chạy Strapi tại máy khi cần soạn nội
+    // dung (đổi NEXT_PUBLIC_STRAPI_URL là xong, không phải sửa config).
     remotePatterns: [
+      { protocol: "https", hostname: "cms.chinasourcing.co" },
       { protocol: "http", hostname: "localhost", port: "1337" },
     ],
     // Strapi local chạy trên loopback — Next chặn mặc định vì lo SSRF. An toàn
-    // ở dev vì host bị chặn cũng chỉ có thể là localhost:1337 (đã whitelist ở
-    // trên); khi deploy thật, NEXT_PUBLIC_STRAPI_URL trỏ sang domain thật nên
-    // cờ này không còn tác dụng.
+    // vì host duy nhất được whitelist trên loopback là localhost:1337.
     dangerouslyAllowLocalIP: true,
   },
 };

@@ -86,8 +86,20 @@ export function Header({
   return (
     <header
       className={cn(
-        "w-full fixed lg:px-3 px-2 z-40 duration-300",
-        scrolled ? "top-0 bg-gradient-header" : "lg:top-8 top-3 bg-transparent",
+        "w-full z-40 duration-300",
+        // Vị trí là thứ site gốc PHÂN BIỆT theo trang, không phải hằng số:
+        //   • trang chủ  → `fixed lg:top-8 top-3` (viên thuốc nổi trên hero tối)
+        //   • trang trong → `sticky top-0` — NẰM TRONG DÒNG, chiếm 82px chiều cao
+        // Bản clone trước đây `fixed` ở cả hai, rồi bù bằng `pt-28 lg:pt-32`
+        // trên `<main>`. Hai con số đó (112 / 128px) lớn hơn header thật, nên
+        // MỌI trang trong đều bắt đầu thấp hơn bản gốc 30px (mobile) tới 46px
+        // (desktop), và tài liệu dài thêm đúng chừng ấy.
+        solid
+          ? "sticky top-0 bg-gradient-header lg:px-0 px-3"
+          : cn(
+              "fixed lg:px-3 px-2",
+              scrolled ? "top-0 bg-gradient-header" : "lg:top-8 top-3 bg-transparent",
+            ),
         lifted && "shadow-[0_1px_0_0_rgba(15,23,42,0.06),0_4px_12px_-8px_rgba(15,23,42,0.18)]",
       )}
     >

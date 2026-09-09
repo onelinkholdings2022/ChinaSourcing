@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { DownloadButton } from "@/components/ui/DownloadButton";
 import { cn } from "@/lib/utils";
 import type { MissionVideoViewData } from "@/lib/views/homeView";
 
@@ -81,9 +82,21 @@ export function ClosingCta({ missionVideo }: { missionVideo: MissionVideoViewDat
           <Button href={missionVideo.primaryButton.href} withArrow className="sm:w-fit w-full">
             {missionVideo.primaryButton.label}
           </Button>
-          <Button href={missionVideo.secondaryButton.href} variant="white" className="sm:w-fit w-full">
-            {missionVideo.secondaryButton.label}
-          </Button>
+          {/* "Download A Sourcing Guide" tải thẳng PDF — nút, không phải link.
+              Chỉ lùi về `<a>` khi env chưa trỏ tới file nào. */}
+          {missionVideo.secondaryButton.fileUrl ? (
+            <DownloadButton
+              fileUrl={missionVideo.secondaryButton.fileUrl}
+              variant="white"
+              className="sm:w-fit w-full"
+            >
+              {missionVideo.secondaryButton.label}
+            </DownloadButton>
+          ) : (
+            <Button href={missionVideo.secondaryButton.href} variant="white" className="sm:w-fit w-full">
+              {missionVideo.secondaryButton.label}
+            </Button>
+          )}
         </div>
       </div>
     </section>

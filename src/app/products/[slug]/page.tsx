@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { permanentRedirect } from "next/navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Faq } from "@/components/sections/Faq";
@@ -17,7 +17,9 @@ import {
   buildProductFaqView,
   buildProductCtaView,
 } from "@/lib/views/productView";
-import { buildNavView, buildFooterView } from "@/lib/views/globalView";
+import { buildNavView, buildFooterView, buildPageMetadata } from "@/lib/views/globalView";
+import { getMediaUrl } from "@/lib/api/media-url";
+import { JsonLd } from "@/components/JsonLd";
 
 export async function generateStaticParams() {
   const result = await productController.getAll();
@@ -30,12 +32,13 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const result = await productController.getBySlug(slug);
-  const product = result.data;
-  return {
-    title: product ? `${product.title} | China Sourcing Co` : "China Sourcing Co",
-    description: product?.cardDescription || undefined,
-  };
+  const { data: product } = await productController.getBySlug(slug);
+  return buildPageMetadata(product?.seo, {
+    title: product?.title ?? "China Sourcing Co",
+    description: product?.heroDescription ?? product?.cardDescription,
+    image: getMediaUrl(product?.heroImage ?? product?.cardImage),
+    path: `/${slug}`,
+  });
 }
 
 /**
@@ -60,7 +63,11 @@ export default async function ProductPage({
   ]);
 
   const product = productResult.data;
-  if (!product) notFound();
+  // 404 của site này là "về trang chủ", không phải một trang lỗi — xem
+  // `src/proxy.ts`. Proxy chỉ rewrite vào đây khi slug CÓ trong bảng phân
+  // giải, nên nhánh này chỉ chạy khi bảng vừa cũ đi (bản ghi vừa bị bỏ
+  // publish) hoặc khi ai đó gõ thẳng đường dẫn nội bộ.
+  if (!product) permanentRedirect("/");
 
   const settings = settingsResult.data;
   const allTestimonials = testimonialsResult.data ?? [];
@@ -75,8 +82,9 @@ export default async function ProductPage({
 
   return (
     <>
+      <JsonLd seo={product?.seo} siteSeo={global?.defaultSeo} />
       <Header solid nav={global ? buildNavView(global) : undefined} />
-      <main className="pt-28 lg:pt-32">
+      <main>
         <ProductHero hero={hero} />
         <ImageCardGrid data={imageCard} />
         <TwoColumnTestimonial data={testimonial} />

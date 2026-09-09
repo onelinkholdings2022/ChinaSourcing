@@ -90,13 +90,20 @@ export function ResourceCards({
               </Link>
             </Reveal>
           ))}
+        </div>
 
-          {ctaLabel && ctaHref && (
+        {/* Nút "Explore our full Resource Hub" / "See All Resources" nằm ở
+            HÀNG RIÊNG của nó bên site gốc — `div.flex justify-center mt-10`
+            ngay sau lưới thẻ. Để nó bên trong lưới (như trước) thì nó thành
+            một flex item nữa: ở 768px nó nằm cạnh thẻ thứ 3 và bị kéo cao
+            bằng thẻ (624px), còn cả khối thì hụt đúng 90px so với bản gốc. */}
+        {ctaLabel && ctaHref && (
+          <div className="flex justify-center items-center mt-10">
             <Button href={ctaHref} variant="primary" withArrow>
               {ctaLabel}
             </Button>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </section>
   );

@@ -43,3 +43,9 @@ next-env.d.ts
 
 # User-specific skills (not part of the template)
 .claude/skills/customize/
+
+# Ảnh WordPress được nhân bản bằng scripts/mirror-wp-assets.mjs (≈345 MB).
+# KHÔNG commit: đây là bản sao của kho ảnh site gốc, không phải mã nguồn.
+# Dựng lại bằng `node scripts/mirror-wp-assets.mjs`, và đồng bộ lên VPS bằng
+# rsync — xem docs/DEPLOY_VPS.md §4.4.
+/public/wp-content

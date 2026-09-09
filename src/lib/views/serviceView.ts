@@ -1,5 +1,5 @@
 import { getMediaUrl } from "../api/media-url";
-import { stripHtml } from "./textUtils";
+import { stripHtml, estimateReadTime, formatDate, trimExcerpt, stripHtmlKeepBreaks } from "./textUtils";
 import type {
   ServicesPageData,
   ServiceData,
@@ -8,6 +8,7 @@ import type {
 } from "../types/services-page";
 import type { Testimonial as TestimonialModel } from "../types/testimonial";
 import type { Resource } from "../types/resource";
+import type { BlogPost } from "../types/blog-post";
 import type { CaseStudy } from "../types/case-study";
 import type { UspListItem } from "@/components/sections/UspList";
 import type { VerticalTabItem } from "@/components/sections/VerticalTab";
@@ -66,7 +67,10 @@ function buildFlowTrackFromSteps(
     tag,
     heading,
     slides: steps.map((step, i) => ({
-      label: step.label ?? "",
+      // Same CMS quirk as contactView's whatHappensNext: `label` is the
+      // eyebrow phrase ("We start with", "And then"...), `title` is the
+      // step's actual name — the tab bar shows the name, not the eyebrow.
+      label: step.title ?? "",
       subheading: step.label ?? "",
       title: step.title ?? "",
       paragraphs: (step.description ?? "").split(/\n{2,}/).filter(Boolean),
@@ -111,7 +115,7 @@ export function buildCategoryShowcaseView(showcase: CategoryShowcase): CategoryS
       alt: tab.product?.title ?? "",
       body: tab.description ?? tab.product?.cardDescription ?? "",
       linkLabel: tab.product ? "Explore more" : null,
-      linkHref: tab.product ? `/products/${tab.product.slug}` : null,
+      linkHref: tab.product ? `/${tab.product.slug}` : null,
     })),
   };
 }
@@ -150,7 +154,7 @@ export function buildServiceListView(
   settings: ServiceSettingData | null
 ): ServiceCardData[] {
   return services.map((s) => ({
-    href: `/services/${s.slug}`,
+    href: `/${s.slug}`,
     tag: settings?.cardTag?.label ?? "",
     title: s.title,
     body: s.cardDescription ?? "",
@@ -173,7 +177,7 @@ export function buildOtherServicesView(
     ctaLabel: settings?.otherServicesButton?.label ?? null,
     ctaHref: settings?.otherServicesButton?.url ?? "/services",
     cards: others.map((s) => ({
-      href: `/services/${s.slug}`,
+      href: `/${s.slug}`,
       tag: settings?.cardTag?.label ?? "",
       title: s.title,
       body: s.cardDescription ?? "",
@@ -188,7 +192,7 @@ function buildCaseCards(list: CaseStudy[]): CaseCard[] {
   return list.map((c) => ({
     title: c.title,
     body: c.description ?? "",
-    href: `/case-studies/${c.slug}`,
+    href: `/${c.slug}`,
     image: getMediaUrl(c.featureImage) ?? FALLBACK_IMAGE,
     alt: `${c.title} case study`,
   }));
@@ -213,17 +217,39 @@ export function buildServicesCaseStudiesView(page: ServicesPageData): CaseStudie
   };
 }
 
-function buildResourceCards(list: Resource[]): ResourceCard[] {
-  return list.map((r) => ({
-    href: `/resources/${r.slug}`,
-    image: getMediaUrl(r.featureImage) ?? FALLBACK_IMAGE,
-    alt: r.title,
-    category: null,
-    title: r.title,
-    excerpt: stripHtml(r.content),
-    date: "",
-    readTime: r.readingTime ?? "",
-  }));
+/**
+ * `.resource-card` — hàng ba thẻ trên dải xám.
+ *
+ * Site gốc trộn 2 loại bài trong cùng khối: `resource` (bản tải về — không có
+ * featured image nên dùng `blog-fallback` của theme, category lấy từ
+ * `categories`) và blog post ở gốc site (category cố định là "Blog"). Cả hai
+ * đều hiện hàng meta ngày + thời gian đọc. Resource xếp trước, đúng thứ tự
+ * trang gốc render.
+ */
+function buildResourceCards(list: Resource[], posts: BlogPost[] = []): ResourceCard[] {
+  return [
+    ...list.map((r) => ({
+      href: `/${r.slug}`,
+      image: getMediaUrl(r.featureImage) ?? FALLBACK_IMAGE,
+      alt: r.title,
+      category: r.categories[0]?.name ?? null,
+      title: r.title,
+      excerpt: trimExcerpt(stripHtml(r.content)),
+      date: formatDate(r.publishedDate ?? r.publishedAt),
+      readTime: r.readingTime ?? estimateReadTime(r.content),
+    })),
+    ...posts.map((p) => ({
+      // Blog post nằm ở gốc site (route `app/[slug]`), không dưới `/resources`.
+      href: `/${p.slug}`,
+      image: getMediaUrl(p.featureImage) ?? FALLBACK_IMAGE,
+      alt: p.title,
+      category: "Blog",
+      title: p.title,
+      excerpt: trimExcerpt(stripHtml(p.excerpt ?? p.content)),
+      date: formatDate(p.publishedDate),
+      readTime: p.readingTime ?? estimateReadTime(p.content),
+    })),
+  ];
 }
 
 export interface ResourcesSectionViewData {
@@ -241,7 +267,7 @@ export function buildServicesResourcesView(page: ServicesPageData): ResourcesSec
     headingLines: [resources.title, resources.titleHighlight].filter((s): s is string => Boolean(s)),
     ctaLabel: resources.viewAllButton?.label ?? null,
     ctaHref: resources.viewAllButton?.url ?? "/resources",
-    cards: buildResourceCards(resources.featuredResources),
+    cards: buildResourceCards(resources.featuredResources, resources.featuredBlogPosts),
   };
 }
 
@@ -252,7 +278,7 @@ export function buildServiceSettingResourcesView(settings: ServiceSettingData | 
     headingLines: [resources?.title, resources?.titleHighlight].filter((s): s is string => Boolean(s)),
     ctaLabel: resources?.viewAllButton?.label ?? null,
     ctaHref: resources?.viewAllButton?.url ?? "/resources",
-    cards: buildResourceCards(resources?.featuredResources ?? []),
+    cards: buildResourceCards(resources?.featuredResources ?? [], resources?.featuredBlogPosts ?? []),
   };
 }
 
@@ -268,7 +294,7 @@ export interface CtaViewData {
 export function buildServicesCtaView(page: ServicesPageData): CtaViewData {
   const { ctaBanner } = page;
   return {
-    sectionClass: "dark-cta px-5",
+    sectionClass: "dark-cta px-5 pb-[120px]",
     tag: ctaBanner.tag?.label ?? "",
     heading: ctaBanner.heading ?? "",
     body: ctaBanner.subheading ?? "",
@@ -280,7 +306,7 @@ export function buildServicesCtaView(page: ServicesPageData): CtaViewData {
 export function buildServiceSettingCtaView(settings: ServiceSettingData | null): CtaViewData {
   const cta = settings?.ctaBanner;
   return {
-    sectionClass: "dark-cta px-5",
+    sectionClass: "dark-cta px-5 pb-[120px]",
     tag: cta?.tag?.label ?? "",
     heading: cta?.heading ?? "",
     body: cta?.subheading ?? "",
@@ -322,7 +348,7 @@ export function buildServiceFaqView(service: ServiceData, settings: ServiceSetti
     email: settings?.faqContactEmail ?? null,
     items: service.faqItems.map((item) => ({
       question: item.question ?? "",
-      answer: stripHtml(item.answer),
+      answer: stripHtmlKeepBreaks(item.answer),
     })),
   };
 }
@@ -349,7 +375,7 @@ export function buildServiceTestimonialsView(
     tabs: (settings?.testimonialTabs ?? []).map((tab) => ({
       label: tab.label ?? "",
       items: (tab.product ? byProduct.get(tab.product.id) ?? [] : []).map((t) => ({
-        image: null,
+        image: getMediaUrl(t.image),
         alt: t.authorName,
         quote: t.quote ?? "",
         avatar: getMediaUrl(t.authorAvatar ?? t.image),
