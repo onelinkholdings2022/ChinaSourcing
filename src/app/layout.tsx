@@ -51,8 +51,11 @@ export default function RootLayout({
        * scroll container, and GSAP ScrollTrigger then resolves the scroller to
        * <body> — whose scrollTop is always 0 — so the pinned UspSlider section
        * never activates. `clip` hides the same overflow without scrolling.
+       *
+       * `min-h-screen`, not `min-h-full`: Lenis's CSS sets <html> to
+       * `height: auto`, so a percentage min-height would resolve to nothing.
        */}
-      <body className="min-h-full flex flex-col overflow-x-clip">
+      <body className="min-h-screen flex flex-col overflow-x-clip">
         {/* Sits above everything at z-9999 and covers the first paint —
             must render before {children} so it is in the DOM immediately. */}
         <PageTransition />

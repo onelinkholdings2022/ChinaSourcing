@@ -2,6 +2,12 @@
 
 import { useEffect } from "react";
 import Lenis from "lenis";
+// Lenis's own stylesheet. The rule that matters is `html.lenis { height: auto }`:
+// <html> carries `h-full`, so without it the root box stays one viewport tall,
+// the ResizeObserver Lenis puts on it never fires as the page grows (images,
+// reveals, the JourneyTimeline pin spacer), and Lenis keeps the scroll limit it
+// measured at mount — the page stops short of the bottom of the footer.
+import "lenis/dist/lenis.css";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { setLenis } from "./lenisRef";
@@ -49,6 +55,12 @@ export function SmoothScroll() {
     lenis.on("scroll", ScrollTrigger.update);
     setLenis(lenis);
 
+    // A refresh means layout moved (pins added/removed, fonts, resize). Lenis
+    // would only catch that after its 250ms resize debounce; re-measure now so
+    // its limit matches the page ScrollTrigger just measured.
+    const onRefresh = () => lenis.resize();
+    ScrollTrigger.addEventListener("refresh", onRefresh);
+
     const onTick = (time: number) => lenis.raf(time * 1000);
     gsap.ticker.add(onTick);
     gsap.ticker.lagSmoothing(0);
@@ -63,6 +75,7 @@ export function SmoothScroll() {
 
     return () => {
       alive = false;
+      ScrollTrigger.removeEventListener("refresh", onRefresh);
       gsap.ticker.remove(onTick);
       setLenis(null);
       lenis.destroy();
