@@ -1,983 +1,888 @@
-# Deploy `chinasourcing-clone` lên VPS `103.110.87.227` + Cloudflare
+# Hướng dẫn deploy lên VPS AlmaLinux + GoDaddy + Cloudflare (SSL 15 năm)
 
-> Doc này viết để **gõ theo từng dòng**. Mỗi lệnh ghi rõ chạy ở đâu:
-> `[MÁY BẠN]` hay `[VPS]`.
+Thứ tự làm theo đúng yêu cầu:
+
+1. **Deploy lên VPS** (AlmaLinux 8/9), đồng thời **trỏ DNS ở GoDaddy song song**
+   (vì DNS cần thời gian lan truyền, làm sớm để lúc deploy xong là domain đã chạy).
+2. **Cloudflare làm sau cùng**: chuyển nameserver sang Cloudflare, cài
+   **Cloudflare Origin Certificate 15 năm**, bật chế độ **Full (strict)**.
+
+```
+Giai đoạn 1 (song song)                          Giai đoạn 2 (sau cùng)
+┌─────────────────────────────┐                  ┌──────────────────────────────┐
+│ A. GoDaddy: trỏ A → IP VPS  │                  │ Cloudflare: add site         │
+│ B. VPS: cài Node/Nginx/PM2, │ ──── chạy OK ──▶ │ GoDaddy: đổi nameserver → CF │
+│    build & chạy app         │                  │ Origin cert 15 năm + Nginx   │
+│ (tuỳ chọn) Let's Encrypt tạm│                  │ SSL/TLS: Full (strict)       │
+└─────────────────────────────┘                  └──────────────────────────────┘
+```
+
+> Trong toàn bộ file này:
+> - `tenmien.com` = domain của bạn
+> - `IP_VPS` = IP public của VPS
+> - `deploy` = user Linux chạy app (không chạy app bằng root)
 >
-> Phạm vi: **chỉ frontend Next.js**. `strapi-cns` **ở nguyên** VPS cũ
-> `103.221.223.148` (`cms.chinasourcing.co`) — không đụng vào.
+> Thay cho đúng trước khi copy lệnh.
+
+---
+
+## Mục lục
+
+- [0. Chuẩn bị](#0-chuẩn-bị)
+- [1. Trỏ DNS ở GoDaddy (làm NGAY, song song)](#1-trỏ-dns-ở-godaddy-làm-ngay-song-song)
+- [2. Cài đặt VPS AlmaLinux](#2-cài-đặt-vps-almalinux)
+- [3. Đưa code lên và build](#3-đưa-code-lên-và-build)
+- [4. Chạy app bằng PM2](#4-chạy-app-bằng-pm2)
+- [5. Nginx reverse proxy (HTTP)](#5-nginx-reverse-proxy-http)
+- [6. (Tuỳ chọn) HTTPS tạm bằng Let's Encrypt](#6-tuỳ-chọn-https-tạm-bằng-lets-encrypt)
+- [7. Kiểm tra DNS đã lan truyền](#7-kiểm-tra-dns-đã-lan-truyền)
+- [8. Cloudflare — chuyển nameserver](#8-cloudflare--chuyển-nameserver)
+- [9. Cloudflare — chứng chỉ Origin 15 năm](#9-cloudflare--chứng-chỉ-origin-15-năm)
+- [10. Cloudflare — thiết lập khuyến nghị](#10-cloudflare--thiết-lập-khuyến-nghị)
+- [11. Cập nhật code về sau](#11-cập-nhật-code-về-sau)
+- [12. Strapi CMS trên cùng VPS (nếu có)](#12-strapi-cms-trên-cùng-vps-nếu-có)
+- [13. Xử lý lỗi thường gặp](#13-xử-lý-lỗi-thường-gặp)
+- [14. Checklist cuối](#14-checklist-cuối)
+
+---
+
+## 0. Chuẩn bị
+
+Cần có trước:
+
+| Thứ cần có | Ghi chú |
+|---|---|
+| VPS AlmaLinux 8 hoặc 9 | Tối thiểu **2 GB RAM** (build Next.js tốn RAM; 1 GB thì bắt buộc phải thêm swap — xem 2.3) |
+| Quyền `root` / SSH vào VPS | |
+| Tài khoản GoDaddy quản lý domain | |
+| Tài khoản Cloudflare (Free là đủ) | Chỉ cần ở giai đoạn 2 |
+| Repo git của project | Nếu repo private cần deploy key (xem 3.1) |
+| File `.env` đang chạy ở máy local | Để chép biến môi trường lên server |
+| URL Strapi CMS production | Frontend đọc toàn bộ nội dung từ Strapi |
+
+Kiểm tra phiên bản AlmaLinux:
+
+```bash
+cat /etc/almalinux-release
+```
+
+---
+
+## 1. Trỏ DNS ở GoDaddy (làm NGAY, song song)
+
+Làm bước này **trước tiên**, rồi mới SSH vào VPS cài đặt. Trong lúc bạn cài
+(30–60 phút), DNS lan truyền xong.
+
+1. Đăng nhập GoDaddy → **My Products** → cạnh domain bấm **DNS**
+   (hoặc **Manage DNS**).
+2. Tìm bản ghi **A** có Name `@`:
+   - Nếu đang trỏ về "Parked" / "WebsiteBuilder" → **Edit**, đổi **Value** thành `IP_VPS`.
+   - Nếu chưa có → **Add New Record** → Type `A`, Name `@`, Value `IP_VPS`.
+   - **TTL**: chọn thấp nhất (`600 seconds` / 1/2 hour) để sau này đổi cho nhanh.
+3. Bản ghi `www`:
+   - GoDaddy mặc định có `CNAME www → @`. Giữ nguyên là được (www sẽ theo IP của `@`).
+   - Hoặc xoá nó và tạo `A`, Name `www`, Value `IP_VPS`.
+4. Nếu dùng subdomain cho CMS: thêm `A`, Name `cms`, Value `IP_VPS`
+   (hoặc IP của server Strapi nếu Strapi ở máy khác).
+5. **Đừng xoá** các bản ghi `MX`, `TXT` (SPF/DKIM), `CNAME` của email nếu bạn
+   đang dùng email theo domain.
+6. Nếu có **Forwarding** (chuyển hướng domain) đang bật trong GoDaddy → **tắt**,
+   nó sẽ đè lên bản ghi A.
+
+Kết quả mong muốn:
+
+| Type | Name | Value | TTL |
+|---|---|---|---|
+| A | @ | `IP_VPS` | 600 |
+| CNAME | www | @ | 1 Hour |
+| A | cms | `IP_VPS` | 600 *(nếu có)* |
+
+> Chưa đổi nameserver ở bước này. Nameserver vẫn là của GoDaddy
+> (`nsXX.domaincontrol.com`). Việc chuyển sang Cloudflare để ở [mục 8](#8-cloudflare--chuyển-nameserver).
+
+---
+
+## 2. Cài đặt VPS AlmaLinux
+
+### 2.1. Đăng nhập & cập nhật hệ thống
+
+```bash
+ssh root@IP_VPS
+
+dnf update -y
+dnf install -y epel-release
+dnf install -y git curl wget nano tar unzip policycoreutils-python-utils
+```
+
+Đặt múi giờ (tuỳ chọn):
+
+```bash
+timedatectl set-timezone Asia/Ho_Chi_Minh
+```
+
+### 2.2. Tạo user `deploy` (không chạy app bằng root)
+
+```bash
+adduser deploy
+passwd deploy
+usermod -aG wheel deploy          # cho phép sudo
+```
+
+(Khuyến nghị) chép SSH key của bạn cho user `deploy` — chạy **trên máy của bạn**:
+
+```bash
+ssh-copy-id deploy@IP_VPS
+```
+
+### 2.3. Thêm swap (bắt buộc nếu RAM ≤ 2 GB)
+
+`next build` dễ bị kill vì thiếu RAM. Tạo 2 GB swap:
+
+```bash
+fallocate -l 2G /swapfile
+chmod 600 /swapfile
+mkswap /swapfile
+swapon /swapfile
+echo '/swapfile none swap sw 0 0' >> /etc/fstab
+free -h                           # kiểm tra dòng Swap
+```
+
+### 2.4. Firewall (firewalld)
+
+AlmaLinux dùng `firewalld`, không phải `ufw`:
+
+```bash
+systemctl enable --now firewalld
+firewall-cmd --permanent --add-service=ssh
+firewall-cmd --permanent --add-service=http
+firewall-cmd --permanent --add-service=https
+firewall-cmd --reload
+firewall-cmd --list-all            # phải thấy: services: http https ssh
+```
+
+> **Không** mở port 3000 ra ngoài. App Next.js nghe ở port 3000 nhưng firewalld
+> chặn nó từ internet, chỉ Nginx (cùng máy) gọi vào được.
 >
-> Đích: bản clone **thay thế** site WordPress đang chạy ở `chinasourcing.co`,
-> đứng sau Cloudflare, chứng chỉ Origin CA 15 năm, có rate limit và chặn truy
-> cập thẳng vào IP.
+> ⚠️ **Không thêm `-H 127.0.0.1` (hay `-H <ip>` bất kỳ) vào `next start`.** Proxy
+> của site rewrite `/<slug>` sang route nội bộ, và với `-H` Next hiểu nhầm đó là
+> rewrite ra ngoài: mọi trang chi tiết (`/furniture`, `/incoterms-explained`…) bị
+> 301 vòng hoặc đá về trang chủ, trong khi `/about-us` vẫn chạy. Chi tiết ở chú
+> thích bước 3 trong `src/proxy.ts`.
+
+> Nếu nhà cung cấp VPS có **firewall riêng ở trang quản trị** (Vultr, AWS
+> Security Group, Hetzner Firewall…), nhớ mở cả port 80 và 443 ở đó.
+
+### 2.5. Cài Node.js 22 LTS
+
+Next.js 16 cần Node ≥ 20.9. Cài Node 22 từ NodeSource:
+
+```bash
+curl -fsSL https://rpm.nodesource.com/setup_22.x | bash -
+dnf install -y nodejs
+node -v      # v22.x
+npm -v
+```
+
+> Nên dùng **đúng major version Node** đang chạy ở máy local
+> (chạy `node -v` ở máy bạn để so).
+
+### 2.6. Cài PM2
+
+```bash
+npm install -g pm2
+```
+
+### 2.7. Cài Nginx
+
+```bash
+dnf install -y nginx
+systemctl enable --now nginx
+nginx -v
+```
+
+Mở `http://IP_VPS` trên trình duyệt → thấy trang chào của Nginx/AlmaLinux là OK.
+
+### 2.8. SELinux — BƯỚC HAY BỊ QUÊN NHẤT
+
+AlmaLinux bật SELinux mặc định. Nếu không cấp quyền, Nginx **không được phép**
+kết nối tới app ở port 3000 và bạn sẽ gặp **502 Bad Gateway** dù app vẫn chạy.
+
+```bash
+getenforce                                   # thường là: Enforcing
+setsebool -P httpd_can_network_connect 1     # cho Nginx proxy tới app
+```
+
+Không tắt SELinux — chỉ cần bật boolean trên là đủ.
 
 ---
 
-## 0. Bức tranh trước / sau
+## 3. Đưa code lên và build
 
-| | Trước | Sau |
-| --- | --- | --- |
-| `chinasourcing.co` | WordPress ở `172.104.48.195` | Next.js ở `103.110.87.227`, qua Cloudflare |
-| DNS | GoDaddy (`ns37/ns38.domaincontrol.com`) | Cloudflare nameserver |
-| SSL | của máy WordPress | **Cloudflare Origin CA 15 năm** ở origin + cert của CF ở biên |
-| IP gốc | ai cũng thấy | 🟠 giấu sau CF + firewall chỉ mở cho dải IP của CF |
-| `cms.chinasourcing.co` | `103.221.223.148` | **giữ nguyên**, để ⚪️ DNS only |
-
-### 8 sự thật quyết định toàn bộ kế hoạch
-
-1. **🔴 Chứng chỉ Origin CA 15 năm KHÔNG được trình duyệt tin.** Nó chỉ có giá
-   trị giữa Cloudflare và máy chủ của bạn. Nghĩa là: **bản ghi DNS của site phải
-   luôn ở trạng thái 🟠 Proxied, vĩnh viễn.** Chuyển sang ⚪️ DNS only một phút
-   thôi là mọi khách nhận `NET::ERR_CERT_AUTHORITY_INVALID`. Đây là cái giá của
-   "SSL 15 năm" và nó không thương lượng được — không có CA công cộng nào cấp
-   chứng chỉ quá 398 ngày.
-
-2. **🔴 61 bài viết đang trỏ ảnh tuyệt đối về `chinasourcing.co/wp-content/…`**
-   Nội dung được cào từ WordPress và giữ nguyên URL (TARGET.md deviation 25).
-   Giây phút tên miền trỏ sang Next, `/wp-content/*` không còn ai phục vụ →
-   **1070 ảnh trong thân bài hỏng, mà trang vẫn trả 200** nên không có cảnh báo
-   nào. Đã có script xử lý — §1.3. **Phải chạy TRƯỚC khi đổi DNS**, vì sau đó
-   nguồn ảnh biến mất.
-
-3. **🔴 Đổi nameserver sang Cloudflare là chuyển TOÀN BỘ DNS, không riêng web.**
-   `chinasourcing.co` đang chạy email Microsoft 365. Thiếu một bản ghi MX/DKIM
-   là **chết email cả công ty**. Bảng đầy đủ ở §6.2 — soát từng dòng.
-
-4. **Repo chưa có git remote, và đang có ~159 file chưa commit.** `git remote -v`
-   không trả về gì. Không thể `git pull` trên VPS cho tới khi xử lý — §1.1.
-
-5. **Máy đích đã có 2 project khác đang chạy.** Không được đoán cổng. §2.2 là
-   bước dò, và nó phải chạy **trước** khi đặt bất cứ `PORT=` nào.
-
-6. **Site chạy ISR theo tag, và project này KHÔNG có module purge Cloudflare.**
-   (`OlcoMain` có `src/lib/cache/cloudflare.ts`; bản này không.) Nên **không được
-   bật cache HTML ở biên** — publish bên CMS sẽ không đẩy được bản mới ra.
-   Cache rule ở §6.6 cố ý chỉ cache asset tĩnh.
-
-7. **Dùng Origin CA thì không cần certbot** — và đó chính là thứ cho phép khoá
-   firewall chỉ cho dải IP của Cloudflare (§9.4). Nếu dùng Let's Encrypt thì
-   phải chừa cổng 80 cho thử thách HTTP-01, tức không khoá được kín.
-
-8. **`src/proxy.ts` gọi `/api/route-slugs` ở MỌI request.** Không đặt
-   `INTERNAL_BASE_URL` thì mỗi lượt render đi vòng ra Cloudflare rồi quay lại
-   máy — thêm một chặng mạng cho từng request. §4.3.
-
----
-
-## 1. `[MÁY BẠN]` Chuẩn bị mã nguồn
-
-### 1.1 Đưa code lên được VPS — chọn một trong hai
-
-Repo hiện **không có remote**:
+Từ đây trở đi làm bằng user `deploy`:
 
 ```bash
-# [MÁY BẠN]
-cd ~/CodeProject/chinasourcing-clone
-git remote -v          # không ra gì
-git status --short | wc -l   # ~159 file chưa commit
+su - deploy
 ```
 
-**Cách A — GitHub (khuyến nghị, giống các project khác).**
+### 3.1. Clone repo
+
+**Repo public:**
 
 ```bash
-# [MÁY BẠN]
-git add -A
-git commit -m "Privacy policy page, responsive parity pass, deploy docs"
-
-# Tạo repo trống trên GitHub trước (private), rồi:
-git remote add origin git@github.com:onelinkholdings2022/chinasourcing-clone.git
-git push -u origin master
+git clone https://github.com/<user>/<repo>.git ~/chinasourcing
 ```
 
-**Cách B — rsync thẳng, không cần GitHub.** Dùng khi chưa muốn tạo repo. Bất
-lợi: VPS không có lịch sử git, lần deploy sau phải rsync lại.
+**Repo private** — tạo deploy key:
 
 ```bash
-# [MÁY BẠN] — chạy SAU khi đã build thử ở §1.2
-rsync -avz --delete \
-  --exclude '.next' --exclude 'node_modules' --exclude '.git' \
-  --exclude 'public/wp-content' \
-  ~/CodeProject/chinasourcing-clone/ \
-  onelink@103.110.87.227:/var/www/chinasourcing-clone/
+ssh-keygen -t ed25519 -C "deploy@vps" -f ~/.ssh/id_ed25519 -N ""
+cat ~/.ssh/id_ed25519.pub
 ```
 
-> `public/wp-content` bị loại ở đây **có chủ ý** — 347 MB, đồng bộ riêng ở §4.4
-> và chỉ cần làm lại khi có bài mới.
-
-### 1.2 Ba cửa kiểm tra ở máy mình
+Copy nội dung in ra → GitHub repo → **Settings → Deploy keys → Add deploy key**
+(chỉ cần quyền read) → rồi:
 
 ```bash
-# [MÁY BẠN]
-npx tsc --noEmit     # phải im lặng
-npm run lint         # 0 error (2 warning ở cqrs/bus.ts là cũ, chấp nhận)
-npm run build        # phải xanh
+ssh -T git@github.com            # gõ "yes" lần đầu
+git clone git@github.com:<user>/<repo>.git ~/chinasourcing
 ```
 
-Cả ba phải qua **trước** khi đụng tới VPS. Build hỏng trên máy chủ thì bạn đang
-gỡ lỗi trên một cái máy không có editor.
-
-### 1.3 🔴 Nhân bản kho ảnh WordPress — BẮT BUỘC, và phải làm TRƯỚC cutover
+### 3.2. Tạo file biến môi trường
 
 ```bash
-# [MÁY BẠN]
-node scripts/mirror-wp-assets.mjs
-```
-
-Script đọc thân bài của `blog-posts` + `resources` bên CMS, gom mọi URL
-`chinasourcing.co/wp-content/…` (cả `src` lẫn `srcset`), tải về
-`public/wp-content/…`. Next phục vụ nguyên `public/` ở gốc URL nên
-`/wp-content/uploads/…` sống lại — **không phải sửa nginx, không phải sửa nội
-dung bên CMS.**
-
-Số liệu lần chạy ngày 09/09/2026:
-
-```
-blog-posts: 132 bản ghi, resources: 12 bản ghi
-1074 file  •  tải mới 1070  •  lỗi 4  •  347 MB
-```
-
-4 file lỗi là **404 ngay trên site gốc** — ảnh hỏng sẵn từ trước, không phải do
-script:
-
-```
-/wp-content/uploads/2025/03/furniture-sourcing-agent-china-at-best-price-2-1024x683.jpg
-/wp-content/uploads/2025/03/furniture-sourcing-agent-china-at-best-price-6-1024x683.webp
-/wp-content/uploads/2025/03/sourcing-hub-in-china-is-best-for-business-1-1024x565.jpg
-/wp-content/uploads/2025/03/sourcing-manufacturers-in-china-ultimate-guide-6-1024x683.webp
-```
-
-Kiểm lại bất cứ lúc nào mà không tải gì:
-
-```bash
-node scripts/mirror-wp-assets.mjs --check
-```
-
-Thư mục này **không vào git** (đã thêm `.gitignore`) — nó là bản sao kho ảnh của
-site gốc, không phải mã nguồn.
-
-> 💡 **Việc nên làm sau này, không phải bây giờ:** đẩy 1070 ảnh đó vào Strapi
-> Media Library và sửa `src` trong nội dung, để site hết phụ thuộc vào một
-> đường dẫn thừa kế từ WordPress. Trước mắt bản nhân bản này là cách rẻ nhất để
-> cutover không làm hỏng bài viết nào.
-
----
-
-## 2. `[VPS]` Khảo sát — làm TRƯỚC KHI đụng bất cứ thứ gì
-
-```bash
-ssh onelink@103.110.87.227     # hoặc root@, tuỳ máy được cấp thế nào
-```
-
-### 2.1 Máy này là gì
-
-```bash
-cat /etc/os-release | head -2      # Ubuntu hay AlmaLinux → quyết định apt/dnf, ufw/firewalld
-free -h                            # RAM — dưới 4 GB thì cần swap (§3.3)
-df -h /                            # cần ≥ 3 GB trống: node_modules + .next + 347 MB ảnh
-node -v 2>/dev/null || echo "chưa có node"
-nginx -v 2>&1 || echo "chưa có nginx"
-pm2 -v 2>/dev/null || echo "chưa có pm2"
-```
-
-Next 16.2.1 cần **Node ≥ 20.9**. Máy dev đang chạy v24.18.0.
-
-### 2.2 🔴 Dò cổng đã bị chiếm — làm trước khi đặt bất cứ `PORT=` nào
-
-Bốn nguồn sự thật, phải xem **cả bốn** (một app có thể đang tắt tạm nhưng nginx
-vẫn giữ chỗ cho nó):
-
-```bash
-# a) Cổng đang thực sự có tiến trình lắng nghe
-sudo ss -ltnp
-
-# Gọn hơn: chỉ cột cổng + tên tiến trình
-sudo ss -ltnp | awk 'NR>1 {split($4,a,":"); print a[length(a)], $NF}' | sort -u
-
-# b) pm2 đang quản gì (2 project kia gần như chắc chắn nằm đây)
-pm2 list
-pm2 jlist | python3 -c "import sys,json;[print(p['name'], p['pm2_env'].get('PORT','?'), p['pm2_env'].get('pm_cwd')) for p in json.load(sys.stdin)]"
-
-# c) nginx đang chuyển tiếp đi những cổng nào — kể cả app đang tắt
-sudo nginx -T 2>/dev/null | grep -nE "proxy_pass|server_name|listen" | grep -v "^\s*#"
-
-# d) docker (nếu có)
-docker ps --format 'table {{.Names}}\t{{.Ports}}' 2>/dev/null || true
-```
-
-Rồi tìm một cổng trống trong dải 3000–3099:
-
-```bash
-for p in $(seq 3000 3099); do
-  ss -ltn "sport = :$p" | grep -q LISTEN || { echo "TRỐNG: $p"; break; }
-done
-```
-
-**Ghi lại kết quả vào đây trước khi đi tiếp:**
-
-| Cổng | Ai giữ | Nguồn |
-| --- | --- | --- |
-| ? | project 1 | `ss` / `pm2` |
-| ? | project 2 | `ss` / `pm2` |
-| **?** | ⬅️ **`chinasourcing-fe`** (chọn ở bước trên) | |
-
-> ⚠️ Cổng trống theo `ss` mà lại xuất hiện trong `nginx -T` thì **đừng lấy** —
-> app của người khác đang tắt tạm, bật lại là hai bên tranh nhau.
-
-Doc này viết `3000` làm ví dụ. **Thay bằng cổng bạn vừa chọn ở mọi chỗ.**
-
-### 2.3 nginx đã có cấu hình Cloudflare chưa
-
-Máy dùng chung nhiều site — rất có thể ai đó đã bật Cloudflare cho một tên miền
-khác từ trước:
-
-```bash
-sudo grep -rn "real_ip_header\|set_real_ip_from" /etc/nginx/ | grep -v "\.bak"
-sudo grep -rn "limit_req_zone\|limit_conn_zone" /etc/nginx/
-```
-
-Có kết quả → **đừng khai lại** `real_ip_header` (§9.1) hay trùng tên zone
-(§9.2). `nginx -t` sẽ đỏ ngay:
-
-```text
-nginx: [emerg] "real_ip_header" directive is duplicate in ...
-```
-
----
-
-## 3. `[VPS]` Chuẩn bị môi trường
-
-### 3.1 Node
-
-```bash
-node -v
-# Chưa có, hoặc < 20.9 — Ubuntu:
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt-get install -y nodejs
-# AlmaLinux:
-curl -fsSL https://rpm.nodesource.com/setup_20.x | sudo -E bash -
-sudo dnf install -y nodejs
-```
-
-> ⚠️ Đã có Node và 2 project kia đang chạy bằng nó → **đừng nâng cấp**. Nâng bản
-> Node dưới chân app đang sống là cách nhanh nhất để làm hỏng hai thứ không
-> liên quan. Nếu bản hiện tại < 20.9, dùng `nvm` cài riêng cho user.
-
-### 3.2 pm2
-
-```bash
-pm2 -v || sudo npm install -g pm2
-```
-
-### 3.3 Swap — nếu RAM < 4 GB
-
-`next build` là bước ngốn RAM nhất. Thiếu swap thì kernel OOM-kill giữa chừng và
-thông báo lỗi trông như lỗi TypeScript.
-
-```bash
-free -h
-swapon --show                       # đã có thì bỏ qua cả mục này
-sudo fallocate -l 4G /swapfile
-sudo chmod 600 /swapfile
-sudo mkswap /swapfile && sudo swapon /swapfile
-echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
-```
-
----
-
-## 4. `[VPS]` Đưa code + cấu hình lên máy
-
-### 4.1 Thư mục
-
-```bash
-sudo mkdir -p /var/www/chinasourcing-clone
-sudo chown -R $USER:$USER /var/www/chinasourcing-clone
-```
-
-### 4.2 Code
-
-```bash
-# Cách A (GitHub)
-cd /var/www
-git clone git@github.com:onelinkholdings2022/chinasourcing-clone.git
-# Cách B: đã rsync ở §1.1
-```
-
-### 4.3 `.env.production`
-
-```bash
-cd /var/www/chinasourcing-clone
+cd ~/chinasourcing
 nano .env.production
 ```
 
+Dán **toàn bộ** biến từ file `.env` ở máy local, sửa các URL cho đúng production.
+Các biến đã biết của project (đối chiếu với `.env` local để đủ):
+
+```dotenv
+# URL Strapi CMS (dùng HTTPS nếu CMS đã có SSL)
+NEXT_PUBLIC_STRAPI_URL=https://cms.tenmien.com
+
+# Token đọc API Strapi (nếu project dùng) — lấy từ .env local
+# STRAPI_API_TOKEN=...
+
+# HubSpot newsletter footer (lưới đỡ khi CMS thiếu cấu hình)
+NEXT_PUBLIC_HUBSPOT_PORTAL_ID=46681098
+NEXT_PUBLIC_HUBSPOT_NEWSLETTER_FORM_ID=e30221f0-7060-4147-9b7b-4dc9593f7828
+NEXT_PUBLIC_HUBSPOT_REGION=na1
+
+# ...các biến khác có trong .env local (URL site, file sourcing guide, v.v.)
+```
+
+Liệt kê tất cả biến mà code đang đọc để không sót (chạy trong thư mục project):
+
 ```bash
-# CMS vẫn ở VPS cũ — KHÔNG đổi.
-NEXT_PUBLIC_STRAPI_URL=https://cms.chinasourcing.co
-
-# Đọc lúc BUILD. Đổi giá trị này là phải build lại.
-NEXT_PUBLIC_SITE_URL=https://chinasourcing.co
-
-# Cho `src/proxy.ts` đọc bảng định tuyến qua loopback thay vì vòng ra
-# Cloudflare ở MỌI request. Số cổng phải khớp §2.2.
-INTERNAL_BASE_URL=http://127.0.0.1:3000
-
-# Dùng chung với webhook Strapi (§10). Sinh bằng: openssl rand -base64 32
-REVALIDATE_SECRET=<dán chuỗi vừa sinh>
-
-# PDF cho nút "Download A Sourcing Guide" (hero trang chủ) và nút Download ở
-# /resources. Thiếu biến này thì cả hai nút lùi về link /contact-us.
-NEXT_PUBLIC_SOURCING_GUIDE_PATH=/uploads/intro_to_china_manufacturing_e9b336107a.pdf
+grep -rhoE "process\.env\.[A-Z0-9_]+" src | sort -u
 ```
 
 ```bash
 chmod 600 .env.production
 ```
 
-### 4.4 Kho ảnh WordPress (347 MB)
+> ⚠️ **Quan trọng:** các biến `NEXT_PUBLIC_*` được **gắn cứng vào bundle lúc
+> build**. Đổi giá trị thì phải `npm run build` lại, restart thôi là không đủ.
+
+### 3.3. Cài dependency và build
 
 ```bash
-# [MÁY BẠN] — chạy sau §1.3
-rsync -avz --progress \
-  ~/CodeProject/chinasourcing-clone/public/wp-content/ \
-  onelink@103.110.87.227:/var/www/chinasourcing-clone/public/wp-content/
-```
-
-```bash
-# [VPS] xác nhận
-find /var/www/chinasourcing-clone/public/wp-content -type f | wc -l   # ≈ 1070
-du -sh /var/www/chinasourcing-clone/public/wp-content                 # ≈ 347M
-```
-
----
-
-## 5. `[VPS]` Build và chạy thử — chưa đụng DNS
-
-### 5.1 Cài + build
-
-```bash
-cd /var/www/chinasourcing-clone
+cd ~/chinasourcing
 npm ci
 npm run build
 ```
 
-Build đọc `.env.production` cho các biến `NEXT_PUBLIC_*`. Log sẽ có vài dòng
-`[StrapiClient] …` — bình thường, nó đang lấy nội dung để prerender.
+Build thành công sẽ kết thúc bằng bảng liệt kê route. Nếu bị `Killed` → thiếu
+RAM, xem lại [2.3](#23-thêm-swap-bắt-buộc-nếu-ram--2-gb).
 
-### 5.2 Chạy bằng pm2
+> Lúc build, Next.js gọi Strapi để lấy dữ liệu. **VPS phải truy cập được URL
+> Strapi** — kiểm tra: `curl -I $NEXT_PUBLIC_STRAPI_URL/api/global`.
 
-Cấu hình nằm sẵn trong repo ở `ecosystem.config.js`. **Sửa `PORT` trong đó cho
-khớp cổng đã dò ở §2.2** (và khớp `INTERNAL_BASE_URL` ở §4.3), rồi:
+Chạy thử:
 
 ```bash
+npm run start -- -p 3000
+# mở SSH thứ 2 và chạy:
+curl -I http://127.0.0.1:3000        # mong đợi: HTTP/1.1 200 OK
+```
+
+`Ctrl + C` để dừng, sang bước PM2.
+
+---
+
+## 4. Chạy app bằng PM2
+
+Tạo file `~/chinasourcing/ecosystem.config.js`:
+
+```bash
+nano ~/chinasourcing/ecosystem.config.js
+```
+
+```js
+module.exports = {
+  apps: [
+    {
+      name: "chinasourcing",
+      cwd: "/home/deploy/chinasourcing",
+      script: "node_modules/next/dist/bin/next",
+      args: "start -p 3000",
+      env: {
+        NODE_ENV: "production",
+      },
+      instances: 1,
+      autorestart: true,
+      max_memory_restart: "1G",
+    },
+  ],
+};
+```
+
+Khởi động:
+
+```bash
+cd ~/chinasourcing
 pm2 start ecosystem.config.js
+pm2 status                 # trạng thái: online
+pm2 logs chinasourcing     # xem log, Ctrl+C để thoát
 pm2 save
-pm2 startup        # chạy dòng lệnh nó in ra, để pm2 tự lên sau khi reboot
-pm2 logs chinasourcing-fe --lines 50
 ```
 
-> Cổng đặt bằng biến `PORT` chứ không phải cờ `-p`: truyền `-p` qua
-> `pm2 start npm -- start -- -p 3000` phải đi qua hai lớp bóc tham số và rất dễ
-> rơi mất — app im lặng nghe ở 3000 mặc định trong khi nginx trỏ đi chỗ khác.
-
-### 5.3 Kiểm ngay trên máy chủ
+Tự khởi động PM2 khi reboot VPS:
 
 ```bash
-curl -I http://127.0.0.1:3000/                      # 200
-curl -I http://127.0.0.1:3000/privacy-policy        # 200
-curl -s http://127.0.0.1:3000/api/route-slugs | head -c 200   # JSON bảng slug
-curl -I http://127.0.0.1:3000/wp-content/uploads/2025/02/China-sourcing-strategy-1024x765.jpeg
-#   → 200 image/jpeg. 404 ở đây nghĩa là §4.4 chưa xong — DỪNG, đừng cutover.
+pm2 startup systemd -u deploy --hp /home/deploy
 ```
 
-### 5.4 Xem bằng mắt trước khi đổi DNS
+Lệnh trên in ra một dòng bắt đầu bằng `sudo env PATH=...` → **copy và chạy dòng
+đó**. Sau đó:
 
 ```bash
-# [MÁY BẠN]
-ssh -L 8080:127.0.0.1:3000 onelink@103.110.87.227
-# rồi mở http://localhost:8080
+pm2 save
 ```
-
-Soát: trang chủ, `/products`, `/resources`, **một bài blog có ảnh trong thân
-bài**, `/privacy-policy`. Thu nhỏ cửa sổ xuống ~390px kiểm mobile.
 
 ---
 
-## 6. Cloudflare
+## 5. Nginx reverse proxy (HTTP)
 
-### 6.1 Thêm site
+Quay lại root (`exit` khỏi user deploy, hoặc dùng `sudo`).
 
-1. `dash.cloudflare.com` → **Add a site** → `chinasourcing.co` → gói **Free**.
-2. CF quét DNS hiện có và dựng lại bảng. **Không tin tuyệt đối bản quét này.**
-3. Song song, **xuất bản ghi từ GoDaddy** (`Domain → DNS → Export zone file`) và
-   đối chiếu từng dòng với bảng §6.2. DNS không có lệnh "liệt kê tất cả", nên
-   bản xuất của GoDaddy là nguồn sự thật duy nhất.
-
-### 6.2 🔴 Bản ghi DNS — soát từng dòng trước khi đổi nameserver
-
-Đây là ảnh chụp thực tế ngày 09/09/2026 (`dig @1.1.1.1`). **Mọi dòng không phải
-web đều phải có mặt trong Cloudflare TRƯỚC khi đổi nameserver.**
-
-| Tên | Loại | Giá trị | Proxy | Mất thì sao |
-| --- | --- | --- | --- | --- |
-| `chinasourcing.co` | A | **`103.110.87.227`** ⬅️ đổi | 🟠 Proxied | — |
-| `www` | CNAME | `chinasourcing.co` | 🟠 Proxied | — |
-| `cms` | A | `103.221.223.148` | ⚪️ **DNS only** | CMS chết |
-| `chinasourcing.co` | MX | `chinasourcing-co.mail.protection.outlook.com` (prio 0) | — | 🔴 **chết email** |
-| `chinasourcing.co` | TXT | `v=spf1 include:spf.protection.outlook.com include:46681098.spf07.hubspotemail.net -all` | — | mail vào spam |
-| `chinasourcing.co` | TXT | `MS=ms12489872` | — | Microsoft bỏ xác thực tên miền |
-| `_dmarc` | TXT | `v=DMARC1; p=quarantine` | — | mất chính sách DMARC |
-| `autodiscover` | CNAME | `autodiscover.outlook.com` | ⚪️ DNS only | Outlook không tự cấu hình được |
-| `selector1._domainkey` | CNAME | `selector1-chinasourcing-co._domainkey.netorgft6591838.a-v1.dkim.mail.microsoft` | ⚪️ DNS only | 🔴 DKIM hỏng → mail vào spam |
-| `selector2._domainkey` | CNAME | `selector2-chinasourcing-co._domainkey.netorgft6591838.a-v1.dkim.mail.microsoft` | ⚪️ DNS only | như trên |
-
-> ⚠️ **`cms` để ⚪️ DNS only.** Hai lý do: (a) Strapi admin upload ảnh, mà CF gói
-> Free chặn body > 100 MB; (b) nó nằm ở máy khác, bật proxy cùng lúc với cutover
-> làm bạn mất khả năng phân biệt lỗi ở đâu. Cái giá: IP `103.221.223.148` vẫn
-> lộ. IP của **máy mới** thì không — không bản ghi nào trỏ tới nó mà không qua
-> proxy.
-
-> ⚠️ Bản ghi `_domainkey` là **CNAME**, không phải TXT. Cloudflare đôi khi quét
-> nhầm thành TXT chứa giá trị đã phân giải. Sai kiểu là DKIM hỏng.
-
-### 6.3 Chưa đổi nameserver vội
-
-Làm xong §6.4 → §7 (cert + nginx) rồi mới đổi ở §8. Đổi nameserver là lúc khách
-bắt đầu đi vào máy mới; máy phải sẵn sàng trước.
-
-### 6.4 Chứng chỉ Origin CA 15 năm
-
-**Cloudflare → SSL/TLS → Origin Server → Create Certificate.**
-
-| Ô | Chọn |
-| --- | --- |
-| Private key type | **RSA (2048)** — tương thích rộng nhất |
-| Hostnames | `chinasourcing.co`, `*.chinasourcing.co` |
-| Certificate Validity | **15 years** |
-
-Màn hình hiện **hai** khối văn bản. Khối *Private key* chỉ hiện **một lần** —
-copy ngay, đóng trang là mất.
+Trên AlmaLinux, cấu hình site đặt trong **`/etc/nginx/conf.d/*.conf`**
+(không có `sites-available` / `sites-enabled` như Ubuntu).
 
 ```bash
-# [VPS]
-sudo mkdir -p /etc/ssl/cloudflare
-sudo nano /etc/ssl/cloudflare/chinasourcing.co.pem      # dán Origin Certificate
-sudo nano /etc/ssl/cloudflare/chinasourcing.co.key      # dán Private Key
-sudo chmod 600 /etc/ssl/cloudflare/chinasourcing.co.key
-sudo chmod 644 /etc/ssl/cloudflare/chinasourcing.co.pem
-
-# Kiểm: hạn phải là +15 năm, CN/SAN phải có cả apex lẫn wildcard
-sudo openssl x509 -in /etc/ssl/cloudflare/chinasourcing.co.pem -noout -enddate -subject -ext subjectAltName
-```
-
-> 🔴 Nhắc lại sự thật số 1: chứng chỉ này **chỉ Cloudflare tin**. Bản ghi A phải
-> ở 🟠 Proxied mãi mãi. Đặt nhắc lịch **tháng 9/2041** cho ngày hết hạn — 15 năm
-> nữa sẽ không ai còn nhớ chuyện này.
-
-### 6.5 SSL/TLS mode
-
-**SSL/TLS → Overview → `Full (strict)`.**
-
-| Chế độ | Chuyện gì xảy ra |
-| --- | --- |
-| `Off` / `Flexible` | 🚫 CF gọi origin bằng http, nginx redirect về https → **vòng lặp chuyển hướng vô tận**. Lỗi kinh điển khi mới bật CF. |
-| `Full` | CF gọi https nhưng không kiểm chứng chỉ — chấp nhận cả cert giả |
-| **`Full (strict)`** | ✅ Đúng cho máy này: origin có Origin CA thật do chính CF cấp |
-
-Bật thêm:
-
-- **Always Use HTTPS**: ON
-- **Minimum TLS Version**: 1.2
-- **Automatic HTTPS Rewrites**: ON
-- **HSTS**: bật sau khi site chạy ổn định **một tuần**. Gỡ ra rất khó — trình
-  duyệt ghim tới 2 năm.
-
-### 6.6 Cache Rules
-
-> 🔴 **Không cache HTML.** Project này không có module purge Cloudflare (sự thật
-> số 6). Cache HTML ở biên thì publish bên CMS không đẩy được bản mới ra, và bạn
-> sẽ ngồi tìm lỗi ở ISR trong khi lỗi nằm ở CDN.
-
-**Rules → Cache Rules**, tạo theo thứ tự:
-
-| # | Điều kiện | Hành động |
-| --- | --- | --- |
-| 1 | URI Path bắt đầu bằng `/api/` | **Bypass cache** |
-| 2 | URI Path bắt đầu bằng `/_next/static/` | Eligible for cache, Edge TTL **1 năm**, Browser TTL 1 năm |
-| 3 | URI Path bắt đầu bằng `/wp-content/` | Eligible for cache, Edge TTL **1 tháng** |
-| 4 | URI Path bắt đầu bằng `/images/` | Eligible for cache, Edge TTL **1 tháng** |
-
-`/_next/image` (ảnh Strapi đã tối ưu) cứ để CF xử lý mặc định — Next đã gửi
-`Cache-Control` hợp lý cho nó.
-
-### 6.7 Speed / Optimization
-
-| Thiết lập | Đặt | Vì sao |
-| --- | --- | --- |
-| **Rocket Loader** | 🔴 **OFF — bắt buộc** | Nó dời/hoãn thực thi `<script>`, phá hydrate của React. Triệu chứng: trang hiện ra nhưng **không bấm được gì**, GSAP/Lenis chết |
-| **Brotli** | ON | |
-| **HTTP/3 (QUIC)** | ON | |
-| **0-RTT** | ON | |
-| **Polish / Mirage** | OFF | `next/image` đã xuất AVIF/WebP; thêm một tầng biến đổi nữa chỉ tốn công |
-| **Email Obfuscation** | OFF | Chèn script vào HTML, dễ đá nhau với React |
-
----
-
-## 7. `[VPS]` nginx
-
-### 7.1 File cấu hình
-
-```bash
-# Ubuntu
-sudo nano /etc/nginx/sites-available/chinasourcing.co
-# AlmaLinux
-sudo nano /etc/nginx/conf.d/chinasourcing.co.conf
+nano /etc/nginx/conf.d/chinasourcing.conf
 ```
 
 ```nginx
-# Cổng 80: chỉ để chuyển hướng. Cloudflare luôn gọi origin bằng 443
-# (Full strict), nên block này chủ yếu bắt người gõ thẳng IP.
+upstream chinasourcing.co {
+    server 127.0.0.1:3000;
+    keepalive 64;
+}
+
 server {
     listen 80;
-    server_name chinasourcing.co www.chinasourcing.co;
-    return 301 https://$host$request_uri;
-}
-
-# www → apex, 301. Site gốc cũng làm đúng vậy (đã đo: `curl -I
-# https://www.chinasourcing.co` trả 301). Bỏ khối này thì cùng một trang phục vụ
-# ở hai địa chỉ trong khi thẻ canonical chỉ trỏ về apex — Google gọi đó là nội
-# dung trùng lặp, và nó là một thay đổi hành vi so với bản gốc chứ không phải
-# chuyện nhỏ về thẩm mỹ URL.
-server {
-    listen 443 ssl;
-    http2 on;
-    server_name www.chinasourcing.co;
-
-    ssl_certificate     /etc/ssl/cloudflare/chinasourcing.co.pem;
-    ssl_certificate_key /etc/ssl/cloudflare/chinasourcing.co.key;
-
-    # Cùng lá chắn như block apex bên dưới. Cần ở ĐÂY nữa vì đây là block 443
-    # đầu tiên trong file: nếu máy chưa có `default_server`, mọi request với
-    # Host lạ (gõ thẳng IP) rơi vào đúng block này.
-    if ($host != "www.chinasourcing.co") { return 444; }
-
-    return 301 https://chinasourcing.co$request_uri;
-}
-
-server {
-    listen 443 ssl;
-    # nginx >= 1.25.1. Bản cũ hơn báo `unknown directive "http2"` — khi đó bỏ
-    # dòng này đi và viết `listen 443 ssl http2;` ở trên. Kiểm: `nginx -v`.
-    http2 on;
+    listen [::]:80;
     server_name chinasourcing.co;
 
-    # Chứng chỉ Origin CA 15 năm — §6.4. KHÔNG phải Let's Encrypt,
-    # KHÔNG chạy certbot cho tên miền này.
-    ssl_certificate     /etc/ssl/cloudflare/chinasourcing.co.pem;
-    ssl_certificate_key /etc/ssl/cloudflare/chinasourcing.co.key;
-    ssl_protocols       TLSv1.2 TLSv1.3;
+    client_max_body_size 50M;
 
-    # mTLS: chỉ nhận request có chứng chỉ client của Cloudflare — §9.5.
-    # Để nguyên dạng chú thích cho tới khi làm xong §9.5.
-    # ssl_client_certificate /etc/ssl/cloudflare/authenticated_origin_pull_ca.pem;
-    # ssl_verify_client on;
-
-    # Chặn ai đó gõ thẳng https://103.110.87.227 với Host giả. Nếu máy chưa có
-    # `default_server`, nginx lấy block ĐẦU TIÊN làm mặc định — và block đó có
-    # thể là block này. Dòng dưới đóng hẳn kết nối đó.
-    #
-    # Dùng $host chứ KHÔNG phải $http_host: $http_host giữ nguyên cổng client
-    # gửi lên, nên "Host: chinasourcing.co:443" (hoàn toàn hợp lệ) sẽ không khớp
-    # và khách thật ăn 444.
-    if ($host != "chinasourcing.co") { return 444; }
-
-    limit_conn cs_conn 20;
-
-    # Body lớn chỉ cần cho webhook; mặc định giữ chặt.
-    client_max_body_size 1m;
-
-    location / {
-        limit_req zone=cs_crawl burst=50 nodelay;
-
-        proxy_pass http://127.0.0.1:3000;   # ⬅️ cổng đã chọn ở §2.2
-        proxy_http_version 1.1;
-        proxy_set_header Host              $host;
-        proxy_set_header X-Real-IP         $remote_addr;
-        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-
-    # Webhook Strapi: body có thể > 1 MB. Thiếu chỗ nới riêng này thì nginx trả
-    # HTML 413, Strapi đọc phải rồi nổ "Unexpected token '<'", và cache KHÔNG
-    # được xoá dù publish vẫn báo thành công.
-    location = /api/revalidate {
-        client_max_body_size 10m;
-        limit_req zone=cs_crawl burst=50 nodelay;
-
-        proxy_pass http://127.0.0.1:3000;
-        proxy_http_version 1.1;
-        proxy_set_header Host              $host;
-        proxy_set_header X-Real-IP         $remote_addr;
-        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-
-    # Ảnh tối ưu của Next — KHÔNG rate limit (một trang thật bắn rất nhiều request).
-    location /_next/image {
-        proxy_pass http://127.0.0.1:3000;
-        proxy_http_version 1.1;
-        proxy_set_header Host              $host;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-
-    # Asset bất biến (có vân tay trong tên) — KHÔNG rate limit.
+    # Asset tĩnh đã hash tên file — cache lâu
     location /_next/static/ {
-        proxy_pass http://127.0.0.1:3000;
-        proxy_http_version 1.1;
-        proxy_set_header Host $host;
+        proxy_pass http://chinasourcing.co;
         add_header Cache-Control "public, max-age=31536000, immutable";
     }
 
-    # Kho ảnh WordPress nhân bản (§1.3) — tĩnh, không rate limit.
-    location /wp-content/ {
-        proxy_pass http://127.0.0.1:3000;
+    location / {
+        proxy_pass http://chinasourcing.co;
         proxy_http_version 1.1;
-        proxy_set_header Host $host;
-        add_header Cache-Control "public, max-age=2592000";
+        proxy_set_header Host              $host;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade           $http_upgrade;
+        proxy_set_header Connection        "upgrade";
+        proxy_read_timeout 60s;
     }
 }
 ```
 
-> 🚨 **Ba `proxy_pass` phải cùng một cổng.** Bẫy có thật ở project anh em: một
-> file mẫu ghi `3010` ở `location /` nhưng `3000` ở `/_next/image` — không có gì
-> nghe ở 3000 → ảnh và JS/CSS trả **502** trong khi HTML vẫn 200: trang hiện ra
-> nhưng trắng trơn, không ảnh, không hiệu ứng.
-
-### 7.2 Bật + kiểm
+Kiểm tra và nạp lại:
 
 ```bash
-# Ubuntu
-sudo ln -s /etc/nginx/sites-available/chinasourcing.co /etc/nginx/sites-enabled/
-
-sudo nginx -t          # ĐỎ thì KHÔNG reload — nginx đang chạy vẫn giữ config cũ
-sudo systemctl reload nginx
+nginx -t
+systemctl reload nginx
 ```
 
-Zone `cs_crawl` / `cs_conn` chưa khai → `nginx -t` sẽ báo lỗi. Làm §9.2 trước.
-
-### 7.3 AlmaLinux: SELinux
-
-Nếu nginx trả 502 trong khi `curl 127.0.0.1:3000` trên chính máy đó vẫn 200:
+Test ngay cả khi DNS **chưa** lan truyền xong:
 
 ```bash
-getenforce                                   # Enforcing?
-sudo setsebool -P httpd_can_network_connect 1
-sudo systemctl reload nginx
+curl -I -H "Host: tenmien.com" http://IP_VPS
+# mong đợi: HTTP/1.1 200 OK
 ```
+
+Hoặc trên máy của bạn, sửa file hosts (`/etc/hosts` trên macOS) thêm dòng
+`IP_VPS tenmien.com www.tenmien.com` rồi mở `http://tenmien.com`
+(nhớ xoá dòng đó sau khi test).
+
+> Gặp **502** → gần như chắc chắn là quên [2.8 SELinux](#28-selinux--bước-hay-bị-quên-nhất)
+> hoặc app PM2 chưa chạy.
 
 ---
 
-## 8. Cutover
+## 6. (Tuỳ chọn) HTTPS tạm bằng Let's Encrypt
 
-### 8.1 Trước khi đổi — dừng lại và soát
+Giai đoạn chờ trước khi chuyển sang Cloudflare, site chỉ có HTTP. Nếu khoảng
+thời gian đó dài (vài ngày trở lên) hoặc bạn muốn chạy thật ngay, cài Let's
+Encrypt tạm. **Bỏ qua bước này** nếu định chuyển sang Cloudflare ngay trong ngày.
 
-- [ ] `§5.3` cả 4 lệnh `curl` đều xanh, kể cả ảnh `/wp-content/`
-- [ ] `§5.4` đã xem bằng mắt qua SSH tunnel, cả desktop lẫn mobile
-- [ ] `§6.2` đã đối chiếu với bản xuất zone của GoDaddy — **MX, SPF, DKIM, DMARC đủ**
-- [ ] `§6.4` chứng chỉ đã cài, `openssl x509` báo đúng hạn 15 năm
-- [ ] `§9` đã làm xong (đặc biệt **§9.1 real-IP** — thiếu là 429 cả site)
-- [ ] `pm2 save` + `pm2 startup` đã chạy
-- [ ] Đã ghi lại IP cũ **`172.104.48.195`** để rollback
-
-### 8.2 Đổi nameserver
-
-GoDaddy → `chinasourcing.co` → **Nameservers → Change → I'll use my own
-nameservers** → dán 2 nameserver Cloudflare cấp.
-
-Chờ CF chuyển sang **Active** (5 phút – vài giờ).
-
-### 8.3 Kiểm sau khi Active
+Chỉ làm **sau khi** DNS đã trỏ đúng ([mục 7](#7-kiểm-tra-dns-đã-lan-truyền)):
 
 ```bash
-# [MÁY BẠN]
-dig +short A chinasourcing.co @1.1.1.1        # phải ra IP của Cloudflare, KHÔNG phải 103.110.87.227
-curl -sI https://chinasourcing.co | grep -i "^server\|^cf-\|^HTTP"
-#   → server: cloudflare  +  cf-ray: …
-
-dig +short MX chinasourcing.co @1.1.1.1       # vẫn phải là outlook
-dig +short TXT _dmarc.chinasourcing.co @1.1.1.1
-
-# Gửi thử một email tới hộp thư công ty và một email TỪ hộp thư đó ra ngoài.
+dnf install -y certbot python3-certbot-nginx
+certbot --nginx -d chinasourcing.co 
 ```
 
-### 8.4 Rollback
+Chọn chuyển hướng HTTP → HTTPS khi được hỏi. Certbot tự sửa file
+`chinasourcing.conf`.
 
-DNS đã ở Cloudflare rồi thì rollback **nhanh hơn** lúc chưa có: sửa bản ghi A về
-`172.104.48.195` và để ⚪️ DNS only, TTL của CF là vài giây.
-
-> ⚠️ Phải **bỏ proxy** khi rollback: máy WordPress cũ không có Origin CA của bạn,
-> để 🟠 với `Full (strict)` là lỗi 526.
+> Ở mục 9 ta sẽ thay chứng chỉ này bằng Origin Certificate 15 năm của Cloudflare
+> và tắt gia hạn của certbot.
 
 ---
 
-## 9. Bảo mật
+## 7. Kiểm tra DNS đã lan truyền
 
-### 9.1 🚨 Khôi phục IP thật — không làm là 429 cả site
-
-Sau khi bật orange cloud, mọi request tới VPS đều đến **từ IP của Cloudflare**.
-Mà `limit_req` đếm theo `$binary_remote_addr`. Hệ quả: cả thế giới bị gộp thành
-vài chục IP → chạm trần trong tích tắc → **toàn bộ khách ăn 429**. Log truy cập
-cũng ghi toàn IP của CF, vô dụng khi cần lần vết.
-
-Kiểm đã có chưa (§2.3). **Chưa có** thì sinh file tự động từ danh sách sống của
-Cloudflare — đừng chép tay, dải IP có thay đổi:
+Trên máy của bạn:
 
 ```bash
-{
-  echo "# Sinh tự động $(date -I) từ https://www.cloudflare.com/ips"
-  echo "# Chạy lại file này mỗi 6 tháng."
-  curl -s https://www.cloudflare.com/ips-v4 | sed 's/^/set_real_ip_from /; s/$/;/'
-  curl -s https://www.cloudflare.com/ips-v6 | sed 's/^/set_real_ip_from /; s/$/;/'
-  echo "real_ip_header CF-Connecting-IP;"
-  echo "real_ip_recursive on;"
-} | sudo tee /etc/nginx/conf.d/00-cloudflare-realip.conf
+dig +short chinasourcing.co
+dig +short www.tenmien.com
+# cả hai phải trả về IP_VPS
 ```
 
-> Tên bắt đầu bằng `00-` để nạp trước các file site. `set_real_ip_from` khai bao
-> nhiêu lần cũng được (cộng dồn), nhưng **`real_ip_header` chỉ được xuất hiện một
-> lần** trong cùng ngữ cảnh — nên nếu §2.3 đã thấy có sẵn thì chỉ thêm các dòng
-> `set_real_ip_from` vào file cũ, đừng tạo file mới.
+Hoặc xem toàn cầu tại https://dnschecker.org (chọn loại `A`).
 
-Ubuntu: xác nhận `include` nằm **trong** block `http { }`:
+Khi đa số điểm đã ra `IP_VPS` → mở `http://tenmien.com` kiểm tra toàn bộ site:
+trang chủ, `/about-us`, `/products`, một trang bài viết, form liên hệ…
+
+✅ **Hết giai đoạn 1.** Site đã chạy trên VPS bằng domain thật.
+
+---
+
+## 8. Cloudflare — chuyển nameserver
+
+### 8.1. Thêm domain vào Cloudflare
+
+1. https://dash.cloudflare.com → **Add a domain** (hoặc *Add site*) → nhập
+   `tenmien.com` → chọn gói **Free**.
+2. Cloudflare tự quét DNS hiện có từ GoDaddy. **Soát kỹ danh sách**:
+   - `A  @    IP_VPS`   → Proxy status: **Proxied** (đám mây cam 🟠)
+   - `CNAME www @` hoặc `A www IP_VPS` → **Proxied** 🟠
+   - `A  cms  IP_VPS` (nếu có) → **Proxied** 🟠
+   - `MX`, `TXT` (SPF/DKIM/verification) → giữ nguyên, **DNS only** (xám)
+   - Bản ghi email kiểu `mail`, `autodiscover`… → **DNS only** (xám)
+   - Xoá bản ghi rác của GoDaddy nếu có (`_domainconnect`, bản ghi trỏ về parking…).
+   - Nếu thiếu bản ghi nào so với GoDaddy → thêm tay cho đủ **trước khi** đổi
+     nameserver, nếu không email/dịch vụ phụ sẽ đứt.
+3. Cloudflare hiển thị **2 nameserver**, dạng:
+   ```
+   ada.ns.cloudflare.com
+   bob.ns.cloudflare.com
+   ```
+
+### 8.2. Chuẩn bị SSL TRƯỚC khi đổi nameserver (tránh downtime)
+
+Làm luôn [mục 9](#9-cloudflare--chứng-chỉ-origin-15-năm) **ngay bây giờ** — tạo
+và cài Origin Certificate lên VPS, đặt chế độ SSL **Full (strict)** — rồi mới đổi
+nameserver. Lý do: ngay khi nameserver đổi, traffic đi qua Cloudflare; nếu lúc đó
+chế độ SSL chưa đúng hoặc VPS chưa có cert trên 443, site sẽ lỗi 521/525/526 hoặc
+lặp redirect.
+
+> Mục 9 tạo được cert kể cả khi domain chưa Active trên Cloudflare.
+
+### 8.3. Đổi nameserver ở GoDaddy
+
+1. GoDaddy → **My Products** → domain → **DNS** → tab **Nameservers** →
+   **Change Nameservers**.
+2. Chọn **"I'll use my own nameservers"**.
+3. Xoá 2 nameserver `domaincontrol.com`, nhập 2 nameserver Cloudflare ở 8.1 → **Save**.
+4. **DNSSEC:** nếu GoDaddy đang bật DNSSEC → **tắt trước khi đổi**
+   (Domain Settings → DNSSEC). DNSSEC cũ + nameserver mới = domain không phân giải.
+   Có thể bật lại DNSSEC từ phía Cloudflare sau khi Active.
+
+### 8.4. Chờ Active
+
+- Cloudflare gửi email khi domain **Active** (thường 5 phút – vài giờ, tối đa 24–48h).
+- Bấm **Check nameservers now** trong dashboard để kiểm tra sớm.
+- Kiểm tra: `dig NS tenmien.com +short` → phải ra nameserver Cloudflare.
+
+> Sau khi đổi nameserver, **mọi chỉnh sửa DNS phải làm ở Cloudflare**. Bảng DNS
+> bên GoDaddy không còn tác dụng nữa.
+
+---
+
+## 9. Cloudflare — chứng chỉ Origin 15 năm
+
+### 9.1. Tạo chứng chỉ
+
+1. Cloudflare → chọn domain → **SSL/TLS** → **Origin Server** → **Create Certificate**.
+2. Chọn:
+   - **Generate private key and CSR with Cloudflare**
+   - Private key type: **RSA (2048)**
+   - Hostnames: `tenmien.com`, `*.tenmien.com` (wildcard phủ luôn `www`, `cms`…)
+   - **Certificate Validity: 15 years**
+3. **Create**. Chọn **Key format: PEM** và copy hai khung:
+   - **Origin Certificate**
+   - **Private Key** — ⚠️ **chỉ hiện MỘT LẦN**. Lưu ngay vào trình quản lý
+     mật khẩu. Mất thì phải tạo cert mới.
+
+### 9.2. Cài lên VPS
+
+Trên VPS (root). Dùng thư mục `/etc/pki/nginx/` — thư mục chuẩn của AlmaLinux,
+SELinux đã gán đúng nhãn:
 
 ```bash
-grep -n "^http {\|include /etc/nginx/conf.d" /etc/nginx/nginx.conf
+mkdir -p /etc/pki/nginx/private
+
+nano /etc/pki/nginx/chinasourcing.co.pem
+# dán Origin Certificate (gồm cả dòng -----BEGIN CERTIFICATE----- và -----END CERTIFICATE-----)
+
+nano /etc/pki/nginx/private/chinasourcing.co.key
+# dán Private Key (gồm cả dòng BEGIN/END)
+
+chmod 644 /etc/pki/nginx/chinasourcing.co.pem
+chmod 600 /etc/pki/nginx/private/chinasourcing.co.key
+chown root:root /etc/pki/nginx/chinasourcing.co.pem /etc/pki/nginx/private/chinasourcing.co.key
+
+# gán lại nhãn SELinux (bắt buộc nếu bạn upload file bằng scp rồi mv vào)
+restorecon -Rv /etc/pki/nginx
 ```
 
-### 9.2 Rate limit ở nginx
+(Tuỳ chọn) tải CA gốc của Cloudflare Origin để dùng cho authenticated origin pulls
+về sau — không bắt buộc cho các bước dưới.
 
-Khai zone trong block `http { }` của `/etc/nginx/nginx.conf`, hoặc một file
-riêng trong `conf.d/`:
+### 9.3. Cấu hình Nginx HTTPS
+
+Nếu đã làm [mục 6](#6-tuỳ-chọn-https-tạm-bằng-lets-encrypt) (Let's Encrypt), tắt
+gia hạn của certbot vì không còn dùng:
 
 ```bash
-sudo tee /etc/nginx/conf.d/01-ratelimit-chinasourcing.conf <<'EOF'
-# Zone đặt tiền tố cs_ để không đụng tên zone của 2 project kia trên máy này.
-limit_req_zone  $binary_remote_addr  zone=cs_crawl:10m  rate=30r/s;
-limit_conn_zone $binary_remote_addr  zone=cs_conn:10m;
-limit_req_status  429;
-limit_conn_status 429;
-EOF
-sudo nginx -t && sudo systemctl reload nginx
+systemctl disable --now certbot-renew.timer 2>/dev/null
 ```
 
-30r/s nghe cao, nhưng **một trang thật bắn hàng chục request** (JS, CSS, font,
-ảnh). Đây là lớp chặn kẻ quét, không phải chặn khách.
-
-> Zone chỉ có tác dụng khi `limit_req` được gọi trong `location` — §7.1 đã gọi ở
-> `/` và `/api/revalidate`, cố ý **không** gọi ở `/_next/*` và `/wp-content/`.
-
-### 9.3 Rate limit + WAF ở Cloudflare
-
-Chặn ở biên rẻ hơn nhiều: request bị chặn **không bao giờ chạm tới VPS**.
-
-**Security → WAF → Managed rules**: bật **Cloudflare Free Managed Ruleset**.
-
-**Security → WAF → Rate limiting rules** — gói Free cho **1 rule**, nên dùng nó
-cho chỗ đáng giá nhất:
-
-| Ô | Giá trị |
-| --- | --- |
-| Rule name | `protect-api` |
-| If | `URI Path` starts with `/api/` |
-| Rate | 20 requests / 10 seconds |
-| Per | IP address |
-| Action | **Block**, thời hạn 60 giây |
-
-**Security → Bots**: bật **Bot Fight Mode**.
-
-> ⚠️ Bot Fight Mode có thể chặn cả công cụ SEO hợp lệ (Ahrefs, Screaming Frog).
-> Sau khi bật, chạy một lượt kiểm SEO; bị chặn thì tạo **WAF Custom Rule** cho
-> user-agent đó `Skip → Bot Fight Mode`.
-
-**Security → Settings**: `Security Level` = **Medium**.
-
-**Chỉ khi đang bị tấn công thật**, bật `I'm Under Attack` — nó chèn màn hình
-kiểm tra 5 giây cho **mọi** khách, đừng để bật thường trực.
-
-### 9.4 🔒 Firewall: chỉ cho Cloudflare vào 80/443
-
-Đây là thứ biến "giấu IP" thành "IP có lộ cũng vô dụng". Làm được **vì** ta dùng
-Origin CA chứ không phải Let's Encrypt (sự thật số 7).
+Ghi đè **toàn bộ** `/etc/nginx/conf.d/chinasourcing.conf`:
 
 ```bash
-# ── Ubuntu (ufw) ─────────────────────────────────────────────────────────────
-sudo ufw allow OpenSSH                 # ĐỪNG BỎ QUA — khoá xong mà mất SSH là hết đường
-for ip in $(curl -s https://www.cloudflare.com/ips-v4) $(curl -s https://www.cloudflare.com/ips-v6); do
-  sudo ufw allow proto tcp from $ip to any port 80,443 comment 'Cloudflare'
-done
-sudo ufw --force enable
-sudo ufw status numbered
+nano /etc/nginx/conf.d/chinasourcing.conf
 ```
-
-```bash
-# ── AlmaLinux (firewalld) ────────────────────────────────────────────────────
-sudo firewall-cmd --permanent --new-ipset=cloudflare --type=hash:net
-for ip in $(curl -s https://www.cloudflare.com/ips-v4); do
-  sudo firewall-cmd --permanent --ipset=cloudflare --add-entry=$ip
-done
-sudo firewall-cmd --permanent --add-rich-rule='rule source ipset=cloudflare service name=http accept'
-sudo firewall-cmd --permanent --add-rich-rule='rule source ipset=cloudflare service name=https accept'
-sudo firewall-cmd --permanent --remove-service=http
-sudo firewall-cmd --permanent --remove-service=https
-sudo firewall-cmd --reload
-```
-
-> ⚠️ Đoạn firewalld trên **chỉ nạp dải IPv4**. Máy có bản ghi AAAA thì Cloudflare
-> sẽ gọi origin qua IPv6 và bị chặn sạch — khi đó phải tạo thêm một ipset
-> `--type=hash:net --option=family=inet6` và nạp `ips-v6` vào đó. Không có AAAA
-> thì bỏ qua. Kiểm: `ip -6 addr show scope global`.
-
-> 🔴 **Máy này còn 2 project khác.** Nếu tên miền của chúng **chưa** ở sau
-> Cloudflare, khoá 80/443 như trên là **giết luôn hai site đó**. Kiểm trước:
-> ```bash
-> sudo nginx -T | grep server_name        # liệt kê mọi tên miền trên máy
-> for d in <từng tên miền>; do dig +short A $d | head -1; done
-> #   IP của Cloudflare → an toàn. IP thật của VPS → ĐỪNG khoá.
-> ```
-> Chưa an toàn thì bỏ qua §9.4, làm §9.5 thay thế — nó chỉ ảnh hưởng
-> `chinasourcing.co`.
-
-Kiểm sau khi khoá:
-
-```bash
-# [MÁY BẠN] — phải TIMEOUT hoặc bị từ chối
-curl -m 10 -I --resolve chinasourcing.co:443:103.110.87.227 https://chinasourcing.co
-# [MÁY BẠN] — phải 200
-curl -I https://chinasourcing.co
-```
-
-### 9.5 Authenticated Origin Pulls (mTLS)
-
-Chỉ nhận request mang chứng chỉ client của Cloudflare. Bảo vệ ở tầng nginx nên
-**không đụng tới 2 project kia** — an toàn hơn §9.4 khi máy dùng chung.
-
-```bash
-# [VPS]
-sudo curl -o /etc/ssl/cloudflare/authenticated_origin_pull_ca.pem \
-  https://developers.cloudflare.com/ssl/static/authenticated_origin_pull_ca.pem
-```
-
-Bỏ chú thích 2 dòng `ssl_client_certificate` / `ssl_verify_client` ở §7.1, rồi:
-
-```bash
-sudo nginx -t && sudo systemctl reload nginx
-```
-
-Cloudflare → **SSL/TLS → Origin Server → Authenticated Origin Pulls** → bật.
-
-> ⚠️ Bật ở nginx mà quên bật ở Cloudflare = **toàn site 400**. Bật ở CF trước,
-> nginx sau, và mở sẵn một tab `curl -I https://chinasourcing.co` để thấy ngay.
-
-### 9.6 Cứng hoá phần còn lại
-
-```bash
-# fail2ban cho SSH
-sudo apt install -y fail2ban          # hoặc: sudo dnf install -y fail2ban
-sudo systemctl enable --now fail2ban
-sudo fail2ban-client status sshd
-
-# SSH: tắt đăng nhập bằng mật khẩu (đảm bảo khoá công khai đã chạy được TRƯỚC)
-sudo nano /etc/ssh/sshd_config
-#   PasswordAuthentication no
-#   PermitRootLogin no
-sudo systemctl reload sshd
-```
-
-Header bảo mật — thêm vào block `server` 443 ở §7.1:
 
 ```nginx
-add_header X-Content-Type-Options    "nosniff"                  always;
-add_header X-Frame-Options           "SAMEORIGIN"               always;
-add_header Referrer-Policy           "strict-origin-when-cross-origin" always;
-add_header Permissions-Policy        "camera=(), microphone=(), geolocation=()" always;
-# HSTS: chỉ bật sau khi site chạy ổn ÍT NHẤT một tuần. Gỡ ra rất khó.
-# add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+upstream chinasourcing_app {
+    server 127.0.0.1:3000;
+    keepalive 64;
+}
+
+# HTTP → HTTPS
+server {
+    listen 80;
+    listen [::]:80;
+    server_name tenmien.com www.tenmien.com;
+    return 301 https://tenmien.com$request_uri;
+}
+
+# www → non-www
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name www.tenmien.com;
+
+    ssl_certificate     /etc/pki/nginx/tenmien.com.pem;
+    ssl_certificate_key /etc/pki/nginx/private/tenmien.com.key;
+
+    return 301 https://tenmien.com$request_uri;
+}
+
+# Site chính
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name tenmien.com;
+
+    ssl_certificate     /etc/pki/nginx/tenmien.com.pem;
+    ssl_certificate_key /etc/pki/nginx/private/tenmien.com.key;
+    ssl_protocols       TLSv1.2 TLSv1.3;
+    ssl_session_cache   shared:SSL:10m;
+    ssl_session_timeout 1d;
+
+    client_max_body_size 50M;
+
+    location /_next/static/ {
+        proxy_pass http://chinasourcing_app;
+        add_header Cache-Control "public, max-age=31536000, immutable";
+    }
+
+    location / {
+        proxy_pass http://chinasourcing_app;
+        proxy_http_version 1.1;
+        proxy_set_header Host              $host;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header Upgrade           $http_upgrade;
+        proxy_set_header Connection        "upgrade";
+        proxy_read_timeout 60s;
+    }
+}
 ```
 
-> Chưa đặt `Content-Security-Policy` có chủ ý: trang nhúng HubSpot
-> (`js.hsforms.net`) và Vimeo, viết CSP sai là hỏng form liên hệ và video hero
-> mà không có lỗi rõ ràng. Làm riêng, sau, và test từng trang.
+> Nginx ≥ 1.25 sẽ cảnh báo `listen ... http2` là cú pháp cũ — vẫn chạy bình thường.
+> Muốn hết cảnh báo thì đổi thành `listen 443 ssl;` + dòng `http2 on;`.
+
+```bash
+nginx -t
+systemctl reload nginx
+```
+
+### 9.4. Đặt chế độ SSL ở Cloudflare
+
+Cloudflare → **SSL/TLS** → **Overview** → chọn **Full (strict)**.
+
+| Chế độ | Dùng? | Lý do |
+|---|---|---|
+| Off / Flexible | ❌ | Flexible + redirect HTTPS ở Nginx = **lặp redirect vô hạn** |
+| Full | ⚠️ | Chạy được nhưng không xác thực cert origin |
+| **Full (strict)** | ✅ | Xác thực Origin Certificate — đúng mục đích |
+
+### 9.5. Lưu ý sống còn về Origin Certificate
+
+- Cert này **chỉ Cloudflare tin**, trình duyệt thì không.
+- Vì vậy mọi bản ghi web (`@`, `www`, `cms`) **phải luôn để Proxied 🟠**.
+  Chuyển sang DNS only (xám) → khách truy cập thẳng VPS → trình duyệt báo
+  "Kết nối không riêng tư".
+- Cert hết hạn sau 15 năm — ghi lịch nhắc ngày tạo + 15 năm.
 
 ---
 
-## 10. Webhook revalidate (Strapi → FE)
+## 10. Cloudflare — thiết lập khuyến nghị
 
-Site chạy ISR theo **tag**, không theo thời gian — publish bên CMS mà webhook
-không tới thì trang cũ nằm đó tới một tiếng.
+**SSL/TLS → Edge Certificates**
 
-`cms.chinasourcing.co/admin` → **Settings → Webhooks → Create new webhook**:
+- **Always Use HTTPS**: On
+- **Automatic HTTPS Rewrites**: On
+- **Minimum TLS Version**: TLS 1.2
+- **HSTS**: chỉ bật sau khi đã chạy ổn vài ngày (bật rồi khó quay lại HTTP).
 
-| Ô | Giá trị |
-| --- | --- |
-| Name | `revalidate-frontend` |
-| URL | `https://chinasourcing.co/api/revalidate` |
-| Headers | `x-revalidate-secret` : `<REVALIDATE_SECRET ở §4.3>` |
-| Events | Entry: publish / unpublish / update / delete • Media: create / update / delete |
+**Speed / Caching**
 
-Test tay:
+- **Caching → Configuration → Browser Cache TTL**: *Respect Existing Headers*
+  (Next.js tự đặt header cache đúng).
+- **Speed → Optimization**: **tắt Rocket Loader** — nó can thiệp script, dễ làm
+  vỡ React/GSAP/HubSpot. Auto Minify đã bị Cloudflare bỏ, không cần tìm.
+- Không bật "Cache Everything" cho toàn site — trang Next.js render động từ CMS,
+  cache toàn site sẽ làm nội dung mới không hiện.
+
+**Network**
+
+- **WebSockets**: On (mặc định)
+
+### 10.1. Lấy IP thật của khách trong log Nginx
+
+Sau khi qua Cloudflare, `$remote_addr` là IP của Cloudflare. Khôi phục IP thật:
 
 ```bash
-curl -s "https://chinasourcing.co/api/revalidate?secret=<SECRET>&tag=strapi"
-#  200 → OK
-#  401 → sai secret
-#  500 → server chưa đọc được REVALIDATE_SECRET (thiếu trong .env.production)
+nano /etc/nginx/conf.d/cloudflare-realip.conf
 ```
 
-> Webhook đi từ `103.221.223.148` → `chinasourcing.co` → Cloudflare → origin.
-> §9.4 không chặn nó vì nó đi qua CF như mọi khách khác.
+```nginx
+# Danh sách IP Cloudflare: https://www.cloudflare.com/ips/
+set_real_ip_from 173.245.48.0/20;
+set_real_ip_from 103.21.244.0/22;
+set_real_ip_from 103.22.200.0/22;
+set_real_ip_from 103.31.4.0/22;
+set_real_ip_from 141.101.64.0/18;
+set_real_ip_from 108.162.192.0/18;
+set_real_ip_from 190.93.240.0/20;
+set_real_ip_from 188.114.96.0/20;
+set_real_ip_from 197.234.240.0/22;
+set_real_ip_from 198.41.128.0/17;
+set_real_ip_from 162.158.0.0/15;
+set_real_ip_from 104.16.0.0/13;
+set_real_ip_from 104.24.0.0/14;
+set_real_ip_from 172.64.0.0/13;
+set_real_ip_from 131.0.72.0/22;
+set_real_ip_from 2400:cb00::/32;
+set_real_ip_from 2606:4700::/32;
+set_real_ip_from 2803:f800::/32;
+set_real_ip_from 2405:b500::/32;
+set_real_ip_from 2405:8100::/32;
+set_real_ip_from 2a06:98c0::/29;
+set_real_ip_from 2c0f:f248::/32;
+real_ip_header CF-Connecting-IP;
+```
+
+```bash
+nginx -t && systemctl reload nginx
+```
+
+> Danh sách IP có thể thay đổi — đối chiếu lại với https://www.cloudflare.com/ips/.
+
+### 10.2. (Tuỳ chọn, nâng cao) Chỉ cho Cloudflare vào port 80/443
+
+Chặn truy cập thẳng bằng IP, buộc mọi traffic đi qua Cloudflare:
+
+```bash
+firewall-cmd --permanent --remove-service=http
+firewall-cmd --permanent --remove-service=https
+for ip in $(curl -s https://www.cloudflare.com/ips-v4); do
+  firewall-cmd --permanent --add-rich-rule="rule family=ipv4 source address=$ip port port=80 protocol=tcp accept"
+  firewall-cmd --permanent --add-rich-rule="rule family=ipv4 source address=$ip port port=443 protocol=tcp accept"
+done
+for ip in $(curl -s https://www.cloudflare.com/ips-v6); do
+  firewall-cmd --permanent --add-rich-rule="rule family=ipv6 source address=$ip port port=80 protocol=tcp accept"
+  firewall-cmd --permanent --add-rich-rule="rule family=ipv6 source address=$ip port port=443 protocol=tcp accept"
+done
+firewall-cmd --reload
+```
+
+> ⚠️ Sau bước này, `curl http://IP_VPS` từ ngoài sẽ không vào được nữa (đúng ý đồ),
+> và Let's Encrypt HTTP-01 cũng không chạy được. Chỉ làm khi mọi thứ đã ổn định.
 
 ---
 
-## 11. Vận hành
+## 11. Cập nhật code về sau
 
-### 11.1 Deploy lần sau
+Tạo script `~/chinasourcing/deploy.sh` (user `deploy`):
 
 ```bash
-# [VPS]
-cd /var/www/chinasourcing-clone
-git pull                       # hoặc rsync lại từ máy bạn
+nano ~/chinasourcing/deploy.sh
+```
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+cd /home/deploy/chinasourcing
+
+echo "==> Pull code"
+git pull --ff-only
+
+echo "==> Cài dependency"
 npm ci
+
+echo "==> Build"
 npm run build
-pm2 reload chinasourcing-fe    # reload, không phải restart — không rớt request
+
+echo "==> Restart"
+pm2 reload chinasourcing --update-env
+pm2 save
+
+echo "==> Xong"
 ```
-
-Có bài blog mới kèm ảnh WordPress → chạy lại `§1.3` + `§4.4`.
-
-### 11.2 Khi có sự cố
 
 ```bash
-pm2 logs chinasourcing-fe --lines 200
-pm2 describe chinasourcing-fe            # restart count cao = app đang crash lặp
-sudo tail -f /var/log/nginx/error.log
-sudo ss -ltnp | grep 3000                # app còn nghe không
-curl -I http://127.0.0.1:3000/           # bỏ qua nginx + CF, hỏi thẳng app
+chmod +x ~/chinasourcing/deploy.sh
 ```
 
-| Triệu chứng | Nhìn vào đâu trước |
-| --- | --- |
-| **502** ở mọi trang | app chết (`pm2 logs`) hoặc sai cổng trong `proxy_pass` |
-| **502** chỉ ở ảnh/JS | ba `proxy_pass` không cùng cổng — §7.1 |
-| **526** | SSL mode `Full (strict)` mà cert origin sai/hết hạn — §6.4 |
-| **521** | firewall chặn cả Cloudflare — §9.4, hoặc nginx chết |
-| **429** hàng loạt | thiếu real-IP restore — §9.1 |
-| **400** ở mọi trang | AOP bật ở nginx mà chưa bật ở CF — §9.5 |
-| Vòng lặp chuyển hướng | SSL mode đang `Flexible` — §6.5 |
-| Trang hiện nhưng **không bấm được** | Rocket Loader đang ON — §6.7 |
-| Ảnh trong bài blog 404 | `public/wp-content` chưa đồng bộ — §4.4 |
-| Publish CMS mà trang không đổi | webhook (§10), hoặc đang cache HTML ở biên (§6.6) |
+Mỗi lần cập nhật:
 
-### 11.3 Việc định kỳ
+```bash
+ssh deploy@IP_VPS
+~/chinasourcing/deploy.sh
+```
 
-| Việc | Nhịp |
-| --- | --- |
-| Sinh lại `00-cloudflare-realip.conf` + rule firewall từ danh sách IP CF | 6 tháng |
-| Chạy `node scripts/mirror-wp-assets.mjs --check` | mỗi lần thêm bài blog cũ |
-| `pm2 logs` soát lỗi lặp | hàng tháng |
-| **Gia hạn Origin CA** | **tháng 9/2041** — đặt lịch ngay bây giờ |
+Sau khi deploy, nếu thấy trang cũ → Cloudflare → **Caching → Configuration →
+Purge Everything**.
+
+> Nếu build thất bại, bản đang chạy vẫn là bản cũ **cho tới khi** `.next` bị ghi
+> đè. Muốn zero-downtime tuyệt đối thì build ở thư mục riêng rồi đổi symlink —
+> chưa cần cho quy mô hiện tại.
+
+---
+
+## 12. Strapi CMS trên cùng VPS (nếu có)
+
+Bỏ qua nếu Strapi chạy ở server khác.
+
+1. Clone `strapi-cns` vào `/home/deploy/strapi-cns`, tạo `.env`, `npm ci`,
+   `npm run build`.
+2. Thêm vào `ecosystem.config.js` (hoặc file riêng):
+   ```js
+   {
+     name: "strapi",
+     cwd: "/home/deploy/strapi-cns",
+     script: "npm",
+     args: "run start",
+     env: { NODE_ENV: "production", HOST: "127.0.0.1", PORT: "1337" },
+   }
+   ```
+3. Nginx: file `/etc/nginx/conf.d/cms.conf`, giống khối 443 ở 9.3 nhưng
+   `server_name cms.tenmien.com;` và `proxy_pass http://127.0.0.1:1337;`.
+   Wildcard cert `*.tenmien.com` dùng chung được, không cần tạo cert mới.
+4. `client_max_body_size 100M;` để upload ảnh vào Media Library.
+5. Bản ghi DNS `cms` phải là **Proxied** 🟠.
+6. Cloudflare Free giới hạn upload **100 MB/request**.
+7. Nhớ `.env` của Strapi có `URL=https://cms.tenmien.com` để link ảnh/admin đúng.
+
+**Thứ tự khởi động:** Strapi phải chạy **trước** khi `npm run build` frontend, vì
+build lấy dữ liệu từ CMS.
+
+---
+
+## 13. Xử lý lỗi thường gặp
+
+| Triệu chứng | Nguyên nhân hay gặp | Cách xử lý |
+|---|---|---|
+| **502 Bad Gateway** (Nginx) | SELinux chặn Nginx proxy | `setsebool -P httpd_can_network_connect 1` |
+| 502 | App PM2 không chạy / crash | `pm2 status`, `pm2 logs chinasourcing --lines 100` |
+| Nginx không start, lỗi đọc cert | Nhãn SELinux của file cert sai | `restorecon -Rv /etc/pki/nginx` |
+| `npm run build` báo `Killed` | Thiếu RAM | Thêm swap (2.3) |
+| Build lỗi fetch / ECONNREFUSED | VPS không gọi được Strapi | Kiểm tra `NEXT_PUBLIC_STRAPI_URL`, `curl` thử từ VPS |
+| Trang lên nhưng trống nội dung | Sai URL CMS hoặc CMS 403 | Xem log PM2; kiểm tra quyền Public trong Strapi |
+| Đổi `.env` mà không ăn | Biến `NEXT_PUBLIC_*` gắn lúc build | `npm run build` lại rồi `pm2 reload` |
+| **ERR_TOO_MANY_REDIRECTS** | Cloudflare để **Flexible** | Đổi sang **Full (strict)** |
+| **Cloudflare 521** | Nginx tắt / firewall chặn 443 | `systemctl status nginx`, `firewall-cmd --list-all` |
+| **Cloudflare 522** | Timeout tới VPS | Firewall nhà cung cấp VPS chưa mở 80/443 |
+| **Cloudflare 525** | Nginx không nghe 443 hoặc lỗi SSL handshake | Kiểm tra khối `listen 443 ssl` và đường dẫn cert |
+| **Cloudflare 526** | Cert origin không hợp lệ với Full (strict) | Cert sai / hostname không khớp / dán thiếu dòng BEGIN-END |
+| Trình duyệt báo cert không tin cậy | Bản ghi DNS để **DNS only** (xám) | Bật lại **Proxied** 🟠 |
+| Domain không phân giải sau đổi NS | DNSSEC còn bật ở GoDaddy | Tắt DNSSEC ở GoDaddy |
+| Email theo domain mất | Thiếu bản ghi MX/TXT khi chuyển sang CF | Thêm lại MX/TXT trong Cloudflare DNS |
+| Form HubSpot / video lỗi sau khi qua CF | Rocket Loader | Tắt Rocket Loader |
+
+Lệnh xem log nhanh:
+
+```bash
+pm2 logs chinasourcing --lines 200
+tail -f /var/log/nginx/error.log
+journalctl -u nginx -e
+ausearch -m avc -ts recent        # log từ chối của SELinux
+```
+
+---
+
+## 14. Checklist cuối
+
+**Giai đoạn 1 — Deploy + DNS GoDaddy**
+
+- [ ] GoDaddy: `A @ → IP_VPS`, `www` trỏ đúng, TTL thấp, tắt Forwarding
+- [ ] VPS: update, user `deploy`, swap, firewalld mở http/https
+- [ ] Node 22, PM2, Nginx đã cài
+- [ ] `setsebool -P httpd_can_network_connect 1`
+- [ ] `.env.production` đủ biến, `npm run build` thành công
+- [ ] PM2 `online`, đã `pm2 startup` + `pm2 save`
+- [ ] Nginx proxy port 80, `curl -H "Host: tenmien.com" http://IP_VPS` → 200
+- [ ] `dig +short tenmien.com` → `IP_VPS`, mở site bằng domain thấy đúng
+
+**Giai đoạn 2 — Cloudflare**
+
+- [ ] Add site, soát đủ bản ghi DNS, web records = Proxied 🟠
+- [ ] Tạo Origin Certificate **15 năm**, lưu private key an toàn
+- [ ] Cài cert vào `/etc/pki/nginx/`, `restorecon`, Nginx 443 OK (`nginx -t`)
+- [ ] SSL/TLS = **Full (strict)**
+- [ ] Tắt DNSSEC ở GoDaddy → đổi nameserver sang Cloudflare
+- [ ] Cloudflare báo **Active**
+- [ ] Always Use HTTPS, Automatic HTTPS Rewrites, TLS ≥ 1.2, tắt Rocket Loader
+- [ ] Real IP config
+- [ ] Kiểm tra: `https://tenmien.com` ổ khoá xanh, `http://` và `www` đều 301 về `https://tenmien.com`
+- [ ] Test form liên hệ HubSpot, newsletter, trang bài viết, video hero
+- [ ] Ghi lịch nhắc hết hạn Origin Certificate (ngày tạo + 15 năm)

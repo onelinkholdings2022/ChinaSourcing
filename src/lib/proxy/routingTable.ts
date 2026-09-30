@@ -26,10 +26,28 @@ let inflight: Promise<RouteSlugTable | null> | null = null;
 const MISS_REFRESH_THROTTLE_MS = 2_000;
 let lastForcedAt = 0;
 
-// Mặc định proxy tự gọi vào ORIGIN CÔNG KHAI của chính nó — tức là vòng ra CDN
-// rồi quay lại: chậm, và phụ thuộc cache biên. Đặt `INTERNAL_BASE_URL`
-// (vd http://127.0.0.1:3000) để gọi thẳng Node server.
-const INTERNAL_BASE_URL = process.env.INTERNAL_BASE_URL;
+/**
+ * Các địa chỉ để hỏi `/api/route-slugs`, theo thứ tự thử.
+ *
+ * 1. `INTERNAL_BASE_URL` nếu có đặt.
+ * 2. Loopback của CHÍNH tiến trình này. `next start` ghi cổng thật vào
+ *    `process.env.PORT`, và proxy chạy trên runtime Node.js cùng tiến trình nên
+ *    đọc được lúc chạy. Đây là đường đúng khi đứng sau Nginx trên VPS.
+ * 3. `origin` proxy truyền vào — lưới đỡ cuối.
+ *
+ * Ở `next start`, `origin` là `http://localhost:<port>`. Tên `localhost` có thể
+ * phân giải ra `::1` trong khi server chỉ nghe IPv4 (hay ngược lại), và fetch
+ * hỏng thì bảng rỗng: proxy đá MỌI URL `/<slug>` về trang chủ. `127.0.0.1` gắn
+ * cứng tránh được chuyện phân giải đó.
+ */
+function candidateBases(origin: string): string[] {
+  const bases = [
+    process.env.INTERNAL_BASE_URL,
+    process.env.PORT ? `http://127.0.0.1:${process.env.PORT}` : undefined,
+    origin,
+  ];
+  return [...new Set(bases.filter((b): b is string => Boolean(b)).map((b) => b.replace(/\/$/, "")))];
+}
 
 async function fetchFrom(base: string): Promise<RouteSlugTable | null> {
   try {
@@ -50,23 +68,31 @@ async function fetchFrom(base: string): Promise<RouteSlugTable | null> {
   }
 }
 
+// Log lỗi ở production, nhưng thưa: đây là đường nóng, mỗi request một dòng là
+// ngập log PM2. Trước đây production im lặng hoàn toàn, nên lỗi "mọi slug về
+// trang chủ" không để lại dấu vết nào.
+const FAIL_LOG_THROTTLE_MS = 60_000;
+let lastFailLogAt = 0;
+
 /**
- * Lấy bảng, ưu tiên cổng nội bộ rồi LÙI VỀ origin công khai.
+ * Lấy bảng, thử lần lượt các địa chỉ của `candidateBases`.
  *
  * Bước lùi là bắt buộc: `INTERNAL_BASE_URL` gắn cứng một cổng, nên chạy dev ở
  * cổng khác là mọi lần gọi đều `ECONNREFUSED` và TOÀN BỘ URL chi tiết bị đá về
  * homepage. Định tuyến của cả site không được chết vì một biến môi trường lệch.
  */
 async function load(origin: string): Promise<RouteSlugTable | null> {
-  for (const base of INTERNAL_BASE_URL ? [INTERNAL_BASE_URL, origin] : [origin]) {
+  const bases = candidateBases(origin);
+  for (const base of bases) {
     const table = await fetchFrom(base);
     if (table) {
       cache = { table, at: Date.now() };
       return table;
     }
-    if (process.env.NODE_ENV !== "production") {
-      console.error("[proxy] không lấy được /api/route-slugs từ", base);
-    }
+  }
+  if (process.env.NODE_ENV !== "production" || Date.now() - lastFailLogAt > FAIL_LOG_THROTTLE_MS) {
+    lastFailLogAt = Date.now();
+    console.error("[proxy] không lấy được /api/route-slugs từ:", bases.join(", "));
   }
   return null;
 }

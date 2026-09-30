@@ -75,6 +75,16 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
   if (segments.length === 1) {
     const kind = await resolveSegment(url.origin, segments[0]);
     if (kind) {
+      // ⚠️ KHÔNG chạy production bằng `next start -H <ip>`. Next chỉ coi rewrite
+      // là NỘI BỘ khi origin của `dest` trùng origin nó tự dựng cho request, và
+      // hai bên lấy hostname từ hai chỗ khác nhau: `request.url` luôn là
+      // `localhost:<port>`, còn origin để so thì lấy đúng giá trị của `-H`.
+      // Với `-H 127.0.0.1`, hai origin lệch, Next coi đây là rewrite RA NGOÀI và
+      // gửi lại request tới `/products/<slug>`: proxy chạy lần nữa, luật bóc
+      // tiền tố ở bước 2 trả 301 về `/<slug>`, và không trang chi tiết nào
+      // render được. `next dev` và `next start` không có `-H` đều không bị.
+      // (Dựng `dest` theo Host của request cũng KHÔNG cứu được: khi đó Next gửi
+      // request ra hẳn domain công khai.)
       const dest = new URL(`${INTERNAL_PREFIX[kind]}/${segments[0]}`, request.url);
       dest.search = url.search;
       return stripHeaders(NextResponse.rewrite(dest));
