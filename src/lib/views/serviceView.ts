@@ -260,14 +260,24 @@ export interface ResourcesSectionViewData {
   cards: ResourceCard[];
 }
 
-export function buildServicesResourcesView(page: ServicesPageData): ResourcesSectionViewData {
+/**
+ * `latestPosts` = 3 bài blog mới nhất (cùng nguồn với "Latest Sourcing Insights"
+ * trang chủ). Có thì hiện đúng 3 bài đó; Strapi lỗi / chưa có bài thì lùi về
+ * danh sách chọn tay trên CMS.
+ */
+export function buildServicesResourcesView(
+  page: ServicesPageData,
+  latestPosts: BlogPost[] = [],
+): ResourcesSectionViewData {
   const { resources } = page;
   return {
     tag: resources.tag?.label ?? "",
     headingLines: [resources.title, resources.titleHighlight].filter((s): s is string => Boolean(s)),
     ctaLabel: resources.viewAllButton?.label ?? null,
     ctaHref: resources.viewAllButton?.url ?? "/resources",
-    cards: buildResourceCards(resources.featuredResources, resources.featuredBlogPosts),
+    cards: latestPosts.length
+      ? buildResourceCards([], latestPosts)
+      : buildResourceCards(resources.featuredResources, resources.featuredBlogPosts),
   };
 }
 

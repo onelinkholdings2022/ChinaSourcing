@@ -14,6 +14,7 @@ import {
   serviceController,
   serviceSettingController,
   globalController,
+  blogPostController,
 } from "@/lib";
 import {
   buildServicesHeroView,
@@ -44,11 +45,12 @@ export async function generateMetadata(): Promise<Metadata> {
  * the rest are the shared components with this page's copy.
  */
 export default async function Page() {
-  const [pageResult, allResult, settingsResult, globalResult] = await Promise.all([
+  const [pageResult, allResult, settingsResult, globalResult, latestResult] = await Promise.all([
     servicesPageController.getPage(),
     serviceController.getAll(),
     serviceSettingController.getSettings(),
     globalController.getGlobal(),
+    blogPostController.getLatest(3),
   ]);
 
   const page = pageResult.data;
@@ -76,7 +78,7 @@ export default async function Page() {
   const usp = buildServicesUspView(page);
   const serviceList = buildServiceListView(allServices, settings);
   const caseStudies = buildServicesCaseStudiesView(page);
-  const resources = buildServicesResourcesView(page);
+  const resources = buildServicesResourcesView(page, latestResult.data ?? []);
   const cta = buildServicesCtaView(page);
 
   return (
