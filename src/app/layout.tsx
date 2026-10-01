@@ -36,6 +36,14 @@ export const metadata: Metadata = {
   ),
 };
 
+/** Google Tag Manager — snippet chính thức, giữ nguyên văn để GTM tự nhận diện. */
+const GTM_ID = "GTM-MW7F6KJZ";
+const GTM_SNIPPET = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','${GTM_ID}');`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -46,6 +54,11 @@ export default function RootLayout({
       lang="en"
       className={`${poppins.variable} ${lora.variable} h-full antialiased`}
     >
+      <head>
+        {/* Google Tag Manager */}
+        <script dangerouslySetInnerHTML={{ __html: GTM_SNIPPET }} />
+        {/* End Google Tag Manager */}
+      </head>
       {/*
        * `overflow-x-clip` rather than `-hidden`: `hidden` turns <body> into a
        * scroll container, and GSAP ScrollTrigger then resolves the scroller to
@@ -56,6 +69,16 @@ export default function RootLayout({
        * `height: auto`, so a percentage min-height would resolve to nothing.
        */}
       <body className="min-h-screen flex flex-col overflow-x-clip">
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
+        {/* End Google Tag Manager (noscript) */}
         {/* Sits above everything at z-9999 and covers the first paint —
             must render before {children} so it is in the DOM immediately. */}
         <PageTransition />
