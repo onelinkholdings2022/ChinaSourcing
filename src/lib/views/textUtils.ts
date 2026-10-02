@@ -53,6 +53,53 @@ export function extractToc(html: string | null | undefined): { href: string; lab
 }
 
 /**
+ * Mục lục + HTML đã có anchor, dùng cho trang bài viết.
+ *
+ * Markup `ez-toc-section` KHÔNG bền: CKEditor của Strapi bỏ các `<span>` rỗng
+ * mỗi lần biên tập viên bấm Save, và site WordPress gốc không còn để scrape lại.
+ * Tới 02/10/2026 cả 63 blog-post đã mất markup đó → hộp mục lục cạnh bài viết
+ * biến mất dù component vẫn còn nguyên.
+ *
+ * Nên: còn markup cũ thì đọc như cũ (giữ đúng id đã phát hành); hết thì dựng từ
+ * các `<h2>` của thân bài và gắn `id` vào chính heading đó để `#anchor` có chỗ
+ * đáp. Heading đã có `id` sẵn thì giữ nguyên id ấy.
+ */
+export function withTocAnchors(html: string | null | undefined): {
+  html: string;
+  toc: { href: string; label: string }[];
+} {
+  const source = html ?? "";
+  const legacy = extractToc(source);
+  if (legacy.length > 0) return { html: source, toc: legacy };
+
+  const toc: { href: string; label: string }[] = [];
+  const used = new Set<string>();
+  const out = source.replace(/<h2(\s[^>]*)?>([\s\S]*?)<\/h2>/gi, (whole, attrs = "", inner) => {
+    const label = stripHtml(inner);
+    if (!label) return whole;
+    const existing = /\sid="([^"]+)"/i.exec(attrs)?.[1];
+    if (existing) {
+      used.add(existing);
+      toc.push({ href: `#${existing}`, label });
+      return whole;
+    }
+    const base =
+      label
+        .normalize("NFKD")
+        .replace(/[̀-ͯ]/g, "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "") || "section";
+    let id = base;
+    for (let n = 2; used.has(id); n++) id = `${base}-${n}`;
+    used.add(id);
+    toc.push({ href: `#${id}`, label });
+    return `<h2 id="${id}"${attrs}>${inner}</h2>`;
+  });
+  return { html: out, toc };
+}
+
+/**
  * Rich text lưu ảnh của Media Library dưới đường dẫn TƯƠNG ĐỐI (`/uploads/…`)
  * để không hardcode host của Strapi vào DB — cùng một bản ghi phải chạy được ở
  * cả local lẫn production. `dangerouslySetInnerHTML` thì lại render nguyên xi,

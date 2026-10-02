@@ -1,5 +1,5 @@
 import { getMediaUrl } from "../api/media-url";
-import { stripHtml, estimateReadTime, formatDate, extractToc } from "./textUtils";
+import { stripHtml, estimateReadTime, formatDate, withTocAnchors } from "./textUtils";
 import { summarizeArticle } from "./articleSummary";
 import type { Resource } from "../types/resource";
 import type { BlogPost } from "../types/blog-post";
@@ -72,6 +72,7 @@ export function buildResourceArticleView(
   settings: ResourceSettingData | null,
   related: Resource[]
 ): ArticleViewData {
+  const body = withTocAnchors(resource.content);
   return {
     title: resource.title,
     subtitle: "",
@@ -84,8 +85,8 @@ export function buildResourceArticleView(
     featuredImage: getMediaUrl(resource.featureImage) ?? FALLBACK_IMAGE,
     featuredAlt: resource.featureImage?.alternativeText || resource.title,
     summary: summarizeArticle(resource.content),
-    toc: extractToc(resource.content),
-    html: resource.content ?? "",
+    toc: body.toc,
+    html: body.html,
     shareUrl: `${SITE}/resources/${resource.slug}/`,
     gated: resource.gated,
     subscribe: buildSubscribe(settings),
@@ -114,6 +115,7 @@ export function buildBlogPostArticleView(
   settings: ResourceSettingData | null,
   related: BlogPost[]
 ): ArticleViewData {
+  const body = withTocAnchors(post.content);
   return {
     title: post.title,
     subtitle: "",
@@ -125,8 +127,8 @@ export function buildBlogPostArticleView(
     featuredImage: getMediaUrl(post.featureImage) ?? FALLBACK_IMAGE,
     featuredAlt: post.featureImage?.alternativeText || post.title,
     summary: summarizeArticle(post.content),
-    toc: extractToc(post.content),
-    html: post.content ?? "",
+    toc: body.toc,
+    html: body.html,
     shareUrl: `${SITE}/${post.slug}/`,
     gated: post.gated,
     subscribe: buildSubscribe(settings),
