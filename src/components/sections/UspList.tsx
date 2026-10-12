@@ -22,6 +22,7 @@ export function UspList({
   intro,
   icon,
   image,
+  imageAlt,
   items,
 }: {
   tag: string;
@@ -29,6 +30,8 @@ export function UspList({
   intro?: string;
   icon: string | null;
   image: string | null;
+  /** Mặc định là `heading` — ảnh minh hoạ cho chính khối này. */
+  imageAlt?: string;
   items: UspListItem[];
 }) {
   return (
@@ -63,6 +66,7 @@ export function UspList({
                       <Image
                         src={icon}
                         alt=""
+                        aria-hidden
                         width={32}
                         height={32}
                         className="size-8"
@@ -84,7 +88,7 @@ export function UspList({
             {image && (
               <Image
                 src={image}
-                alt="Image"
+                alt={imageAlt || heading}
                 width={600}
                 height={600}
                 className="w-full h-auto max-h-[466px] object-contain rounded-lg"

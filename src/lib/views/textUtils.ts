@@ -114,6 +114,43 @@ export function resolveContentMedia(html: string | null | undefined): string {
   return html.replace(/(src|srcset)="(\/uploads\/)/g, `$1="${STRAPI_URL}$2`);
 }
 
+// alt là tên file ("boxed-storage-1.jpg") hoặc slug ("pillers-1") — WordPress
+// tự điền khi người đăng bài để trống, đọc lên không mô tả được gì.
+const FILENAME_ALT_RE = /^[\w-]+\.(?:jpe?g|png|webp|gif|svg|avif)$|^[a-z0-9]+(?:[-_][a-z0-9]+)+$/i;
+const HEADING_RE = /<h[2-4]\b[^>]*>([\s\S]*?)<\/h[2-4]>/gi;
+
+function escapeAttr(text: string): string {
+  return text.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+/**
+ * Chuẩn hoá alt của mọi `<img>` trong rich text CMS. Ảnh thiếu alt, alt rỗng
+ * hoặc alt là tên file được đặt lại theo heading gần nhất phía trên nó — chính
+ * là đề mục mà ảnh đó minh hoạ — và lùi về `fallback` (tiêu đề bài) khi ảnh
+ * nằm trước heading đầu tiên. Alt có nghĩa sẵn thì chỉ được cắt khoảng trắng.
+ */
+export function fixContentImageAlts(html: string, fallback: string): string {
+  if (!html || !html.includes("<img")) return html;
+
+  const headings: { at: number; text: string }[] = [];
+  for (const m of html.matchAll(HEADING_RE)) {
+    const text = stripHtml(m[1]);
+    if (text) headings.push({ at: m.index ?? 0, text });
+  }
+
+  return html.replace(/<img\b[^>]*>/gi, (tag, offset: number) => {
+    const current = /\salt\s*=\s*(?:"([^"]*)"|'([^']*)')/i.exec(tag);
+    const value = (current?.[1] ?? current?.[2] ?? "").trim();
+    let alt = value;
+    if (!value || FILENAME_ALT_RE.test(value)) {
+      const heading = headings.filter((h) => h.at < offset).pop()?.text;
+      alt = escapeAttr(stripHtml(heading || fallback));
+    }
+    if (current) return tag.replace(current[0], ` alt="${alt}"`);
+    return tag.replace(/^<img\b/i, `<img alt="${alt}"`);
+  });
+}
+
 /**
  * Theme cắt mọi excerpt in trên thẻ bài về 150 ký tự, lùi lại tới khoảng trắng
  * gần nhất rồi nối "..." (đúng hành vi `wp_html_excerpt`) — thẻ `.resource-card`

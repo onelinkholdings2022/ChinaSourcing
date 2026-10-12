@@ -34,7 +34,7 @@ export function CoreValues({
             <Reveal key={card.title} delay={150 + i * 50} className="space-y-3">
               <Image
                 src={card.icon}
-                alt="icon"
+                alt={`${card.title} icon`}
                 width={32}
                 height={32}
                 className="size-8 min-w-8"

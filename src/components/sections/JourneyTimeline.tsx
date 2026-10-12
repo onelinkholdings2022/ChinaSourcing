@@ -219,7 +219,7 @@ export function JourneyTimeline({
                   {ship && (
                     <Image
                       src={ship}
-                      alt="Ship"
+                      alt="Stacked shipping containers loaded for export from China"
                       // Ship.png là ảnh dọc 611x1800 (chồng container). Khai
                       // đúng tỉ lệ gốc + `h-auto`: để 300x300 thì next/image ghi
                       // height="300" và ảnh bị cắt thành hình vuông, trong khi

@@ -1,4 +1,4 @@
-import { getMediaUrl } from "../api/media-url";
+import { getMediaUrl, toLogoItems, type LogoItem } from "../api/media-url";
 import type { AboutPageData } from "../types/about-page";
 import type { TeamMember } from "../types/team-member";
 import type { CaseStudy } from "../types/case-study";
@@ -236,6 +236,6 @@ export function buildCtaBannerView(data: AboutPageData): CtaBannerViewData {
   };
 }
 
-export function buildAboutLogosView(data: AboutPageData): string[] {
-  return data.logoMarquee.logos.map((l) => getMediaUrl(l.logo) ?? FALLBACK_IMAGE);
+export function buildAboutLogosView(data: AboutPageData): LogoItem[] {
+  return toLogoItems(data.logoMarquee.logos, FALLBACK_IMAGE);
 }

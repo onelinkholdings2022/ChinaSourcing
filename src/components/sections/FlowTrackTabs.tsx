@@ -243,6 +243,7 @@ export function FlowTrackTabs({
               <Image
                 src="/images/button-next.svg"
                 alt=""
+                aria-hidden
                 width={48}
                 height={48}
                 className="w-12 h-12 duration-300 rotate-180"
@@ -262,6 +263,7 @@ export function FlowTrackTabs({
               <Image
                 src="/images/button-next.svg"
                 alt=""
+                aria-hidden
                 width={48}
                 height={48}
                 className="w-12 h-12 duration-300"

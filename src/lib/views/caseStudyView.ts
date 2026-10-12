@@ -1,5 +1,5 @@
 import { getMediaUrl } from "../api/media-url";
-import { resolveContentMedia } from "./textUtils";
+import { resolveContentMedia, fixContentImageAlts } from "./textUtils";
 import type { CaseStudiesPageData, CaseStudySettingData } from "../types/case-studies-page";
 import type { CaseStudy } from "../types/case-study";
 import type { CaseStudyCard, FilterOption } from "@/components/sections/CaseStudyList";
@@ -193,12 +193,12 @@ export function buildCaseStudyBlocksView(cs: CaseStudy): CaseStudyBlock[] {
     {
       tag: cs.challengeTag?.label ?? "",
       heading: "The Challenge",
-      html: resolveContentMedia(cs.challengeContent),
+      html: fixContentImageAlts(resolveContentMedia(cs.challengeContent), `${cs.title} – the challenge`),
     },
     {
       tag: cs.solutionTag?.label ?? "",
       heading: "The Solution",
-      html: resolveContentMedia(cs.solutionContent),
+      html: fixContentImageAlts(resolveContentMedia(cs.solutionContent), `${cs.title} – the solution`),
     },
   ];
 }

@@ -1,10 +1,11 @@
 import Image from "next/image";
+import type { LogoItem } from "@/lib/api/media-url";
 
 /**
  * Infinite logo strip. The list is rendered twice and the track is translated
  * by -50%, so the loop is seamless. Edge fades sit on top at both ends.
  */
-export function LogoMarquee({ clientLogos }: { clientLogos: string[] }) {
+export function LogoMarquee({ clientLogos }: { clientLogos: LogoItem[] }) {
   const loop = [...clientLogos, ...clientLogos];
 
   return (
@@ -15,10 +16,10 @@ export function LogoMarquee({ clientLogos }: { clientLogos: string[] }) {
 
         <div className="flex w-max animate-marquee">
           {loop.map((logo, i) => (
-            <div key={`${logo}-${i}`} className="px-8 shrink-0">
+            <div key={`${logo.src}-${i}`} className="px-8 shrink-0">
               <Image
-                src={logo}
-                alt=""
+                src={logo.src}
+                alt={logo.alt}
                 width={100}
                 height={100}
                 className="size-[100px] object-contain"

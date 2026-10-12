@@ -30,7 +30,7 @@ export function Hero({ hero }: { hero: HeroViewData }) {
         <div className="absolute inset-0 lg:rounded-3xl overflow-hidden z-0">
           <Image
             src={hero.poster}
-            alt=""
+            alt={hero.posterAlt}
             fill
             priority
             sizes="100vw"

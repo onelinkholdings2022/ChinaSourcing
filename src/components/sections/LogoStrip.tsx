@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Tag } from "@/components/ui/button";
 import { Reveal } from "@/components/Reveal";
 import { cn } from "@/lib/utils";
+import type { LogoItem } from "@/lib/api/media-url";
 
 /**
  * The certification / partner logo marquee.
@@ -25,7 +26,7 @@ export function LogoStrip({
   intro,
   className = "logo container text-center spacing",
 }: {
-  logos: string[];
+  logos: LogoItem[];
   tag?: string;
   heading?: string;
   intro?: string;
@@ -80,10 +81,10 @@ export function LogoStrip({
           )}
         >
           {loop.map((logo, i) => (
-            <div key={`${logo}-${i}`} className="shrink-0 px-3 xl:px-[60px]">
+            <div key={`${logo.src}-${i}`} className="shrink-0 px-3 xl:px-[60px]">
               <Image
-                src={logo}
-                alt=""
+                src={logo.src}
+                alt={logo.alt}
                 width={100}
                 height={100}
                 className="size-[100px] object-cover"

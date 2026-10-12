@@ -26,3 +26,25 @@ export function mediaHeight(media?: StrapiMedia | null): number | undefined {
 export function mediaAlt(media?: StrapiMedia | null, fallback = ""): string {
   return media?.alternativeText || fallback;
 }
+
+/** Một logo trong dải marquee: ảnh + alt đi cùng nhau. */
+export interface LogoItem {
+  src: string;
+  alt: string;
+}
+
+/**
+ * Dải huy hiệu chứng nhận (About, trang chủ, `/products`). Alt lấy `name` của
+ * item → `alternativeText` của media → nhãn chung. Cả 7 item hiện để trống
+ * `name` bên CMS và tên file là `image-85.webp`…, nên chưa điền thì mới rơi
+ * xuống nhãn chung.
+ */
+export function toLogoItems(
+  logos: { name: string | null; logo: StrapiMedia | null }[],
+  fallbackSrc: string,
+): LogoItem[] {
+  return logos.map((l) => ({
+    src: getMediaUrl(l.logo) ?? fallbackSrc,
+    alt: l.name?.trim() || mediaAlt(l.logo) || "Logistics certification badge",
+  }));
+}

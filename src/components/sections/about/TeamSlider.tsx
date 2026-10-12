@@ -210,7 +210,7 @@ export function TeamSlider({
                       {Math.abs(i - vi) <= 6 && (
                         <Image
                           src={member.image}
-                          alt={member.name.toLowerCase()}
+                          alt={member.position ? `${member.name}, ${member.position}` : member.name}
                           fill
                           sizes="(max-width: 1023px) 300px, 700px"
                           className={cn(
@@ -270,6 +270,7 @@ export function TeamSlider({
             <Image
               src="/images/button-next.svg"
               alt=""
+              aria-hidden
               width={48}
               height={48}
               className="w-full h-full object-cover rotate-180"
@@ -284,6 +285,7 @@ export function TeamSlider({
             <Image
               src="/images/button-next.svg"
               alt=""
+              aria-hidden
               width={48}
               height={48}
               className="w-full h-full object-cover"

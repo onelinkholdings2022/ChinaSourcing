@@ -158,6 +158,7 @@ export function ServiceCarousel({
               <Image
                 src="/images/button-next.svg"
                 alt=""
+                aria-hidden
                 width={48}
                 height={48}
                 className="w-full h-full object-cover rotate-180"
@@ -176,6 +177,7 @@ export function ServiceCarousel({
               <Image
                 src="/images/button-next.svg"
                 alt=""
+                aria-hidden
                 width={48}
                 height={48}
                 className="w-full h-full object-cover"

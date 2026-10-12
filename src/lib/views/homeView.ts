@@ -1,4 +1,4 @@
-import { getMediaUrl } from "../api/media-url";
+import { getMediaUrl, toLogoItems, type LogoItem } from "../api/media-url";
 import type { HomepageData } from "../types/homepage";
 import type { CaseStudy } from "../types/case-study";
 import type { BlogPost } from "../types/blog-post";
@@ -19,6 +19,7 @@ export interface HeroViewData {
   subheading: string;
   cta: { idle: string; hover: string };
   poster: string;
+  posterAlt: string;
   /** Vimeo embed (đã kèm sẵn `autoplay=1&muted=1&loop=1` từ CMS) — null thì chỉ hiện poster. */
   videoUrl: string | null;
 }
@@ -110,6 +111,9 @@ export function buildHeroView(data: HomepageData): HeroViewData {
       hover: hero.ctaButton?.hoverLabel ?? "",
     },
     poster: getMediaUrl(hero.posterImage) ?? FALLBACK_IMAGE,
+    // Không đọc `alternativeText` của poster: bên CMS nó đang là "logo cns",
+    // trong khi ảnh là khung hình đầu của video hero chứ không phải logo.
+    posterAlt: `China Sourcing Co – ${(hero.subtitle || hero.title || "sourcing partner in Asia").replace(/\.$/, "")}`,
     videoUrl: hero.videoUrl ? toBackgroundVimeoUrl(hero.videoUrl) : null,
   };
 }
@@ -238,9 +242,9 @@ export function buildMissionVideoView(data: HomepageData): MissionVideoViewData 
   };
 }
 
-export function buildClientLogosView(about: AboutPageData | null): string[] {
+export function buildClientLogosView(about: AboutPageData | null): LogoItem[] {
   if (!about) return [];
-  return about.logoMarquee.logos.map((l) => getMediaUrl(l.logo) ?? FALLBACK_IMAGE);
+  return toLogoItems(about.logoMarquee.logos, FALLBACK_IMAGE);
 }
 
 export function buildFaqsView(data: HomepageData): FaqViewData[] {

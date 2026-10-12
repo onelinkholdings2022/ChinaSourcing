@@ -1,4 +1,4 @@
-import { getMediaUrl } from "../api/media-url";
+import { getMediaUrl, toLogoItems, type LogoItem } from "../api/media-url";
 import { stripHtmlKeepBreaks } from "./textUtils";
 import { buildPartnerTabsView, type PartnerTabViewData } from "./homeView";
 import type { RouteSlugTable } from "../routing/routeSlugs";
@@ -106,7 +106,7 @@ export interface LogoStripViewData {
   tag: string;
   heading: string;
   intro: string;
-  items: string[];
+  items: LogoItem[];
 }
 
 export function buildCertificationsView(page: ProductsPageData): LogoStripViewData {
@@ -115,7 +115,7 @@ export function buildCertificationsView(page: ProductsPageData): LogoStripViewDa
     tag: certifications.tag?.label ?? "",
     heading: certifications.heading ?? "",
     intro: certifications.description ?? "",
-    items: certifications.logos.map((l) => getMediaUrl(l.logo) ?? FALLBACK_IMAGE),
+    items: toLogoItems(certifications.logos, FALLBACK_IMAGE),
   };
 }
 

@@ -1,4 +1,4 @@
-import { resolveContentMedia } from "./textUtils";
+import { resolveContentMedia, fixContentImageAlts } from "./textUtils";
 import type { PrivacyPolicyPageData } from "../types/privacy-policy-page";
 
 export interface TextBlockSectionView {
@@ -28,7 +28,7 @@ export function buildTextBlockView(data: PrivacyPolicyPageData): TextBlockViewDa
       .filter((s) => (s.heading ?? "").trim() || (s.body ?? "").trim())
       .map((s) => ({
         heading: s.heading ?? "",
-        body: resolveContentMedia(s.body),
+        body: fixContentImageAlts(resolveContentMedia(s.body), s.heading || data.title || "China Sourcing Co"),
       })),
   };
 }

@@ -79,7 +79,7 @@ export function SimpleCardGrid({
               {card.icon && (
                 <Image
                   src={card.icon}
-                  alt="icon"
+                  alt={`${card.title} icon`}
                   width={32}
                   height={32}
                   className="size-8 min-w-8"

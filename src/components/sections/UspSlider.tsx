@@ -209,6 +209,7 @@ export function UspSlider({ usps }: { usps: UspViewData[] }) {
                       <Image
                         src="/images/star-05-white.png"
                         alt=""
+                        aria-hidden
                         width={40}
                         height={40}
                         draggable={false}

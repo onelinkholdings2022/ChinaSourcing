@@ -1,5 +1,5 @@
 import { getMediaUrl } from "../api/media-url";
-import { stripHtml, estimateReadTime, formatDate, withTocAnchors } from "./textUtils";
+import { stripHtml, estimateReadTime, formatDate, withTocAnchors, fixContentImageAlts } from "./textUtils";
 import { summarizeArticle } from "./articleSummary";
 import type { Resource } from "../types/resource";
 import type { BlogPost } from "../types/blog-post";
@@ -86,7 +86,7 @@ export function buildResourceArticleView(
     featuredAlt: resource.featureImage?.alternativeText || resource.title,
     summary: summarizeArticle(resource.content),
     toc: body.toc,
-    html: body.html,
+    html: fixContentImageAlts(body.html, resource.title),
     shareUrl: `${SITE}/resources/${resource.slug}/`,
     gated: resource.gated,
     subscribe: buildSubscribe(settings),
@@ -128,7 +128,7 @@ export function buildBlogPostArticleView(
     featuredAlt: post.featureImage?.alternativeText || post.title,
     summary: summarizeArticle(post.content),
     toc: body.toc,
-    html: body.html,
+    html: fixContentImageAlts(body.html, post.title),
     shareUrl: `${SITE}/${post.slug}/`,
     gated: post.gated,
     subscribe: buildSubscribe(settings),
