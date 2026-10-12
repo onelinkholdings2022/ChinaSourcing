@@ -41,7 +41,7 @@ export function TestimonialCard({ item }: { item: Testimonial }) {
         </blockquote>
         <Image
           src="/images/quote-2.svg"
-          alt=""
+          alt="Closing quotation mark"
           aria-hidden
           width={60}
           height={60}

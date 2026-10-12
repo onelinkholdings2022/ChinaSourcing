@@ -52,7 +52,7 @@ export function LogoStrip({
         <div className="absolute z-[2] w-10 h-full top-0 left-[-5px] opacity-70">
           <Image
             src="/images/onelink_white_overlay.png"
-            alt=""
+            alt="Decorative edge fade"
             aria-hidden
             width={40}
             height={100}
@@ -62,7 +62,7 @@ export function LogoStrip({
         <div className="absolute z-[2] w-10 h-full top-0 right-0 opacity-70">
           <Image
             src="/images/onelink_white_overlay.png"
-            alt=""
+            alt="Decorative edge fade"
             aria-hidden
             width={40}
             height={100}

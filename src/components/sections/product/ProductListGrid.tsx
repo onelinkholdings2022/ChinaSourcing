@@ -85,7 +85,7 @@ export function ProductListGrid({
                     </div>
                     <Image
                       src="/images/arrow-next-button.svg"
-                      alt=""
+                      alt="Arrow icon"
                       aria-hidden
                       width={48}
                       height={48}

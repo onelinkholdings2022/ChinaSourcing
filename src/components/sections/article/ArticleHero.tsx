@@ -29,7 +29,7 @@ export function ArticleHero({
     <div className="relative pt-24 lg:pt-[120px] overflow-hidden">
       <Image
         src="/images/pattern-left.svg"
-        alt=""
+        alt="Decorative background pattern"
         aria-hidden
         width={503}
         height={372}
@@ -37,7 +37,7 @@ export function ArticleHero({
       />
       <Image
         src="/images/pattern-right.svg"
-        alt=""
+        alt="Decorative background pattern"
         aria-hidden
         width={503}
         height={372}
@@ -63,7 +63,7 @@ export function ArticleHero({
                   {fact.icon && (
                     <Image
                       src={fact.icon}
-                      alt=""
+                      alt={`${fact.label} icon`}
                       aria-hidden
                       width={24}
                       height={24}

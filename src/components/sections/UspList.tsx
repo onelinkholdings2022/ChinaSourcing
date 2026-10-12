@@ -65,7 +65,7 @@ export function UspList({
                     {icon && (
                       <Image
                         src={icon}
-                        alt=""
+                        alt="Star icon"
                         aria-hidden
                         width={32}
                         height={32}

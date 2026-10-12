@@ -193,7 +193,7 @@ export function CaseStudySlider({
           >
             <Image
               src="/images/button-next.svg"
-              alt=""
+              alt="Previous arrow"
               aria-hidden
               width={48}
               height={48}
@@ -209,7 +209,7 @@ export function CaseStudySlider({
           >
             <Image
               src="/images/button-next.svg"
-              alt=""
+              alt="Next arrow"
               aria-hidden
               width={48}
               height={48}

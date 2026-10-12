@@ -32,7 +32,7 @@ export function CaseStudyHero({
     <section className="spacing relative overflow-hidden">
       <Image
         src="/images/pattern-left.svg"
-        alt=""
+        alt="Decorative background pattern"
         aria-hidden
         width={503}
         height={372}
@@ -40,7 +40,7 @@ export function CaseStudyHero({
       />
       <Image
         src="/images/pattern-right.svg"
-        alt=""
+        alt="Decorative background pattern"
         aria-hidden
         width={503}
         height={372}

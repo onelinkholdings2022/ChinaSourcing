@@ -56,7 +56,7 @@ export function FounderQuote({
         <Reveal className="relative mt-6 lg:mt-10 mx-6">
           <Image
             src="/images/quote-1.svg"
-            alt=""
+            alt="Opening quotation mark"
             width={96}
             height={70}
             aria-hidden
@@ -76,7 +76,7 @@ export function FounderQuote({
           </blockquote>
           <Image
             src="/images/quote-2.svg"
-            alt=""
+            alt="Closing quotation mark"
             width={96}
             height={70}
             aria-hidden

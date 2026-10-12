@@ -117,7 +117,7 @@ export function ResourceListing({
                 <div className="flex gap-2 mt-[75px] items-center">
                   <Image
                     src="/images/calendar-grey.svg"
-                    alt=""
+                    alt="Calendar icon"
                     aria-hidden
                     width={24}
                     height={24}

@@ -89,10 +89,10 @@ export function BlogCard({
         </p>
 
         <div className="flex items-center gap-2 body-3 text-grey-200 px-6 pb-6 mt-20 font-lora">
-          <Image src="/images/calendar.svg" alt="" aria-hidden width={24} height={24} className="w-6 h-6" />
+          <Image src="/images/calendar.svg" alt="Calendar icon" aria-hidden width={24} height={24} className="w-6 h-6" />
           <div className="font-lora">{card.date}</div>
           <div className="w-[1px] h-7 bg-grey-200" />
-          <Image src="/images/clock.svg" alt="" aria-hidden width={24} height={24} className="w-6 h-6" />
+          <Image src="/images/clock.svg" alt="Clock icon" aria-hidden width={24} height={24} className="w-6 h-6" />
           <div className="font-lora">{card.readingTime}</div>
         </div>
       </div>

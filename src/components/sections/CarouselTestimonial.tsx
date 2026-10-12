@@ -159,7 +159,7 @@ export function CarouselTestimonial({
                   </blockquote>
                   <Image
                     src="/images/quote-2.svg"
-                    alt=""
+                    alt="Closing quotation mark"
                     aria-hidden
                     width={60}
                     height={60}
@@ -208,7 +208,7 @@ export function CarouselTestimonial({
         >
           <Image
             src="/images/button-next.svg"
-            alt=""
+            alt="Previous arrow"
             aria-hidden
             width={48}
             height={48}
@@ -227,7 +227,7 @@ export function CarouselTestimonial({
         >
           <Image
             src="/images/button-next.svg"
-            alt=""
+            alt="Next arrow"
             aria-hidden
             width={48}
             height={48}

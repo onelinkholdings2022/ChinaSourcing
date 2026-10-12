@@ -208,7 +208,7 @@ export function UspSlider({ usps }: { usps: UspViewData[] }) {
                           the other pages use. */}
                       <Image
                         src="/images/star-05-white.png"
-                        alt=""
+                        alt="Star icon"
                         aria-hidden
                         width={40}
                         height={40}

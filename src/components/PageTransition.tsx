@@ -345,7 +345,7 @@ export function PageTransition() {
           ref={logo1Ref}
           className="transition-logo"
           src="/images/logox3.png"
-          alt=""
+          alt="China Sourcing Co logo"
           aria-hidden
         />
       </div>
@@ -353,7 +353,7 @@ export function PageTransition() {
       <div className="overlay layer-2" ref={layer2Ref}>
         <div className="transition-group" ref={groupRef}>
           {/* eslint-disable-next-line @next/next/no-img-element -- as above */}
-          <img className="transition-logo" src="/images/logox3.png" alt="" aria-hidden />
+          <img className="transition-logo" src="/images/logox3.png" alt="China Sourcing Co logo" aria-hidden />
           <div className="transition-percent" ref={percentRef}>
             0%
           </div>
