@@ -478,13 +478,13 @@ theme's icon SVGs (redrawn as React components in `src/components/icons.tsx`).
 
     Dữ liệu SEO đã được đổ đầy — xem deviation 43.
 
-41. **Favicon là logo "CH", bọc PNG trong SVG.** `src/app/icon.svg` (viewBox
-    512, nền trong suốt, PNG đã crop theo bbox mực và hạ xuống 496px nhúng
-    base64), kèm `favicon.ico` (16/32/48/64) cho client cũ và `apple-icon.png`
-    180x180 nền trắng — iOS ghép nền đen cho ảnh trong suốt. Nguồn:
-    `Logo_China Sourcing-06.png`, 3750x2203, một màu `rgb(46 54 143)`. Vì là
-    raster nhúng nên nó KHÔNG đổi màu theo dark mode; muốn vector thật (và file
-    ~2KB thay vì 17KB) thì cần bản AI/EPS gốc.
+41. **Favicon chỉ dùng `src/app/icon.svg`.** Theo yêu cầu: tab trình duyệt
+    phải hiện đúng file SVG đó, không ảnh nào khác. `favicon.ico` và
+    `apple-icon.png` đã bị xoá — Next.js tự sinh `<link rel="icon">` cho mọi
+    file icon có trong `app/`, và khi có cả `.ico` lẫn `.svg` thì trình duyệt
+    có thể chọn `.ico`. Hệ quả: client quá cũ không hỗ trợ favicon SVG sẽ không
+    có icon, và iOS "Add to Home Screen" dùng ảnh chụp trang thay cho icon.
+    Đừng thêm lại `favicon.ico` / `icon.png` / `apple-icon.*` vào `app/`.
 
 42. **`applyDeepPopulate` giờ tôn trọng `fields`.** Controller Strapi gắn deep
     populate cho mọi `find` và chỉ bỏ qua khi query đã có `populate`, nên
