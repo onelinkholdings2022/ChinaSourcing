@@ -11,7 +11,6 @@ export type ResourceCard = {
   /** Post type shown above the title ("Blog"). Absent on the service pages. */
   category?: string | null;
   title: string;
-  excerpt: string;
   date: string;
   readTime: string;
 };
@@ -19,9 +18,9 @@ export type ResourceCard = {
 /**
  * `.resource-card` — three linked article cards on the grey band.
  *
- * `grow` on both the title and the excerpt is what keeps the meta row flush
- * with the bottom of every card regardless of how long the copy runs; the
- * original leans on it rather than a fixed height.
+ * Category + title + meta only, no excerpt — the same content as the related
+ * cards on the article page. `grow` on the title keeps the meta row flush with
+ * the bottom of every card regardless of how long the title runs.
  */
 export function ResourceCards({
   tag,
@@ -76,10 +75,7 @@ export function ResourceCards({
                   <h3 className="body-1 mt-2 mb-4 font-medium px-6 grow">
                     {card.title}
                   </h3>
-                  <p className="body-3 font-medium text-dark-blue-400 px-6 grow">
-                    {card.excerpt}
-                  </p>
-                  <div className="flex items-center gap-2 body-3 text-grey-200 px-6 pb-6 mt-20 font-lora">
+                  <div className="flex items-center gap-2 body-3 text-grey-200 px-6 pb-6 mt-4 font-lora">
                     <CalendarIcon className="w-6 h-6" />
                     <div className="font-lora">{card.date}</div>
                     <div className="w-px h-7 bg-grey-200" />

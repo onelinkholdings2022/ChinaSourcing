@@ -1,89 +1,85 @@
 import Image from "next/image";
 import { ArticleSummary } from "@/components/sections/article/ArticleSummary";
 
-/** One row of the hero's pale blue fact box. */
-export type ArticleFact = { label: string; icon: string | null; value: string };
-
 /**
- * The opener of an article — centred title over a pale blue fact box
- * (Tag / Date / Reading Time), with the same two blurred wedges as the
- * case-study hero.
+ * Mở bài — thiết kế v2.
  *
- * Not a `<section>` on the original but a plain `<div>`, and its top padding
- * (`pt-24 lg:pt-[120px]`) is what clears the fixed header — so the page does
- * not add its own.
+ * Desktop (≥768px): mọi thứ canh giữa. Pill category → H1 40px navy (tối đa
+ * 800px, `text-wrap: balance`) → ô 3 cột Category / Published / Reading Time
+ * (720px) → ô Summary → ảnh 480px bo 20px.
+ *
+ * Mobile: canh trái, H1 28px, ô 3 cột rút còn MỘT dòng "26 Oct 2026 · 11 min
+ * read", Summary (viền chạy vòng + gõ chữ, Show More khi tràn 2 dòng), ảnh 16:9.
+ *
+ * Các khối hero hiện lên một lần (fade-up 24px / 500ms, trễ 100ms mỗi khối) —
+ * `.ah-rv` trong globals.css, tắt khi `prefers-reduced-motion`.
  */
 export function ArticleHero({
   title,
-  subtitle,
-  facts,
+  category,
+  publishedShort,
+  publishedLong,
+  readingTime,
   summary,
+  image,
+  imageAlt,
 }: {
   title: string;
-  subtitle: string;
-  facts: ArticleFact[];
-  /** Rỗng thì không dựng ô Summary — xem `ArticleViewData.summary`. */
+  category: string;
+  publishedShort: string;
+  publishedLong: string;
+  readingTime: string;
   summary: string;
+  image: string | null;
+  imageAlt: string;
 }) {
+  const facts = [
+    { label: "Category", value: category },
+    { label: "Published", value: publishedShort },
+    { label: "Reading Time", value: readingTime },
+  ].filter((f) => f.value);
+
   return (
-    <div className="relative pt-24 lg:pt-[120px] overflow-hidden">
-      <Image
-        src="/images/pattern-left.svg"
-        alt="Decorative background pattern"
-        aria-hidden
-        width={503}
-        height={372}
-        className="absolute w-[503px] h-[372px] -bottom-[96px] left-0 -translate-x-1/2 -translate-y-1/3 rotate-[40.692deg] -z-10 hidden md:block"
-      />
-      <Image
-        src="/images/pattern-right.svg"
-        alt="Decorative background pattern"
-        aria-hidden
-        width={503}
-        height={372}
-        className="absolute w-[503px] h-[372px] rotate-[40.692deg] top-0 -translate-y-1/3 right-0 translate-x-1/2 -z-10 hidden md:block"
-      />
-
-      <div className="container z-10">
-        <div className="md:w-11/12 md:mx-auto max-w-[800px]">
-          <h1 className="article-title font-medium text-center mb-4">{title}</h1>
-          {/* The theme prints this paragraph even when empty — posts have no
-              subtitle, only the resource downloads do. */}
-          <p className="text-center body-1 text-grey-600">{subtitle}</p>
+    <section className="mx-auto max-w-[1248px] px-4 pt-6 md:px-6 md:pt-24 flex flex-col items-start md:items-center md:text-center">
+      {category && (
+        <div className="ah-rv rounded-full border border-cyan-400 text-cyan-400 px-3 py-1 text-xs md:px-4 md:py-1.5 md:text-sm">
+          {category}
         </div>
+      )}
 
-        <div className="mt-6 lg:mt-10 bg-cyan-50 p-6 lg:px-10 lg:py-6 max-w-[772px] w-full lg:w-4/5 mx-auto rounded-lg flex justify-center items-center">
-          <div className="flex flex-col sm:flex-row justify-center gap-6 md:justify-between w-full">
-            {facts.map((fact) => (
-              <div
-                key={fact.label}
-                className="flex flex-row sm:flex-col justify-between gap-2 w-full sm:w-fit"
-              >
-                <div className="inline-flex gap-2 body-3 text-cyan-900 font-semibold">
-                  {fact.icon && (
-                    <Image
-                      src={fact.icon}
-                      alt={`${fact.label} icon`}
-                      aria-hidden
-                      width={24}
-                      height={24}
-                      className="w-6 h-6"
-                    />
-                  )}
-                  {fact.label}
-                </div>
-                <div className="body-2 text-grey-600 font-medium">
-                  {fact.value}
-                </div>
-              </div>
-            ))}
+      <h1 className="ah-rv ah-d1 mt-3.5 md:mt-5 max-w-[800px] text-[28px] md:text-[40px] leading-[1.3] font-medium text-dark-blue-950 [text-wrap:balance]">
+        {title}
+      </h1>
+
+      {/* Mobile: một dòng meta thay cho ô 3 cột. */}
+      <p className="md:hidden mt-3 text-[13px] text-[#5A6280]">
+        {[publishedLong, readingTime].filter(Boolean).join(" · ")}
+      </p>
+
+      <dl className="ah-rv ah-d2 hidden md:grid mt-10 w-full max-w-[720px] grid-cols-3 gap-4 rounded-lg bg-[#EEF3FD] px-8 py-[22px] text-left text-sm">
+        {facts.map((fact) => (
+          <div key={fact.label}>
+            <dt className="font-semibold text-dark-blue-950">{fact.label}</dt>
+            <dd className="mt-2 text-base text-grey-600">{fact.value}</dd>
           </div>
-        </div>
+        ))}
+      </dl>
 
-        {/* Ô Summary nằm ngay dưới ô Tag/Date/Reading Time và mượn đúng
-            bảng màu của nó. */}
-        {summary && <ArticleSummary text={summary} />}
-      </div>
-    </div>
+      {summary && <ArticleSummary text={summary} />}
+
+      {image && (
+        <div className="mt-[18px] md:mt-14 w-full overflow-hidden rounded-xl md:rounded-[20px] bg-[#D9DDE4]">
+          <Image
+            src={image}
+            alt={imageAlt}
+            width={1200}
+            height={480}
+            priority
+            sizes="(min-width: 1248px) 1200px, 100vw"
+            className="w-full aspect-video md:aspect-auto md:h-[480px] object-cover"
+          />
+        </div>
+      )}
+    </section>
   );
 }

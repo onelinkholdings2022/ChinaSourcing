@@ -56,7 +56,7 @@ export default async function ResourcePage({
   const settings = settingsResult.data;
   const global = globalResult.data;
 
-  const article = buildResourceArticleView(resource, settings, all);
+  const article = await buildResourceArticleView(resource, settings, all);
 
   return (
     <>

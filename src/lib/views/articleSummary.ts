@@ -62,7 +62,7 @@ const MAX_OVERLAP = 0.6;
  * tóm tắt in ra nguyên văn nên phải giải mã rộng hơn, không thì ô Summary hiện
  * "China&#8217;s trade".
  */
-function decodeEntities(text: string): string {
+export function decodeEntities(text: string): string {
   return text
     .replace(/&#(\d+);/g, (_, code: string) => String.fromCodePoint(Number(code)))
     .replace(/&#x([0-9a-f]+);/gi, (_, code: string) => String.fromCodePoint(parseInt(code, 16)))

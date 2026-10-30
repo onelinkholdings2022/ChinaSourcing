@@ -1,42 +1,57 @@
 import { getMediaUrl } from "../api/media-url";
-import { stripHtml, estimateReadTime, formatDate, withTocAnchors, fixContentImageAlts } from "./textUtils";
+import { stripHtml, estimateReadTime, formatDate, withTocAnchors, fixContentImageAlts, resolveContentMedia } from "./textUtils";
 import { summarizeArticle } from "./articleSummary";
+import { addFaqDividers, decorateLinks, splitArticleBlocks, type ArticleBlock } from "./articleContent";
+import { fetchArticleCtas, buildLinkPreviews, type ArticleCtaData, type LinkPreviewData } from "./articleExtras";
 import type { Resource } from "../types/resource";
 import type { BlogPost } from "../types/blog-post";
 import type { ResourceSettingData } from "../types/resources-page";
-import type { ArticleFact } from "@/components/sections/article/ArticleHero";
 import type { BlogCardData } from "@/components/sections/resources/BlogCard";
 
 const FALLBACK_IMAGE = "/images/blog-fallback.png";
 const RELATED_COUNT = 3;
+const SITE = "https://chinasourcing.co";
 
-// Icon cố định theo loại fact — không có field CMS tương ứng, y hệt bản gốc.
-const TAG_ICON = "/images/tag-01.svg";
-const CALENDAR_ICON = "/images/calendar-dl.svg";
-const CLOCK_ICON = "/images/clock-dl.svg";
-
+/**
+ * Dữ liệu trang bài viết — 12 resource + mọi blog post dùng chung một khuôn.
+ *
+ * Bố cục theo thiết kế "CNS Blog Layout Redesign" (v2): hero canh giữa (tag
+ * category → H1 → ô Category/Published/Reading Time → ô Summary → ảnh), thân bài
+ * ba cột (mục lục dính bên trái, bài 720px, cột phải trống), cuối trang là dải
+ * bài liên quan.
+ */
 export interface ArticleViewData {
   title: string;
-  subtitle: string;
-  facts: ArticleFact[];
+  /** Category đầu tiên của bài — pill trên H1 và ô "Category". */
+  category: string;
+  /** `26/10/2026` — ô "Published" ở desktop. */
+  publishedShort: string;
+  /** `26 Oct 2026` — dòng meta ở mobile. */
+  publishedLong: string;
+  readingTime: string;
   featuredImage: string | null;
   featuredAlt: string;
-  /**
-   * Tóm tắt cho ô Summary đầu bài, trích từ CHÍNH THÂN BÀI. Chuỗi rỗng khi thân
-   * bài chưa có đoạn văn nào đáng kể — lúc đó `ArticleHero` không dựng ô.
-   */
+  /** Rỗng khi thân bài chưa có đoạn nào đáng kể — lúc đó không dựng ô Summary. */
   summary: string;
   toc: { href: string; label: string }[];
-  html: string;
+  /** Thân bài đã tách: khúc HTML xen kẽ khung CTA, đúng thứ tự trong CKEditor. */
+  blocks: ArticleBlock[];
+  ctas: Record<string, ArticleCtaData>;
+  /** Popup xem trước của link nội bộ, theo key đường dẫn (`/quality-control`). */
+  previews: Record<string, LinkPreviewData>;
   shareUrl: string;
-  /** Công tắc điền form mới đọc được — cả `resource.gated` lẫn `blog-post.gated`. */
+  /** Công tắc khoá bài — `resource.gated` / `blog-post.gated` bên CMS, logic cũ giữ nguyên. */
   gated: boolean;
   subscribe: { tag: string; heading: string; body: string };
-  related: { tag: string; heading: string; cards: BlogCardData[]; ctaLabel: string; ctaHref: string };
-  cta: { tag: string; heading: string; body: string; ctaLabel: string; sectionClass: string };
+  related: { tag: string; heading: string; cards: BlogCardData[] };
 }
 
-const SITE = "https://chinasourcing.co";
+function formatLongDate(iso: string | null | undefined): string {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+}
 
 function buildSubscribe(settings: ResourceSettingData | null) {
   const lc = settings?.leadCapture;
@@ -49,45 +64,41 @@ function buildSubscribe(settings: ResourceSettingData | null) {
 
 function buildRelatedMeta(settings: ResourceSettingData | null) {
   return {
-    tag: settings?.relatedResourcesTag?.label ?? "",
-    heading: settings?.relatedResourcesHeading ?? "",
-    ctaLabel: settings?.relatedResourcesButton?.label ?? "See All Resources",
-    ctaHref: settings?.relatedResourcesButton?.url ?? "/resources",
+    tag: settings?.relatedResourcesTag?.label || "Free Resources",
+    heading: settings?.relatedResourcesHeading || "Explore More Related Resources",
   };
 }
 
-function buildCta(settings: ResourceSettingData | null) {
-  const cta = settings?.ctaBanner;
-  return {
-    sectionClass: "dark-cta px-5",
-    tag: cta?.tag?.label ?? "",
-    heading: cta?.heading ?? "",
-    body: cta?.subheading ?? "",
-    ctaLabel: cta?.button?.label ?? "",
-  };
+/** Phần bất đồng bộ dùng chung: khung CTA + popup link. */
+async function buildBody(content: string | null | undefined, title: string) {
+  const anchored = withTocAnchors(content);
+  const html = fixContentImageAlts(resolveContentMedia(anchored.html), title);
+  const linked = decorateLinks(addFaqDividers(html));
+  const { blocks, ctaSlugs } = splitArticleBlocks(linked.html);
+  const [ctas, previews] = await Promise.all([
+    fetchArticleCtas(ctaSlugs),
+    buildLinkPreviews(linked.internal),
+  ]);
+  return { toc: anchored.toc, blocks, ctas, previews };
 }
 
-export function buildResourceArticleView(
+export async function buildResourceArticleView(
   resource: Resource,
   settings: ResourceSettingData | null,
   related: Resource[]
-): ArticleViewData {
-  const body = withTocAnchors(resource.content);
+): Promise<ArticleViewData> {
+  const date = resource.publishedDate ?? resource.publishedAt;
   return {
     title: resource.title,
-    subtitle: "",
-    facts: [
-      { label: "Tag", icon: TAG_ICON, value: resource.categories[0]?.name ?? resource.resourceType },
-      // resource không có field ngày đăng riêng — dùng thời điểm publish trên CMS.
-      { label: "Date", icon: CALENDAR_ICON, value: formatDate(resource.publishedDate ?? resource.publishedAt) },
-      { label: "Reading Time", icon: CLOCK_ICON, value: resource.readingTime ?? estimateReadTime(resource.content) },
-    ],
+    category: resource.categories[0]?.name ?? resource.type?.name ?? resource.resourceType,
+    publishedShort: formatDate(date),
+    publishedLong: formatLongDate(date),
+    readingTime: resource.readingTime ?? estimateReadTime(resource.content),
     featuredImage: getMediaUrl(resource.featureImage) ?? FALLBACK_IMAGE,
     featuredAlt: resource.featureImage?.alternativeText || resource.title,
     summary: summarizeArticle(resource.content),
-    toc: body.toc,
-    html: fixContentImageAlts(body.html, resource.title),
-    shareUrl: `${SITE}/resources/${resource.slug}/`,
+    ...(await buildBody(resource.content, resource.title)),
+    shareUrl: `${SITE}/${resource.slug}`,
     gated: resource.gated,
     subscribe: buildSubscribe(settings),
     related: {
@@ -106,30 +117,25 @@ export function buildResourceArticleView(
           href: `/${r.slug}`,
         })),
     },
-    cta: buildCta(settings),
   };
 }
 
-export function buildBlogPostArticleView(
+export async function buildBlogPostArticleView(
   post: BlogPost,
   settings: ResourceSettingData | null,
   related: BlogPost[]
-): ArticleViewData {
-  const body = withTocAnchors(post.content);
+): Promise<ArticleViewData> {
   return {
     title: post.title,
-    subtitle: "",
-    facts: [
-      { label: "Tag", icon: TAG_ICON, value: "Blog" },
-      { label: "Date", icon: CALENDAR_ICON, value: formatDate(post.publishedDate) },
-      { label: "Reading Time", icon: CLOCK_ICON, value: post.readingTime ?? estimateReadTime(post.content) },
-    ],
+    category: post.categories?.[0]?.name ?? "Blog",
+    publishedShort: formatDate(post.publishedDate),
+    publishedLong: formatLongDate(post.publishedDate),
+    readingTime: post.readingTime ?? estimateReadTime(post.content),
     featuredImage: getMediaUrl(post.featureImage) ?? FALLBACK_IMAGE,
     featuredAlt: post.featureImage?.alternativeText || post.title,
     summary: summarizeArticle(post.content),
-    toc: body.toc,
-    html: fixContentImageAlts(body.html, post.title),
-    shareUrl: `${SITE}/${post.slug}/`,
+    ...(await buildBody(post.content, post.title)),
+    shareUrl: `${SITE}/${post.slug}`,
     gated: post.gated,
     subscribe: buildSubscribe(settings),
     related: {
@@ -138,7 +144,7 @@ export function buildBlogPostArticleView(
         .filter((p) => p.slug !== post.slug)
         .slice(0, RELATED_COUNT)
         .map((p) => ({
-          category: "Blog",
+          category: p.categories?.[0]?.name ?? "Blog",
           title: p.title,
           excerpt: stripHtml(p.excerpt ?? p.content),
           date: formatDate(p.publishedDate),
@@ -148,6 +154,5 @@ export function buildBlogPostArticleView(
           href: `/${p.slug}`,
         })),
     },
-    cta: buildCta(settings),
   };
 }

@@ -1,67 +1,88 @@
 "use client";
 
-import { useState } from "react";
+import { cn } from "@/lib/utils";
+import { ShareButtons } from "@/components/sections/article/ShareButtons";
+import { PreferredSourceBadge } from "@/components/PreferredSourceBadge";
+
+export type TocItem = { href: string; label: string };
 
 /**
- * The Easy Table of Contents box beside the article body.
+ * Mục lục desktop — thiết kế v2.
  *
- * Rebuilt rather than re-imported: it is a plugin, but all it renders is a
- * titled box of anchor links plus a collapse toggle. The two glyphs on the
- * right are the plugin's own — a list mark and an unsorted-arrow — and the
- * whole title row is `display: table` with the toggle floated into it, which is
- * what makes that row 34px rather than the title's own 27px.
- *
- * The toggle really does collapse the box on the original: 481px down to 56px
- * and back.
+ * Cột trái 216px, dính ở `top: 106px` (header 82 + 24). Mục đang đọc nền
+ * #EEF3FD chữ navy đậm, mục khác xám #5A6280. Dưới danh sách là thanh tiến độ
+ * đọc 4px rồi dải "Share".
  */
 export function TableOfContents({
   items,
+  active,
+  progress,
+  onPick,
+  shareUrl,
+  title,
 }: {
-  items: { href: string; label: string }[];
+  items: TocItem[];
+  active: number;
+  progress: number;
+  onPick: (id: string) => void;
+  shareUrl: string;
+  title: string;
 }) {
-  const [open, setOpen] = useState(true);
-
   return (
-    <div className="ez-toc">
-      <div className="ez-toc-title-container">
-        <p className="ez-toc-title">Table of Contents</p>
-        <button
-          type="button"
-          aria-label="Toggle Table of Content"
-          aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
-          className="ez-toc-toggle"
-        >
-          {/* The 1px outline the plugin draws sits on this span, not the
-              button — see `.ez-toc-toggle > span` in globals.css. */}
-          <span>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
-              <path
-                d="M6 6H4v2h2V6zm14 0H8v2h12V6zM4 11h2v2H4v-2zm16 0H8v2h12v-2zM4 16h2v2H4v-2zm16 0H8v2h12v-2z"
-                fill="currentColor"
-              />
-            </svg>
-            <svg width="10" height="10" viewBox="0 0 24 24" aria-hidden>
-              <path
-                fill="currentColor"
-                d="M18.2 9.3l-6.2-6.3-6.2 6.3c-.2.2-.3.4-.3.7s.1.5.3.7c.2.2.4.3.7.3h11c.3 0 .5-.1.7-.3.2-.2.3-.5.3-.7s-.1-.5-.3-.7zM5.8 14.7l6.2 6.3 6.2-6.3c.2-.2.3-.5.3-.7s-.1-.5-.3-.7c-.2-.2-.4-.3-.7-.3h-11c-.3 0-.5.1-.7.3-.2.2-.3.5-.3.7s.1.5.3.7z"
-              />
-            </svg>
-          </span>
-        </button>
+    <div>
+      {items.length > 0 && (
+        <>
+          <p className="pl-3 text-[13px] font-semibold text-dark-blue-950">On this page</p>
+          <nav aria-label="Table of contents" className="mt-3 flex flex-col gap-0.5">
+            {items.map((item, i) => {
+              const on = i === Math.max(active, 0);
+              return (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  aria-current={on ? "location" : undefined}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onPick(item.href.slice(1));
+                  }}
+                  className={cn(
+                    "block rounded-lg px-3 py-[7px] text-sm leading-[1.45] no-underline",
+                    "transition-colors duration-150 ease-[cubic-bezier(.4,0,.2,1)]",
+                    on
+                      ? "bg-[#EEF3FD] font-semibold text-dark-blue-950"
+                      : "text-[#5A6280] hover:bg-[#F4F7FD] hover:text-dark-blue-950",
+                  )}
+                >
+                  {item.label}
+                </a>
+              );
+            })}
+          </nav>
+          <div
+            className="mt-4 ml-3 h-1 rounded-sm bg-[#EEF3FD] overflow-hidden"
+            role="progressbar"
+            aria-label="Reading progress"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={Math.round(progress * 100)}
+          >
+            <div className="h-1 bg-cyan-400" style={{ width: `${progress * 100}%` }} />
+          </div>
+        </>
+      )}
+
+      <div className={cn("ml-3", items.length > 0 && "mt-7 pt-5 border-t border-[#E6EAF4]")}>
+        <p className="text-[13px] font-semibold text-dark-blue-950">Share</p>
+        <div className="mt-2.5">
+          <ShareButtons url={shareUrl} title={title} />
+        </div>
       </div>
 
-      {open && (
-        <nav aria-label="Table of contents">
-          <ul>
-            {items.map((item) => (
-              <li key={item.href}>
-                <a href={item.href}>{item.label}</a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      )}
+      {/* Badge Google Preferred Source dưới dải Share — như cột trái bài viết
+          của OlcoMain, nhưng bản sáng cho hợp nền trắng của cột này. */}
+      <div className="ml-3 mt-7 pt-5 border-t border-[#E6EAF4]">
+        <PreferredSourceBadge />
+      </div>
     </div>
   );
 }

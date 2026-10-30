@@ -81,6 +81,11 @@ export default function RootLayout({
         {/* End Google Tag Manager (noscript) */}
         {/* Sits above everything at z-9999 and covers the first paint —
             must render before {children} so it is in the DOM immediately. */}
+        {/* Helper của badge DMCA (src/components/DmcaBadge.tsx): gắn `?refurl=`
+            vào a.dmca-badge trong listener DOMContentLoaded. Thẻ `defer` thường
+            chứ không phải next/script — next/script nạp muộn hơn sự kiện đó nên
+            refurl không bao giờ được gắn (cùng lý do bên OlcoMain). */}
+        <script src="https://images.dmca.com/Badges/DMCABadgeHelper.min.js" defer />
         <PageTransition />
         <SmoothScroll />
         {children}

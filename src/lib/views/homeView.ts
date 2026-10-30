@@ -5,7 +5,7 @@ import type { BlogPost } from "../types/blog-post";
 import type { Partner } from "../types/partner";
 import type { AboutPageData } from "../types/about-page";
 import { filterTabHref, type RouteSlugTable } from "../routing/routeSlugs";
-import { stripHtml, estimateReadTime, formatDate, stripHtmlKeepBreaks, trimExcerpt } from "./textUtils";
+import { estimateReadTime, formatDate, stripHtmlKeepBreaks } from "./textUtils";
 import { SOURCING_GUIDE_HREF, SOURCING_GUIDE_URL, isSourcingGuideHref } from "../sourcingGuide";
 
 // ─── View model cho trang chủ ────────────────────────────────────────────────
@@ -60,7 +60,6 @@ export interface PartnerTabViewData {
 export interface InsightViewData {
   category: string;
   title: string;
-  excerpt: string;
   date: string;
   readTime: string;
   image: string;
@@ -203,12 +202,10 @@ export function buildPartnerTabsView(
 
 export function buildInsightsView(posts: BlogPost[]): InsightViewData[] {
   return posts.map((post) => ({
-    category: "Blog",
+    // Thẻ chỉ hiện category + tiêu đề (cùng nội dung thẻ "Explore More Related
+    // Resources" ở trang bài viết) — category thật của bài, "Blog" khi trống.
+    category: post.categories?.[0]?.name ?? "Blog",
     title: post.title,
-    // Theme cắt mọi excerpt thẻ bài về 150 ký tự (`wp_html_excerpt`) — xem
-    // deviation 27. Thẻ này không có `line-clamp` nào, nên bỏ cắt là thẻ cao
-    // dư: ở 390px cả khối "Latest Sourcing Insights" phình thêm ~500px.
-    excerpt: trimExcerpt(stripHtml(post.excerpt)),
     date: formatDate(post.publishedDate),
     readTime: post.readingTime ?? estimateReadTime(post.content),
     image: getMediaUrl(post.featureImage) ?? FALLBACK_IMAGE,

@@ -60,7 +60,7 @@ export default async function PostPage({
   const settings = settingsResult.data;
   const global = globalResult.data;
 
-  const article = buildBlogPostArticleView(post, settings, all);
+  const article = await buildBlogPostArticleView(post, settings, all);
 
   return (
     <>

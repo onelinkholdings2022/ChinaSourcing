@@ -13,6 +13,8 @@ import {
   MapPinIcon,
 } from "@/components/icons";
 import { cn } from "@/lib/utils";
+import { DmcaBadge } from "@/components/DmcaBadge";
+import { PreferredSourceBadge } from "@/components/PreferredSourceBadge";
 
 const IMG = "/images";
 
@@ -346,14 +348,22 @@ export function Footer({ footer = FALLBACK_FOOTER }: { footer?: FooterViewData }
           </div>
 
           {/* Bottom bar */}
-          <div className="flex md:flex-row flex-col gap-3 justify-between mt-4">
-            <p className="text-grey-600 font-normal">{footer.copyright}</p>
-            <Link
-              href="/privacy-policy"
-              className="text-grey-600 hover:text-primary duration-300 font-normal"
-            >
-              Privacy Policy
-            </Link>
+          {/* Copyright + Privacy Policy xếp dọc bên trái, hàng badge DMCA +
+              Google Preferred Source bên phải (dưới md thì xuống dưới). */}
+          <div className="flex md:flex-row flex-col gap-6 md:items-center justify-between mt-4">
+            <div className="flex flex-col gap-3">
+              <p className="text-grey-600 font-normal">{footer.copyright}</p>
+              <Link
+                href="/privacy-policy"
+                className="w-fit text-grey-600 hover:text-primary duration-300 font-normal"
+              >
+                Privacy Policy
+              </Link>
+            </div>
+            <div className="flex flex-wrap items-center gap-6">
+              <DmcaBadge />
+              <PreferredSourceBadge />
+            </div>
           </div>
         </div>
       </div>

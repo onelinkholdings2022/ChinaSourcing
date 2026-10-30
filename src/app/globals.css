@@ -883,6 +883,8 @@ body {
   .sum-box {
     --sum-accent: var(--color-cyan-400);
     --sum-head: var(--color-dark-blue-950);
+    /* Vành ở lại = viền #C9D6F5 của thiết kế v2. */
+    --sum-rest: #C9D6F5;
   }
 
   /* Con trỏ gõ chữ — nét đặc, KHÔNG nháy: ô này đã hết animation lặp vô hạn. */
@@ -918,7 +920,7 @@ body {
   .sum-ring-svg rect { fill: none; stroke-width: 1; }
 
   /* Vành mờ ở lại sau màn chạy viền — trạng thái cuối, ai cũng thấy. */
-  .sum-ring-rest { stroke: var(--sum-accent); opacity: 0.3; }
+  .sum-ring-rest { stroke: var(--sum-rest); }
 
   /* Vệt sáng = ba nét chồng nhau, cùng mép dẫn, ngắn dần và đậm dần → đuôi tan
      chứ không phải một khúc bị cắt cụt. */
@@ -984,9 +986,171 @@ body {
   }
 
   [data-summary-state="play"] .sum-sparkle {
-    /* Glyph sparkle vẽ lệch trong hộp 24 (tâm hình ở x=9 ≈ 37.5% bề ngang) —
-       xoay quanh tâm hộp thì icon đảo quỹ đạo. */
-    transform-origin: 37.5% 50%;
+    /* Glyph v2 cân giữa hộp 24 nên xoay quanh đúng tâm. */
+    transform-origin: 50% 50%;
     animation: sum-sparkle-turn 1s ease-in-out 0.13s 2 both;
   }
 }
+
+/* ------------------------------------------------------------
+   Trang bài viết — thiết kế "CNS Blog Layout Redesign" v2
+   ------------------------------------------------------------
+   Thang chữ thân bài 40 → 30 → 22 → 17 (desktop) / 28 → 24 → 19 → 16 (≤640px):
+   H2 Lora 30/600, H3 Poppins 22/600 navy, thân Poppins 17/1.8. Khoảng cách:
+   trên H2 64 / dưới 20, trên H3 40 / dưới 14, giữa các đoạn 20.
+
+   Thân bài là NHIỀU khúc `.ap-chunk` (HTML của CKEditor) xen khung CTA
+   (`.ap-cta`), nên nhịp dọc đặt bằng margin-top của từng phần tử chứ không
+   bằng `> * + *` — selector đó không nhìn xuyên qua ranh giới các khúc.
+   Riêng phần tử đầu tiên của cả bài thì về 0.
+
+   Khác `.rich-text` (thân case study), `.article-prose` chỉ dùng cho bài viết. */
+@layer components {
+  .article-prose { color: rgb(30 15 72); }
+  .article-prose .ap-chunk > * { margin-top: 20px; }
+  .article-prose > .ap-chunk:first-child > :first-child { margin-top: 0; }
+
+  .article-prose p,
+  .article-prose ul,
+  .article-prose ol { font-size: 17px; line-height: 1.8; }
+  .article-prose > .ap-chunk:first-child > p:first-of-type { font-size: 19px; line-height: 1.75; }
+
+  .article-prose h2 {
+    margin-top: 64px;
+    scroll-margin-top: 106px;
+    font-family: var(--font-lora), Georgia, serif;
+    font-size: 30px; line-height: 1.35; font-weight: 600;
+    color: rgb(4 12 25);
+  }
+  .article-prose h3 {
+    margin-top: 40px;
+    font-size: 22px; line-height: 1.4; font-weight: 600;
+    color: rgb(39 48 141);
+  }
+  .article-prose h4, .article-prose h5, .article-prose h6 {
+    margin-top: 28px;
+    font-size: 19px; line-height: 1.4; font-weight: 600;
+    color: rgb(39 48 141);
+  }
+  .article-prose .ap-chunk > h2 + * { margin-top: 20px; }
+  .article-prose .ap-chunk > :is(h3, h4, h5, h6) + * { margin-top: 14px; }
+  /* Heading CKEditor hay bọc nguyên câu trong <strong> — weight đã do heading lo. */
+  .article-prose :is(h2, h3, h4) strong { font-weight: inherit; }
+
+  .article-prose ul { list-style: disc outside; padding-left: 22px; }
+  .article-prose ol { list-style: decimal outside; padding-left: 22px; }
+  /* Danh sách cấp ngoài cùng nằm trong hộp nền nhạt + chữ nghiêng — port từ
+     `.blog-content ul, ol` của OlcoMain. Không bám "con trực tiếp": bài dán từ
+     Lark còn bọc thêm một lớp `<div data-lark-html-role="root">`. Danh sách
+     lồng trong `li` (đã nằm trong hộp cha) hay trong ô bảng thì bỏ hộp. */
+  .article-prose :is(ul, ol) {
+    border-radius: 8px;
+    background: #F4F7FD;
+    padding: 16px 16px 16px 40px;
+    font-style: italic;
+    /* Cùng nhịp 20px của `.ap-chunk > *` — bài bọc lớp Lark không ăn rule đó
+       nên hộp sẽ dính sát dòng chữ phía trên. */
+    margin-top: 20px;
+  }
+  .article-prose :is(li, td, th) :is(ul, ol) {
+    border-radius: 0;
+    background: none;
+    padding: 0 0 0 22px;
+  }
+  .article-prose :is(td, th) :is(ul, ol) { font-style: normal; }
+  .article-prose li + li { margin-top: 6px; }
+  .article-prose li > :is(ul, ol) { margin-top: 6px; }
+  .article-prose strong, .article-prose b { font-weight: 600; }
+  .article-prose em, .article-prose i { font-style: italic; }
+
+  .article-prose img { width: 100%; height: auto; border-radius: 12px; }
+  .article-prose figure { margin-top: 32px; }
+  .article-prose figcaption { margin-top: 8px; font-size: 13px; line-height: 1.5; color: #5A6280; text-align: center; }
+  .article-prose blockquote {
+    border-left: 3px solid rgb(37 107 232);
+    padding: 4px 0 4px 18px;
+    font-size: 18px; line-height: 1.7; color: rgb(39 48 141);
+  }
+  .article-prose hr { margin-top: 64px; border: 0; border-top: 1px solid #E6EAF4; }
+  .article-prose hr + * { margin-top: 48px; }
+  .article-prose table { width: 100%; border-collapse: collapse; font-size: 15px; line-height: 1.6; }
+  .article-prose figure.table { overflow-x: auto; }
+  .article-prose th, .article-prose td { border: 1px solid #E3E8F5; padding: 10px 12px; text-align: left; vertical-align: top; }
+  .article-prose th { background: #F4F7FD; font-weight: 600; color: rgb(39 48 141); }
+
+  /* Khung CTA giữa bài. */
+  .article-prose > .ap-cta { margin-top: 32px; }
+  .article-prose > .ap-cta + .ap-chunk > :first-child:not(h2) { margin-top: 32px; }
+
+  /* ── Link trong bài: 2 loại ─────────────────────────────────────────────
+     Nội bộ (keyword SEO): navy 600, gạch chân xanh mờ 2px cách chữ 4px — luôn
+     có gạch chân vì mobile không có hover. Hover/focus: xanh #256BE8, 150ms.
+     Ngoài (nguồn): weight 500, gạch chân 1px + mũi tên ↗, mở tab mới.
+     Chạm trên mobile: nền #EEF3FD. */
+  .article-prose a { color: rgb(39 48 141); }
+  .article-prose .kw-link,
+  .article-prose .kw-ext {
+    color: rgb(39 48 141);
+    text-decoration-line: underline;
+    text-decoration-color: rgba(37, 107, 232, .35);
+    text-underline-offset: 4px;
+    transition: color .15s cubic-bezier(.4,0,.2,1), text-decoration-color .15s cubic-bezier(.4,0,.2,1);
+  }
+  .article-prose .kw-link { font-weight: 600; text-decoration-thickness: 2px; }
+  .article-prose .kw-ext { font-weight: 500; text-decoration-thickness: 1px; }
+  .article-prose .kw-link :is(strong, b) { font-weight: inherit; }
+  .article-prose .kw-link:hover, .article-prose .kw-link:focus-visible,
+  .article-prose .kw-ext:hover, .article-prose .kw-ext:focus-visible {
+    color: rgb(37 107 232);
+    text-decoration-color: rgb(37 107 232);
+  }
+  .article-prose .kw-link:active, .article-prose .kw-ext:active {
+    color: rgb(39 48 141); background: #EEF3FD; border-radius: 3px;
+  }
+  .article-prose .kw-ext::after {
+    content: "";
+    display: inline-block;
+    width: 12px; height: 12px; margin-left: 2px;
+    vertical-align: -1px;
+    background-color: rgb(37 107 232);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 17L17 7'/%3E%3Cpath d='M8 7h9v9'/%3E%3C/svg%3E") center / contain no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 17L17 7'/%3E%3Cpath d='M8 7h9v9'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+  /* Link bọc ảnh: không gạch chân, không mũi tên. */
+  .article-prose a:has(> img) { text-decoration: none; }
+  .article-prose a:has(> img)::after { display: none; }
+
+  @media (max-width: 640px) {
+    .article-prose p,
+    .article-prose ul,
+    .article-prose ol { font-size: 16px; line-height: 1.75; }
+    .article-prose > .ap-chunk:first-child > p:first-of-type { font-size: 17px; }
+    .article-prose h2 { margin-top: 48px; font-size: 24px; }
+    .article-prose h3 { margin-top: 32px; font-size: 19px; }
+  }
+  @media (max-width: 899px) {
+    /* Header (~88px) + thanh mục lục 51px + 16px. */
+    .article-prose h2 { scroll-margin-top: 155px; }
+  }
+
+  /* Hero hiện lên một lần: fade-up 24px / 500ms, trễ 100ms mỗi khối. */
+  .ah-rv { animation: ah-rv .5s cubic-bezier(.25,.1,.25,1) both; }
+  .ah-d1 { animation-delay: .1s; }
+  .ah-d2 { animation-delay: .2s; }
+  .ah-d3 { animation-delay: .3s; }
+
+  /* Hover thẻ bài liên quan: nâng -4px, bóng navy, nền ĐẬM lên, ảnh 1.03. */
+  .rel-card { transition: transform .3s cubic-bezier(.4,0,.2,1), box-shadow .3s cubic-bezier(.4,0,.2,1), background-color .3s cubic-bezier(.4,0,.2,1); }
+  .rel-card-img { transition: transform .5s cubic-bezier(.25,.1,.25,1); }
+  @media (hover: hover) {
+    .rel-card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(39,48,141,.22); background-color: #20287A; }
+    .rel-card:hover .rel-card-img { transform: scale(1.03); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ah-rv { animation: none; }
+    .rel-card, .rel-card-img { transition: none; }
+    .rel-card:hover, .rel-card:hover .rel-card-img { transform: none; }
+  }
+}
+@keyframes ah-rv { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }

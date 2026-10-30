@@ -1,4 +1,20 @@
+import { networkInterfaces } from "node:os";
 import type { NextConfig } from "next";
+
+/**
+ * IPv4 mạng LAN của máy đang chạy dev server (vd. 192.168.1.46).
+ *
+ * Next chặn mọi origin khác `localhost` gọi tới tài nguyên dev (HMR, chunk
+ * `/_next/…`), nên người cùng wifi mở `http://<ip>:3000` sẽ thấy trang không
+ * chạy. Đọc IP từ card mạng thay vì ghi cứng, để đổi wifi / router cấp IP khác
+ * vẫn chạy. Chỉ có tác dụng ở `next dev`, production không đọc tới.
+ */
+function lanAddresses(): string[] {
+  return Object.values(networkInterfaces())
+    .flat()
+    .filter((net) => net && net.family === "IPv4" && !net.internal)
+    .map((net) => net!.address);
+}
 
 /**
  * Định tuyến nằm ở `src/proxy.ts`, không ở đây.
@@ -10,6 +26,7 @@ import type { NextConfig } from "next";
  * chạy lúc build và chỉ so khớp mẫu tĩnh — nên nó phải là proxy.
  */
 const nextConfig: NextConfig = {
+  allowedDevOrigins: lanAddresses(),
   images: {
     // Ảnh động đến từ Strapi Media Library. `cms.chinasourcing.co` là nguồn
     // thật; `localhost:1337` giữ lại để chạy Strapi tại máy khi cần soạn nội

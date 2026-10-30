@@ -1,5 +1,5 @@
 import { getMediaUrl } from "../api/media-url";
-import { stripHtml, estimateReadTime, formatDate, trimExcerpt, stripHtmlKeepBreaks } from "./textUtils";
+import { estimateReadTime, formatDate, stripHtmlKeepBreaks } from "./textUtils";
 import type {
   ServicesPageData,
   ServiceData,
@@ -222,8 +222,9 @@ export function buildServicesCaseStudiesView(page: ServicesPageData): CaseStudie
  *
  * Site gốc trộn 2 loại bài trong cùng khối: `resource` (bản tải về — không có
  * featured image nên dùng `blog-fallback` của theme, category lấy từ
- * `categories`) và blog post ở gốc site (category cố định là "Blog"). Cả hai
- * đều hiện hàng meta ngày + thời gian đọc. Resource xếp trước, đúng thứ tự
+ * `categories`) và blog post ở gốc site (category đầu tiên của bài, "Blog" khi
+ * trống). Thẻ chỉ hiện category + tiêu đề + hàng meta, không excerpt — cùng nội
+ * dung thẻ bài liên quan ở trang bài viết. Resource xếp trước, đúng thứ tự
  * trang gốc render.
  */
 function buildResourceCards(list: Resource[], posts: BlogPost[] = []): ResourceCard[] {
@@ -232,9 +233,8 @@ function buildResourceCards(list: Resource[], posts: BlogPost[] = []): ResourceC
       href: `/${r.slug}`,
       image: getMediaUrl(r.featureImage) ?? FALLBACK_IMAGE,
       alt: r.title,
-      category: r.categories[0]?.name ?? null,
+      category: r.categories[0]?.name ?? r.type?.name ?? r.resourceType ?? null,
       title: r.title,
-      excerpt: trimExcerpt(stripHtml(r.content)),
       date: formatDate(r.publishedDate ?? r.publishedAt),
       readTime: r.readingTime ?? estimateReadTime(r.content),
     })),
@@ -243,9 +243,8 @@ function buildResourceCards(list: Resource[], posts: BlogPost[] = []): ResourceC
       href: `/${p.slug}`,
       image: getMediaUrl(p.featureImage) ?? FALLBACK_IMAGE,
       alt: p.title,
-      category: "Blog",
+      category: p.categories?.[0]?.name ?? "Blog",
       title: p.title,
-      excerpt: trimExcerpt(stripHtml(p.excerpt ?? p.content)),
       date: formatDate(p.publishedDate),
       readTime: p.readingTime ?? estimateReadTime(p.content),
     })),

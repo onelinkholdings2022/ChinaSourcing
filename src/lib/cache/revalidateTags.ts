@@ -100,6 +100,9 @@ export function tagsFor(model: string | null, entry: Record<string, unknown> | n
     case "category":
       // Tab lọc của /resources đọc tên category, thẻ bài in nó.
       return ["category", "resource", "blog-post", "resources-page"];
+    case "article-cta":
+      // Khung CTA chèn trong thân bài — chỉ trang bài viết đọc nó.
+      return ["article-cta"];
 
     default:
       // Model lạ (gọi tay, webhook media, body rỗng) → bust rộng cho chắc.

@@ -833,5 +833,93 @@ theme's icon SVGs (redrawn as React components in `src/components/icons.tsx`).
     Nhịp cuối của hero: title -> ô Tag 40px, ô Tag -> Summary 40px
     (`mt-6 lg:mt-10`, cùng nhịp ô Tag dùng để cách title), Summary -> ảnh 80px.
 
+61. **Trang bài viết dựng lại theo thiết kế "CNS Blog Layout Redesign" v2**
+    (desktop + mobile). Thay cho deviation 20/21/60 ở trang bài viết:
+    hero canh giữa (pill category → H1 40px navy → ô Category/Published/Reading
+    Time → Summary → ảnh 480px); thân bài 2 cột (mục lục
+    dính 216px có scroll-spy + thanh tiến độ + Share | bài giãn tới mép phải
+    ảnh đầu bài — khung chung 1200px, cột chữ ~952px; trước đây 720px + cột trống);
+    thang chữ 30/22/17 (`.article-prose`, KHÔNG đụng `.rich-text` của case
+    study); dải bài liên quan nền #F7F9FD. Mobile (<900px): mục lục thành thanh
+    dính "2/8" dưới header + bottom sheet; bài liên quan vuốt ngang.
+    **Logic khoá bài giữ nguyên** theo yêu cầu (cờ `gated` bên CMS, kẹp
+    600/1000px + lớp mờ, `SubscribeForm` ngay dưới bài, mở khoá bằng
+    `onelink_subscribed`). Chỉ dải DarkCta cuối trang là bỏ theo thiết kế.
+
+    **Link trong bài:** nội bộ (`kw-link`, navy 600, gạch chân 2px) được đổi về
+    đường dẫn tương đối, mở cùng tab, và có popup xem trước trên desktop (giữ
+    chuột 300ms; ảnh + nhãn + tiêu đề + mô tả, KHÔNG có nút "View page"), dữ liệu
+    tự lấy từ trang đích ở server (`articleExtras.ts`). Link ngoài (`kw-ext`) mở
+    tab mới, có mũi tên ↗.
+
+    **Khung CTA chèn giữa bài:** collection `article-cta` bên strapi-cns
+    (`variant` light/heavy, heading, description, buttonLabel, buttonUrl) + nút
+    "CTA Box" trên toolbar CKEditor (`strapi-cns/src/admin/ckeditor/`), chèn thẻ
+    `<div class="article-cta" data-cta="slug">` vào bất kỳ đâu trong bài.
+    Frontend tách thân bài tại các thẻ đó (`articleContent.ts`) và dựng
+    `ArticleCtaBox`. Lối tắt gõ tay: một đoạn chỉ chứa `[cta:slug]`. Quyền Public
+    tự cấp trong `bootstrap` của strapi-cns. Khung có slug không còn bản ghi thì
+    bị bỏ qua, bài không vỡ.
+
+    **Ô Summary giữ hiệu ứng cũ** (deviation 60: viền sáng chạy một vòng → gõ
+    chữ → Show More khi tràn 2 dòng), theo yêu cầu — chỉ đổi icon sparkle, màu
+    (nền #EEF3FD, viền #C9D6F5, nhãn navy) và khung 720px cho khớp ô
+    Category/Published/Reading Time. Cỡ chữ vẫn 14/24 vì phép đo 2 dòng trong
+    `summaryTiming.ts` dựa vào line-height đó. `ArticleSummaryBox` đã xoá.
+
 ## Customization Plans
 None yet — pure emulation. Content lives in `src/data/site.ts`, so copy changes are one-file edits.
+
+62. **Thẻ bài ngoài `/resources` bỏ excerpt, hiện category thật.** Theo yêu
+    cầu, thẻ ở "Latest Sourcing Insights" (trang chủ) và "Our Resources"
+    (`/services` + 4 trang service) giờ chỉ còn category + tiêu đề + hàng ngày /
+    thời gian đọc — cùng nội dung thẻ "Explore More Related Resources" ở trang
+    bài viết. Category trước đây gắn cứng "Blog"; giờ là category đầu tiên của
+    bài ("Blog" khi trống), resource lùi về loại resource như trang bài viết.
+    Lưới thẻ trên chính `/resources` (`BlogCard`) không đổi.
+
+63. **Tiêu đề FAQ trong bài viết tự có đường kẻ ngang phía trên.** Theo yêu
+    cầu. `addFaqDividers` (`src/lib/views/articleContent.ts`) chèn `<hr>` trước
+    mọi `<h2>`–`<h4>` có chữ "FAQ"/"FAQs"/"Frequently Asked Questions" — cùng
+    thẻ `<hr>` biên tập viên tự đặt trước "References", nên cùng style
+    `.article-prose hr`. Không chèn thêm khi bài đã có sẵn `<hr>` ở đó.
+    Không đụng dữ liệu CMS: chạy lúc render, áp cho cả blog post lẫn resource.
+
+64. **Khoảng hở mục lục → thân bài = khoảng trống giữa chữ "About Us" và
+    "Products" trên header.** Theo yêu cầu (trước đây 32px). Đo từ mép chữ
+    tới mép chữ, đổi cùng mốc menu đổi cỡ: 24px (dưới `xl`), 28px (`xl`),
+    56px (`2xl`). Cột chữ giờ bị chặn ở 740px — xem mục 67.
+
+65. **Danh sách bullet trong bài viết nằm trong hộp + in nghiêng.** Port từ
+    `.blog-content ul, ol` của OlcoMain: nền `#F4F7FD`, bo 8px, đệm
+    16/16/16/40px, `font-style: italic`, cách trên 20px. Chỉ CSS
+    (`.article-prose :is(ul, ol)` trong `globals.css`), không đụng CMS. Danh
+    sách lồng trong `li` hoặc ô bảng thì không đóng hộp lần nữa (trong bảng
+    giữ chữ thẳng). Selector không bám "con trực tiếp" vì bài dán từ Lark bọc
+    thêm `<div data-lark-html-role="root">`.
+
+66. **Badge DMCA + Google Preferred Source.** Theo yêu cầu, port từ OlcoMain /
+    VietNamSourcing (site gốc không có).
+    • **Footer:** thanh dưới cùng đổi thành copyright + Privacy Policy xếp dọc
+      bên trái, hàng badge bên phải (dưới `md` xuống dưới). `DmcaBadge`
+      (ID `019ab15c-…`, ảnh hiển thị 180x36, bản w250 từ `images.dmca.com`) và
+      `PreferredSourceBadge` (link sâu
+      `google.com/preferences/source?q=chinasourcing.co`, ảnh badge chính thức
+      bản SÁNG ở `public/images/google-preferred-source/`, rộng 168px). Không
+      dùng publisher.js của Google (138KB).
+    • **Script `DMCABadgeHelper`** nằm trong `<body>` của `layout.tsx`, là thẻ
+      `defer` thường chứ không phải `next/script`: helper chỉ gắn `?refurl=` ở
+      DOMContentLoaded, `next/script` nạp muộn hơn sự kiện đó. Mọi trang đều
+      nạp `images.dmca.com`.
+    • **Cột mục lục trang bài viết:** thêm badge Google dưới dải Share. Bài có
+      mục lục dài thì cột cao hơn màn hình, mà cột lại dính ở `top: 106px`, nên
+      Share + badge nằm ngoài màn hình vĩnh viễn (938px cột → badge ở 1037px).
+      Port luôn `useAdaptiveStickyTop` của OlcoMain: cột cao hơn màn hình thì
+      `top` âm vừa đủ cho đáy cột dính sát đáy màn hình.
+
+67. **Cột chữ trang bài viết tối đa 740px.** Theo yêu cầu, vì dòng quá dài khó
+    đọc: ở 956px, Poppins 17px ra ~89 ký tự/dòng; 740px còn ~68, nằm trong
+    khoảng 60–75 dễ đọc. Ảnh, khung CTA và form đăng ký nằm trong cột nên theo
+    cùng bề rộng. Cụm mục lục + bài căn giữa khung 1200px (`justify-center`)
+    thay vì bám mép trái ảnh đầu bài — nên mục lục không còn thẳng mép trái
+    với ảnh hero. Dưới 740px không đổi gì.

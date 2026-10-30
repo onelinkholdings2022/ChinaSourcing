@@ -7,11 +7,11 @@ import { cn } from "@/lib/utils";
 import { SUMMARY_TIMING, COLLAPSED_MAX_HEIGHT } from "./summaryTiming";
 import { useSummaryPlay } from "./useSummaryPlay";
 
-/** Sao bốn cánh — glyph vẽ lệch trong hộp 24 (tâm ở x≈9), xem CSS `.sum-sparkle`. */
+/** Sao bốn cánh của thiết kế v2 — glyph cân giữa hộp 24, xem CSS `.sum-sparkle`. */
 function Sparkle({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
-      <path d="M18.996 12.018C16.4011 12.1767 13.9538 13.2791 12.1154 15.1174C10.2771 16.9557 9.17471 19.403 9.016 21.998H8.976C8.656 16.634 4.363 12.342 -1 12.018V11.978C4.363 11.658 8.656 7.36495 8.98 2.00195H9.02C9.344 7.36495 13.637 11.658 19 11.982V12.018H18.996Z" />
+      <path d="M12 2l2.2 7.8L22 12l-7.8 2.2L12 22l-2.2-7.8L2 12l7.8-2.2z" />
     </svg>
   );
 }
@@ -116,9 +116,9 @@ export function ArticleSummary({ text }: { text: string }) {
       ref={hostRef}
       data-summary-state={playState}
       aria-labelledby="article-summary-label"
-      /* `mt-6 lg:mt-10`: cùng nhịp mà chính ô Tag/Date/Reading Time dùng để
-         cách title, nên ba khối của hero cách nhau đều nhau. */
-      className="sum-box relative mt-6 lg:mt-10 max-w-[772px] w-full lg:w-4/5 mx-auto rounded-lg bg-cyan-50 p-6 lg:px-10 lg:py-6"
+      /* Khung theo thiết kế v2: cùng bề rộng 720px, nền #EEF3FD và padding
+         với ô Category/Published/Reading Time ngay trên nó. */
+      className="sum-box relative mt-[18px] md:mt-6 w-full max-w-[720px] rounded-lg bg-[#EEF3FD] px-4 py-3.5 md:px-8 md:py-[22px] text-left"
       style={
         {
           "--sum-reveal-delay": `${SUMMARY_TIMING.textRevealMs}ms`,
@@ -146,9 +146,9 @@ export function ArticleSummary({ text }: { text: string }) {
       <div className="flex flex-col">
         <p
           id="article-summary-label"
-          className="inline-flex items-center gap-2 body-3 font-semibold text-cyan-900"
+          className="inline-flex items-center gap-1.5 md:gap-2 text-[13px] md:text-sm font-semibold text-dark-blue-950"
         >
-          <Sparkle className="sum-sparkle w-6 h-6 shrink-0 text-cyan-400" />
+          <Sparkle className="sum-sparkle w-3.5 h-3.5 md:w-4 md:h-4 shrink-0 text-cyan-400" />
           Summary
         </p>
 
@@ -202,7 +202,7 @@ export function ArticleSummary({ text }: { text: string }) {
                     onClick={handleToggle}
                     aria-expanded={isExpanded}
                     aria-controls="article-summary"
-                    className="inline-flex cursor-pointer items-center gap-1 body-3 font-semibold whitespace-nowrap text-cyan-400 transition-colors duration-200 hover:text-cyan-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+                    className="inline-flex cursor-pointer items-center gap-1 body-3 font-semibold whitespace-nowrap text-cyan-400 transition-colors duration-200 hover:text-dark-blue-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
                   >
                     {isExpanded ? "Show Less" : "Show More"}
                     <CaretDown

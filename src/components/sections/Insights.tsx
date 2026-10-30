@@ -37,10 +37,7 @@ export function Insights({ insights }: { insights: InsightViewData[] }) {
                 <h3 className="body-1 mt-2 mb-4 font-medium px-6 grow">
                   {post.title}
                 </h3>
-                <p className="body-3 font-medium text-dark-blue-400 px-6 grow">
-                  {post.excerpt}
-                </p>
-                <div className="flex items-center gap-2 body-3 text-grey-200 px-6 pb-6 mt-20 font-lora">
+                <div className="flex items-center gap-2 body-3 text-grey-200 px-6 pb-6 mt-4 font-lora">
                   <CalendarIcon className="w-6 h-6" />
                   <span className="font-lora">{post.date}</span>
                   <span className="w-px h-7 bg-grey-200" />

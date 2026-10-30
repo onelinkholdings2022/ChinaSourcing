@@ -1,94 +1,126 @@
 "use client";
 
-import Image from "next/image";
-import { ShareRow } from "@/components/sections/casestudy/ShareRow";
-import { TableOfContents } from "@/components/sections/article/TableOfContents";
+import { Fragment, useMemo, useRef } from "react";
+import { TableOfContents, type TocItem } from "@/components/sections/article/TableOfContents";
+import { MobileTocBar } from "@/components/sections/article/MobileTocBar";
+import { ArticleCtaBox } from "@/components/sections/article/ArticleCtaBox";
+import { LinkPreviewLayer } from "@/components/sections/article/LinkPreviewLayer";
 import { useSubscribed } from "@/hooks/useSubscribed";
 import { cn } from "@/lib/utils";
+import { useArticleProgress } from "@/components/sections/article/useArticleProgress";
+import { useAdaptiveStickyTop } from "@/components/sections/article/useAdaptiveStickyTop";
+import type { ArticleBlock } from "@/lib/views/articleContent";
+import type { ArticleCtaData, LinkPreviewData } from "@/lib/views/articleExtras";
 
 /**
- * The banner image, the share column and the article itself.
+ * Thân bài — thiết kế v2.
  *
- * ## Mục lục: còn hộp, bỏ ngăn kéo
+ * Desktop: hai cột trong 1248px — mục lục dính 216px | bài giãn hết phần còn
+ * lại, nên mép phải chữ thẳng mép phải ảnh đầu bài (cùng khung 1200px với
+ * `ArticleHero`). Dưới 900px mục lục
+ * cột trái biến thành `MobileTocBar` dính dưới header.
  *
- * Hộp `TableOfContents` ở cột trái GIỮ NGUYÊN. Thứ đã gỡ theo yêu cầu chỉ là
- * ngăn kéo `StickyIndex` ghim ở mép trái màn hình (deviation 20 dựng nó) —
- * component vẫn còn trong `sections/article/`, bật lại là một dòng.
+ * Thân bài là chuỗi khối: khúc HTML của CKEditor xen kẽ khung CTA tại đúng vị trí
+ * biên tập viên chèn. Khung có slug không còn bản ghi (đã bị xoá bên CMS) thì bỏ
+ * qua lặng lẽ — bài không vỡ.
  *
- * ## The body is gated — only when the CMS says so
+ * ## Khoá bài — logic cũ giữ nguyên
  *
- * `gated` (Strapi's `resource.gated` / `blog-post.gated`) decides this per
- * article. When gated, `#post-content-container`
- * is capped at `max-h-[600px] lg:max-h-[1000px]` with `overflow-clip`, and a
- * white gradient fades the cut-off edge under "Please subscribe to see the
- * detail". Handing over an email lifts the cap — see `useSubscribed`.
+ * `gated` (bên CMS) và chưa đăng ký → thân bài bị kẹp `max-h-[600px]
+ * lg:max-h-[1000px]` với lớp gradient trắng "Please subscribe to see the
+ * detail"; form ở `SubscribeForm` ngay dưới. Đăng ký xong (`useSubscribed`,
+ * `localStorage.onelink_subscribed`) là bỏ kẹp.
  */
 export function ArticleBody({
-  featuredImage,
-  featuredAlt,
   toc,
-  html,
+  blocks,
+  ctas,
+  previews,
   shareUrl,
   title,
   gated,
 }: {
-  featuredImage: string | null;
-  featuredAlt: string;
-  toc: { href: string; label: string }[];
-  html: string;
+  toc: TocItem[];
+  blocks: ArticleBlock[];
+  ctas: Record<string, ArticleCtaData>;
+  previews: Record<string, LinkPreviewData>;
   shareUrl: string;
   title: string;
   gated: boolean;
 }) {
   const subscribed = useSubscribed();
   const locked = gated && !subscribed;
+  const asideRef = useAdaptiveStickyTop<HTMLElement>();
+  const proseRef = useRef<HTMLDivElement>(null);
+  const ids = useMemo(() => toc.map((t) => t.href.replace(/^#/, "")), [toc]);
+  const { active, progress, scrollToId } = useArticleProgress(ids, proseRef);
 
   return (
-    <>
-      {featuredImage && (
-        <Image
-          src={featuredImage}
-          alt={featuredAlt}
-          width={1448}
-          height={579}
-          priority
-          /* Không có margin trên: khoảng cách tới ô Summary phía trên đã do
-             `spacing` (120px, 40px dưới 1028px) của khối bọc trong `ArticlePage`
-             lo trọn. Theme gốc cộng thêm `mt-10 lg:mt-[120px]` ở đây, thành 240px
-             ở desktop — gấp đôi nhịp section của cả site. */
-          className="w-full object-cover aspect-[4/3] md:aspect-[5/2] rounded-3xl"
-        />
-      )}
+    <div className="mt-8 md:mt-[72px]">
+      <MobileTocBar
+        items={toc}
+        active={active}
+        progress={progress}
+        onPick={scrollToId}
+        shareUrl={shareUrl}
+        title={title}
+      />
 
-      <div className="flex flex-col lg:flex-row gap-10 mt-24 lg:mt-20">
-        <div className="w-full lg:w-[252px] lg:min-w-[252px] 2xl:w-[300px] 2xl:min-w-[300px]">
-          {toc.length > 0 && <TableOfContents items={toc} />}
-
-          <ShareRow url={shareUrl} title={title} className="inline-flex" />
-        </div>
+      {/* Cột chữ tối đa 740px: Poppins 17px ra ~70 ký tự/dòng (956px cũ là ~89,
+          mắt phải quay về quá xa để tìm dòng sau). Ảnh, khung CTA, form đăng ký
+          nằm trong cột nên theo cùng bề rộng. Cụm mục lục + bài căn giữa khung. */}
+      {/* Khoảng hở mục lục → thân bài = khoảng trống giữa CHỮ "About Us" và
+          chữ "Products" trên header (padding hai bên link + gap giữa chúng),
+          đổi đúng các mốc menu đổi cỡ: 24px (tới xl), 28px (xl), 56px (2xl). */}
+      <div className="mx-auto flex max-w-[1248px] items-start justify-center gap-6 xl:gap-7 2xl:gap-14 px-4 pt-2 pb-12 md:px-6 md:pb-24 min-[900px]:pt-0">
+        <aside
+          ref={asideRef}
+          className="hidden min-[900px]:block sticky top-[var(--sidebar-top,106px)] w-[216px] shrink-0"
+        >
+          <TableOfContents
+            items={toc}
+            active={active}
+            progress={progress}
+            onPick={scrollToId}
+            shareUrl={shareUrl}
+            title={title}
+          />
+        </aside>
 
         <div
+          ref={proseRef}
           className={cn(
-            "max-w-[800px] max-[1023px]:mx-auto overflow-clip relative",
-            locked && "max-h-[600px] lg:max-h-[1000px]",
+            "article-prose min-w-0 w-full flex-1 max-w-[740px]",
+            locked && "relative overflow-clip max-h-[600px] lg:max-h-[1000px]",
           )}
         >
-          <div
-            className="rich-text"
-            // The editor's own markup, with the plugin's heading anchors intact
-            // so the table of contents above actually lands somewhere.
-            dangerouslySetInnerHTML={{ __html: html }}
-          />
+          {blocks.map((block, i) => {
+            if (block.type === "cta") {
+              const cta = ctas[block.slug];
+              return cta ? <ArticleCtaBox key={`cta-${i}`} cta={cta} /> : <Fragment key={`cta-${i}`} />;
+            }
+            return (
+              <div
+                key={`html-${i}`}
+                className="ap-chunk"
+                // HTML của biên tập viên (CKEditor) — đã qua `decorateLinks`
+                // (class link) và `withTocAnchors` (id cho mục lục).
+                dangerouslySetInnerHTML={{ __html: block.html }}
+              />
+            );
+          })}
 
           {locked && (
-            <span className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-white/0 to-white">
-              <p className="text-center absolute left-0 right-0 bottom-0 font-medium text-dark-blue-900 text-2xl">
+            <span className="absolute inset-0 bg-gradient-to-b from-white/0 to-white">
+              <span className="absolute inset-x-0 bottom-0 text-center font-medium text-dark-blue-900 text-xl md:text-2xl">
                 Please subscribe to see the detail
-              </p>
+              </span>
             </span>
           )}
         </div>
       </div>
-    </>
+
+      <LinkPreviewLayer containerRef={proseRef} previews={previews} />
+    </div>
   );
 }
