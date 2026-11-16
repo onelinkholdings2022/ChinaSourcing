@@ -5,16 +5,22 @@ import { STRAPI_URL } from "./api/strapi-client";
 // không nút nào trong số đó là link: theme dựng tạm một `<a download>` rồi tự
 // bấm, nên trình duyệt mở hộp tải xuống chứ không điều hướng.
 //
-// CMS không model được file này (`downloadCta` không có quan hệ media, và nút
-// bên `missionVideo` thì chỉ có `label` + `url`), nên đường dẫn nằm ở env —
-// xem .env.example.
+// File nằm trên Strapi: `resources-page.downloadCta.file`. Mọi nút tải đều đi
+// qua `/api/sourcing-guide` (CÙNG DOMAIN) — link thẳng sang `cms.chinasourcing.co`
+// thì trình duyệt bỏ qua `download` và MỞ PDF thay vì tải về.
+//
+// Env `NEXT_PUBLIC_SOURCING_GUIDE_PATH` chỉ còn là dự phòng khi field file trên
+// CMS để trống.
 
 const SOURCING_GUIDE_PATH = process.env.NEXT_PUBLIC_SOURCING_GUIDE_PATH || "";
 
-/** URL tuyệt đối tới file PDF; `null` khi env chưa đặt. */
+/** URL tuyệt đối tới file PDF dự phòng (env); `null` khi env chưa đặt. */
 export const SOURCING_GUIDE_URL = SOURCING_GUIDE_PATH
   ? `${STRAPI_URL}${SOURCING_GUIDE_PATH}`
   : null;
+
+/** Route cùng domain trả PDF kèm `Content-Disposition: attachment`. */
+export const SOURCING_GUIDE_DOWNLOAD = "/api/sourcing-guide";
 
 /**
  * Href giữ chỗ mà CMS gắn cho nút tải hướng dẫn. Không có trang nào ở địa chỉ

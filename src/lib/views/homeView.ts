@@ -6,7 +6,7 @@ import type { Partner } from "../types/partner";
 import type { AboutPageData } from "../types/about-page";
 import { filterTabHref, type RouteSlugTable } from "../routing/routeSlugs";
 import { estimateReadTime, formatDate, stripHtmlKeepBreaks } from "./textUtils";
-import { SOURCING_GUIDE_HREF, SOURCING_GUIDE_URL, isSourcingGuideHref } from "../sourcingGuide";
+import { SOURCING_GUIDE_DOWNLOAD, SOURCING_GUIDE_HREF, isSourcingGuideHref } from "../sourcingGuide";
 
 // ─── View model cho trang chủ ────────────────────────────────────────────────
 // Map raw Strapi -> đúng hình dữ liệu mà các component section đang đọc (trước
@@ -225,15 +225,14 @@ export function buildMissionVideoView(data: HomepageData): MissionVideoViewData 
     subtitle: data.missionVideo.subtitle ?? "",
     primaryButton: { label: btn1?.label ?? "", href: btn1?.url ?? "/contact-us" },
     // "Download A Sourcing Guide" — bên site gốc là `<button id="downloadBtn">`
-    // tải thẳng PDF, không phải link. CMS không có field file nên nó lưu href
-    // giữ chỗ `/sourcing-guide`; gặp href đó thì trả file thật, và trang render
-    // nút tải xuống thay vì `<a>` (địa chỉ kia không có trang, proxy sẽ đá về
-    // trang chủ).
+    // tải thẳng PDF, không phải link. Nút trên CMS lưu href giữ chỗ
+    // `/sourcing-guide`; gặp href đó thì render nút tải qua `/api/sourcing-guide`
+    // — CÙNG file với Resources Page (`downloadCta.file`).
     secondaryButton: {
       label: btn2?.label ?? "",
       href: btn2?.url ?? SOURCING_GUIDE_HREF,
       fileUrl: isSourcingGuideHref(btn2?.url ?? SOURCING_GUIDE_HREF)
-        ? SOURCING_GUIDE_URL
+        ? SOURCING_GUIDE_DOWNLOAD
         : null,
     },
   };

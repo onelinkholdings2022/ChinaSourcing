@@ -1,6 +1,6 @@
 import { getMediaUrl } from "../api/media-url";
 import { categoryHref, filterTabHref, type RouteSlugTable } from "../routing/routeSlugs";
-import { SOURCING_GUIDE_URL } from "../sourcingGuide";
+import { SOURCING_GUIDE_DOWNLOAD, SOURCING_GUIDE_URL } from "../sourcingGuide";
 import { stripHtml, estimateReadTime, formatDate, stripHtmlKeepBreaks, trimExcerpt } from "./textUtils";
 import type { ResourcesPageData } from "../types/resources-page";
 import type { Resource } from "../types/resource";
@@ -191,7 +191,9 @@ export function buildDownloadCtaView(page: ResourcesPageData): SplitScreenViewDa
     ctaLabel: downloadCta.buttonLabel ?? "Download",
     image: getMediaUrl(downloadCta.image) ?? FALLBACK_IMAGE,
     alt: downloadCta.heading ?? "",
-    fileUrl: SOURCING_GUIDE_URL,
+    // File trên CMS (fallback env) → nút tải qua route cùng domain; không có
+    // file nào thì nút lùi về link /contact-us.
+    fileUrl: downloadCta.file?.url || SOURCING_GUIDE_URL ? SOURCING_GUIDE_DOWNLOAD : null,
   };
 }
 
