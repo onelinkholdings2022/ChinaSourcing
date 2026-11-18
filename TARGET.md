@@ -960,3 +960,13 @@ None yet — pure emulation. Content lives in `src/data/site.ts`, so copy change
     Google. Thay thế instance `poppinsItalic` của mục 68: italic chung một
     family, nên giờ preload 10 file thay vì 6 (thêm ~35KB). Lora fallback
     là Times New Roman.
+
+71. **Bài viết bỏ style chữ viết thẳng vào thẻ (dán từ Word/Docs).**
+    `stripInlineTypography` (`articleContent.ts`) chạy lúc render, trước
+    `addFaqDividers`: xoá `font-family`, `font-size`, `line-height`, `font`,
+    `letter-spacing`, `color`, `tab-stops`, `mso-*` trong `style="…"` của thân
+    bài; GIỮ `text-align`, `font-weight`, `width`, nền/viền/đệm ô bảng. Bài
+    `china-factory-capacity-2026-building-materials-sourcing` có 77 chỗ
+    `font-family:"Arial"`, 38 `line-height:normal`, 15 cỡ chữ bằng pt — style
+    inline thắng mọi rule `.article-prose` nên đoạn đó ra Arial. Không đụng
+    dữ liệu CMS. `&quot;` phải giải mã trước khi tách theo `;`.

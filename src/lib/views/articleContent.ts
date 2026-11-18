@@ -104,6 +104,38 @@ export function decorateLinks(html: string): { html: string; internal: string[] 
 
 // Tiêu đề mục hỏi đáp: "Frequently Asked Questions (FAQ)", "China Sourcing FAQs
 // for Building Materials", "Technical FAQ: …".
+/**
+ * Thuộc tính chữ trong `style="…"` mà bài dán từ Word / Google Docs / Lark
+ * mang theo: `<span style="font-family:'Arial',sans-serif">`,
+ * `<p style="line-height:normal">`, `font-size:13.5pt`… Style viết thẳng vào
+ * thẻ thắng mọi rule của `.article-prose`, nên đoạn đó ra Arial, sai cỡ, sai
+ * giãn dòng giữa một bài Poppins. Bỏ những thuộc tính này lúc render, giữ
+ * nguyên phần biên tập viên cố ý đặt (`text-align`, `font-weight`, `width`,
+ * nền ô, viền bảng…). Không đụng dữ liệu CMS.
+ */
+const STRIPPED_STYLE_PROPS = new Set([
+  "font", "font-family", "font-size", "line-height", "letter-spacing",
+  "color", "tab-stops", "font-variant-ligatures", "font-variant-caps",
+]);
+const STYLE_ATTR_RE = /\sstyle\s*=\s*("([^"]*)"|'([^']*)')/gi;
+
+export function stripInlineTypography(html: string): string {
+  return html.replace(STYLE_ATTR_RE, (_m, _q, dq?: string, sq?: string) => {
+    // `&quot;` chứa dấu `;` — giải mã trước rồi mới tách khai báo.
+    const decls = (dq ?? sq ?? "")
+      .replace(/&quot;|&#34;/g, "'")
+      .split(";")
+      .map((d) => d.trim())
+      .filter((d) => {
+        const i = d.indexOf(":");
+        if (i <= 0) return false;
+        const prop = d.slice(0, i).trim().toLowerCase();
+        return !STRIPPED_STYLE_PROPS.has(prop) && !prop.startsWith("mso-");
+      });
+    return decls.length ? ` style="${decls.join("; ").replace(/"/g, "&quot;")}"` : "";
+  });
+}
+
 const FAQ_TITLE_RE = /\bFAQs?\b|frequently\s+asked\s+questions/i;
 const HEADING_RE = /<h([2-4])\b[^>]*>([\s\S]*?)<\/h\1>/gi;
 

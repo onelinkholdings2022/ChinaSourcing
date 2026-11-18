@@ -1,7 +1,7 @@
 import { getMediaUrl } from "../api/media-url";
 import { stripHtml, estimateReadTime, formatDate, withTocAnchors, fixContentImageAlts, resolveContentMedia } from "./textUtils";
 import { summarizeArticle } from "./articleSummary";
-import { addFaqDividers, decorateLinks, splitArticleBlocks, type ArticleBlock } from "./articleContent";
+import { addFaqDividers, stripInlineTypography, decorateLinks, splitArticleBlocks, type ArticleBlock } from "./articleContent";
 import { fetchArticleCtas, buildLinkPreviews, type ArticleCtaData, type LinkPreviewData } from "./articleExtras";
 import type { Resource } from "../types/resource";
 import type { BlogPost } from "../types/blog-post";
@@ -73,7 +73,7 @@ function buildRelatedMeta(settings: ResourceSettingData | null) {
 async function buildBody(content: string | null | undefined, title: string) {
   const anchored = withTocAnchors(content);
   const html = fixContentImageAlts(resolveContentMedia(anchored.html), title);
-  const linked = decorateLinks(addFaqDividers(html));
+  const linked = decorateLinks(addFaqDividers(stripInlineTypography(html)));
   const { blocks, ctaSlugs } = splitArticleBlocks(linked.html);
   const [ctas, previews] = await Promise.all([
     fetchArticleCtas(ctaSlugs),
