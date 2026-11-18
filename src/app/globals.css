@@ -1018,7 +1018,9 @@ body {
   .article-prose h2 {
     margin-top: 64px;
     scroll-margin-top: 106px;
-    font-family: var(--font-lora), Georgia, serif;
+    /* Poppins như toàn bộ phần còn lại của bài — trước đây là Lora (bê từ
+       `.rich-text h2` của theme), nên trang bài viết lẫn một font serif. */
+    font-family: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
     font-size: 30px; line-height: 1.35; font-weight: 600;
     color: rgb(4 12 25);
   }

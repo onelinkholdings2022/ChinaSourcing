@@ -11,6 +11,22 @@ const poppins = Poppins({
   display: "swap",
 });
 
+/**
+ * Poppins nghiêng — bản riêng, không preload. Danh sách trong bài viết in
+ * nghiêng (`.article-prose :is(ul, ol)`), và không có file italic thì trình
+ * duyệt tự xiên chữ đứng ("faux italic"): nét méo, không còn là Poppins thật.
+ * Tách instance để 4 file này chỉ tải ở trang thật sự có chữ nghiêng, không
+ * preload lên mọi trang. Cùng family "Poppins" nên `font-style: italic` tự chọn.
+ */
+const poppinsItalic = Poppins({
+  variable: "--font-poppins-italic",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: "italic",
+  display: "swap",
+  preload: false,
+});
+
 const lora = Lora({
   variable: "--font-lora",
   subsets: ["latin"],
@@ -52,7 +68,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${poppins.variable} ${lora.variable} h-full antialiased`}
+      className={`${poppins.variable} ${poppinsItalic.variable} ${lora.variable} h-full antialiased`}
     >
       <head>
         {/* Google Tag Manager */}

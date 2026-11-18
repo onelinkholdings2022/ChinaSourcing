@@ -923,3 +923,12 @@ None yet — pure emulation. Content lives in `src/data/site.ts`, so copy change
     cùng bề rộng. Cụm mục lục + bài căn giữa khung 1200px (`justify-center`)
     thay vì bám mép trái ảnh đầu bài — nên mục lục không còn thẳng mép trái
     với ảnh hero. Dưới 740px không đổi gì.
+
+68. **Trang bài viết dùng Poppins 100%.** Theo yêu cầu. Hai chỗ lệch font:
+    • `.article-prose h2` còn mang Lora (bê từ `.rich-text h2` của theme) —
+      mọi tiêu đề mục trong thân bài là serif. Đổi sang Poppins. `.rich-text`
+      của case study KHÔNG đổi.
+    • Danh sách in nghiêng (mục 65) nhưng `layout.tsx` chỉ nạp Poppins đứng,
+      nên trình duyệt tự xiên chữ ("faux italic"). Thêm instance
+      `poppinsItalic` (400–700, `preload: false`): cùng family "Poppins", chỉ
+      tải ở trang có chữ nghiêng, số font preload mỗi trang vẫn là 6.
