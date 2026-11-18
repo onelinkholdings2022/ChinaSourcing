@@ -36,9 +36,9 @@ export function Hero({ hero }: { hero: HeroViewData }) {
             sizes="100vw"
             className="object-cover"
           />
-          {hero.videoUrl && showVideo && (
+          {hero.video?.kind === "embed" && showVideo && (
             <iframe
-              src={hero.videoUrl}
+              src={hero.video.src}
               title=""
               aria-hidden
               allow="autoplay; fullscreen"
@@ -46,6 +46,23 @@ export function Hero({ hero }: { hero: HeroViewData }) {
               className="absolute top-1/2 left-1/2 pointer-events-none -translate-x-1/2 -translate-y-1/2"
               style={{ width: "177.78vh", height: "56.25vw", minWidth: "100%", minHeight: "100%" }}
             />
+          )}
+          {/* File video thật: `muted` + `playsInline` là điều kiện để trình
+              duyệt cho autoplay. Poster vẫn nằm bên dưới nên trong lúc tải
+              không có khung đen. */}
+          {hero.video?.kind === "file" && showVideo && (
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              aria-hidden
+              poster={hero.poster}
+              className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+            >
+              <source src={hero.video.src} {...(hero.video.type ? { type: hero.video.type } : {})} />
+            </video>
           )}
         </div>
         {/* Dark scrim — #1A1A1A at 65% */}

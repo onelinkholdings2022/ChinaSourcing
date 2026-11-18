@@ -932,3 +932,17 @@ None yet — pure emulation. Content lives in `src/data/site.ts`, so copy change
       nên trình duyệt tự xiên chữ ("faux italic"). Thêm instance
       `poppinsItalic` (400–700, `preload: false`): cùng family "Poppins", chỉ
       tải ở trang có chữ nghiêng, số font preload mỗi trang vẫn là 6.
+
+69. **Video nền hero trang chủ: upload thẳng vào CMS.** Hero bị lỗi vì
+    `videoUrl` bên CMS đang là link Google Drive (`…/file/d/…/view`) — trang
+    xem file chứ không phải luồng video, không tự chạy/lặp/tắt tiếng được.
+    Field `backgroundVideo` thì đã có từ trước nhưng khai
+    `allowedTypes: ["images","files"]`, nên Media Library không cho gán video.
+    • strapi-cns: `sections/hero.json` → `allowedTypes: ["videos"]`.
+    • Frontend (`resolveHeroVideo` trong `homeView.ts`): ưu tiên file
+      `backgroundVideo` → `<video autoplay muted loop playsinline>`; lùi về
+      `videoUrl`, nhận Vimeo (trang hoặc player), YouTube (ép chế độ nền,
+      `youtube-nocookie`) và link thẳng .mp4/.webm. Link Drive bị bỏ qua →
+      chỉ hiện poster. Vẫn chỉ dựng từ `lg` (deviation 56).
+    • CMS nằm sau Cloudflare: mỗi lần upload tối đa 100MB (Strapi mặc định
+      200MB). Video nền nên nén về ~5–15MB (H.264 MP4, 1080p, không tiếng).

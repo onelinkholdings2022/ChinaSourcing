@@ -15,6 +15,8 @@ export interface HomepageHero {
   rotatingWords: { id: number; text: string }[];
   ctaButton: StrapiSlideButton | null;
   posterImage: StrapiMedia | null;
+  /** File video upload thẳng vào Media Library — ưu tiên hơn `videoUrl`. */
+  backgroundVideo?: StrapiMedia | null;
 }
 
 export interface HomepageServiceCard {

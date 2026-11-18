@@ -20,9 +20,17 @@ export interface HeroViewData {
   cta: { idle: string; hover: string };
   poster: string;
   posterAlt: string;
-  /** Vimeo embed (đã kèm sẵn `autoplay=1&muted=1&loop=1` từ CMS) — null thì chỉ hiện poster. */
-  videoUrl: string | null;
+  /** Video nền — null thì chỉ hiện poster. Xem `resolveHeroVideo`. */
+  video: HeroVideo | null;
 }
+
+/**
+ * Hai cách dựng video nền:
+ * • `file`  — file video thật (`<video>`): upload vào field `backgroundVideo`
+ *   bên CMS, hoặc dán link trực tiếp tới .mp4/.webm vào `videoUrl`.
+ * • `embed` — iframe player của Vimeo / YouTube, ép về chế độ nền.
+ */
+export type HeroVideo = { kind: "file"; src: string; type: string | null } | { kind: "embed"; src: string };
 
 export interface ServiceCardViewData {
   title: string;
@@ -88,15 +96,67 @@ const FALLBACK_IMAGE = "/images/blog-fallback.png";
  * với video nền chỉ để trang trí thì phải ép `background=1&controls=0` (Vimeo
  * background-mode) mới ẩn hẳn thanh đó, dù CMS đã tự set autoplay/muted/loop.
  */
-function toBackgroundVimeoUrl(url: string): string {
-  try {
-    const u = new URL(url);
-    u.searchParams.set("background", "1");
-    u.searchParams.set("controls", "0");
-    return u.toString();
-  } catch {
-    return url;
+function toBackgroundVimeoUrl(u: URL): string {
+  u.searchParams.set("background", "1");
+  u.searchParams.set("controls", "0");
+  return u.toString();
+}
+
+/** YouTube: `loop` chỉ chạy khi `playlist` trỏ về chính video đó. */
+function toBackgroundYoutubeUrl(id: string): string {
+  const q = new URLSearchParams({
+    autoplay: "1", mute: "1", loop: "1", playlist: id, controls: "0",
+    playsinline: "1", modestbranding: "1", rel: "0", disablekb: "1",
+  });
+  return `https://www.youtube-nocookie.com/embed/${id}?${q}`;
+}
+
+const VIDEO_EXT = /\.(mp4|webm|ogv|mov|m4v)$/i;
+
+/**
+ * Chọn nguồn video nền, theo thứ tự: file upload `backgroundVideo` → `videoUrl`.
+ *
+ * Link Google Drive (`drive.google.com/file/d/…/view`) bị BỎ QUA có chủ đích:
+ * đó là trang xem file chứ không phải luồng video, nhúng vào iframe thì ra
+ * khung player của Drive (hoặc trang lỗi "không có quyền truy cập"), không tự
+ * chạy, không lặp, không tắt tiếng được — tức đúng cái hero "bị lỗi". Link tải
+ * thẳng của Drive cũng không dùng được làm nguồn `<video>`: file lớn bị chặn
+ * bởi trang cảnh báo quét virus và bị giới hạn lượt tải. Gặp link đó thì hero
+ * chỉ hiện poster.
+ */
+function resolveHeroVideo(hero: HomepageData["hero"]): HeroVideo | null {
+  const media = hero.backgroundVideo;
+  if (media?.url && (media.mime ?? "").startsWith("video/")) {
+    const src = getMediaUrl(media);
+    if (src) return { kind: "file", src, type: media.mime ?? null };
   }
+
+  const raw = hero.videoUrl?.trim();
+  if (!raw) return null;
+  let u: URL;
+  try {
+    u = new URL(raw);
+  } catch {
+    return null;
+  }
+  const host = u.hostname.replace(/^www\./, "");
+
+  if (host === "player.vimeo.com") return { kind: "embed", src: toBackgroundVimeoUrl(u) };
+  if (host === "vimeo.com") {
+    const id = u.pathname.split("/").find((seg) => /^\d+$/.test(seg));
+    if (id) return { kind: "embed", src: toBackgroundVimeoUrl(new URL(`https://player.vimeo.com/video/${id}?autoplay=1&muted=1&loop=1`)) };
+  }
+
+  const ytId =
+    host === "youtu.be" ? u.pathname.slice(1)
+    : /(^|\.)youtube(-nocookie)?\.com$/.test(host)
+      ? u.searchParams.get("v") ?? u.pathname.match(/\/(?:embed|shorts|live)\/([\w-]+)/)?.[1] ?? null
+      : null;
+  if (ytId) return { kind: "embed", src: toBackgroundYoutubeUrl(ytId) };
+
+  if (VIDEO_EXT.test(u.pathname)) return { kind: "file", src: u.toString(), type: null };
+
+  return null;
 }
 
 export function buildHeroView(data: HomepageData): HeroViewData {
@@ -113,7 +173,7 @@ export function buildHeroView(data: HomepageData): HeroViewData {
     // Không đọc `alternativeText` của poster: bên CMS nó đang là "logo cns",
     // trong khi ảnh là khung hình đầu của video hero chứ không phải logo.
     posterAlt: `China Sourcing Co – ${(hero.subtitle || hero.title || "sourcing partner in Asia").replace(/\.$/, "")}`,
-    videoUrl: hero.videoUrl ? toBackgroundVimeoUrl(hero.videoUrl) : null,
+    video: resolveHeroVideo(hero),
   };
 }
 
