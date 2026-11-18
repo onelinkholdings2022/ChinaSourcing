@@ -128,7 +128,11 @@ function resolveHeroVideo(hero: HomepageData["hero"]): HeroVideo | null {
   const media = hero.backgroundVideo;
   if (media?.url && (media.mime ?? "").startsWith("video/")) {
     const src = getMediaUrl(media);
-    if (src) return { kind: "file", src, type: media.mime ?? null };
+    // `.mov` (video/quicktime) KHÔNG được khai type: Chrome trả
+    // `canPlayType("video/quicktime") === ""` nên bỏ qua `<source>` và video
+    // đứng ở NO_SOURCE — dù bên trong thường là H.264 mà Chrome phát tốt.
+    // Không khai type thì trình duyệt tự dò định dạng từ chính file.
+    if (src) return { kind: "file", src, type: media.mime === "video/quicktime" ? null : media.mime ?? null };
   }
 
   const raw = hero.videoUrl?.trim();

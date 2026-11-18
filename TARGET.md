@@ -946,3 +946,7 @@ None yet — pure emulation. Content lives in `src/data/site.ts`, so copy change
       chỉ hiện poster. Vẫn chỉ dựng từ `lg` (deviation 56).
     • CMS nằm sau Cloudflare: mỗi lần upload tối đa 100MB (Strapi mặc định
       200MB). Video nền nên nén về ~5–15MB (H.264 MP4, 1080p, không tiếng).
+    • File `.mov` KHÔNG được khai `type="video/quicktime"` trên `<source>`:
+      Chrome trả `canPlayType("video/quicktime") === ""`, bỏ qua nguồn và
+      video đứng ở NO_SOURCE dù bên trong là H.264. `resolveHeroVideo` bỏ
+      `type` với quicktime để trình duyệt tự dò.
