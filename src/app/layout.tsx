@@ -1,37 +1,46 @@
 import type { Metadata } from "next";
-import { Poppins, Lora } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { PageTransition } from "@/components/PageTransition";
 import { SmoothScroll } from "@/components/SmoothScroll";
 
-const poppins = Poppins({
-  variable: "--font-poppins",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  display: "swap",
-});
-
 /**
- * Poppins nghiêng — bản riêng, không preload. Danh sách trong bài viết in
- * nghiêng (`.article-prose :is(ul, ol)`), và không có file italic thì trình
- * duyệt tự xiên chữ đứng ("faux italic"): nét méo, không còn là Poppins thật.
- * Tách instance để 4 file này chỉ tải ở trang thật sự có chữ nghiêng, không
- * preload lên mọi trang. Cùng family "Poppins" nên `font-style: italic` tự chọn.
+ * Font tự host trong `src/app/fonts/` (bản subset latin lấy từ Google Fonts),
+ * KHÔNG dùng `next/font/google`.
+ *
+ * `next/font/google` tải CSS của Google LÚC BUILD. Trên server production
+ * Google trả Lora dạng `fonts.gstatic.com/l/font?kit=…&skey=…&v=…` — URL
+ * nhiều tham số — và bộ thay URL font của Turbopack chỉ nhận đúng một, nên
+ * `next build` vỡ với "next/font/google queries have exactly one entry".
+ * Máy dev nhận dạng `/s/…woff2` nên không thấy lỗi. Tự host thì build không
+ * còn phụ thuộc Google, ra cùng một kết quả ở mọi máy.
+ *
+ * Italic nằm chung một family để `font-style: italic` chọn đúng file thật
+ * (không có thì trình duyệt tự xiên chữ đứng — "faux italic").
  */
-const poppinsItalic = Poppins({
-  variable: "--font-poppins-italic",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  style: "italic",
+const poppins = localFont({
+  variable: "--font-poppins",
   display: "swap",
-  preload: false,
+  src: [
+    { path: "./fonts/poppins-300-normal.woff2", weight: "300", style: "normal" },
+    { path: "./fonts/poppins-400-normal.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/poppins-500-normal.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/poppins-600-normal.woff2", weight: "600", style: "normal" },
+    { path: "./fonts/poppins-700-normal.woff2", weight: "700", style: "normal" },
+    { path: "./fonts/poppins-400-italic.woff2", weight: "400", style: "italic" },
+    { path: "./fonts/poppins-500-italic.woff2", weight: "500", style: "italic" },
+    { path: "./fonts/poppins-600-italic.woff2", weight: "600", style: "italic" },
+    { path: "./fonts/poppins-700-italic.woff2", weight: "700", style: "italic" },
+  ],
 });
 
-const lora = Lora({
+/** Lora là variable font — một file phủ cả 400–600. */
+const lora = localFont({
   variable: "--font-lora",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
   display: "swap",
+  // Fallback mặc định của next/font/local là Arial — Lora là serif.
+  adjustFontFallback: "Times New Roman",
+  src: [{ path: "./fonts/lora-400-600-normal.woff2", weight: "400 600", style: "normal" }],
 });
 
 /**
@@ -68,7 +77,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${poppins.variable} ${poppinsItalic.variable} ${lora.variable} h-full antialiased`}
+      className={`${poppins.variable} ${lora.variable} h-full antialiased`}
     >
       <head>
         {/* Google Tag Manager */}

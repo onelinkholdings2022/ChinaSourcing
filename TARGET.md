@@ -950,3 +950,13 @@ None yet — pure emulation. Content lives in `src/data/site.ts`, so copy change
       Chrome trả `canPlayType("video/quicktime") === ""`, bỏ qua nguồn và
       video đứng ở NO_SOURCE dù bên trong là H.264. `resolveHeroVideo` bỏ
       `type` với quicktime để trình duyệt tự dò.
+
+70. **Font tự host (`next/font/local`), bỏ `next/font/google`.** `next build`
+    trên server production vỡ: Google trả Lora dạng
+    `fonts.gstatic.com/l/font?kit=…&skey=…` (nhiều tham số) và Turbopack báo
+    "next/font/google queries have exactly one entry". Giờ 9 file Poppins
+    (300–700 đứng, 400–700 nghiêng) và 1 file Lora variable (400–600) nằm ở
+    `src/app/fonts/`, subset latin của Google, nên build không cần mạng tới
+    Google. Thay thế instance `poppinsItalic` của mục 68: italic chung một
+    family, nên giờ preload 10 file thay vì 6 (thêm ~35KB). Lora fallback
+    là Times New Roman.
